@@ -1,0 +1,17 @@
+name: policy-guardrail-agent
+version: 0.1.0
+description: Evaluates draft output, tool responses, and workflow transitions against policy.
+inputs:
+  - draftOutput
+  - toolDecisions
+  - evidencePacket
+  - requestedAction
+outputs:
+  - policyDecision
+  - redactions
+  - escalationReason
+guardrails:
+  - block safe-discharge claims
+  - block clinical determinations
+  - require human review for consequential actions
+

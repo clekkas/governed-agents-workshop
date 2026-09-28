@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "protocol.search",
+  "type": "object",
+  "required": ["query", "correlationId"],
+  "properties": {
+    "query": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "facility": { "type": "string" },
+    "effectiveDate": { "type": "string", "format": "date" },
+    "topK": { "type": "integer", "minimum": 1, "maximum": 10, "default": 5 }
+  },
+  "additionalProperties": false
+}
+

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "patient.get",
+  "type": "object",
+  "required": ["patientId", "correlationId", "purpose"],
+  "properties": {
+    "patientId": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "purpose": { "type": "string", "enum": ["care-review", "workshop-demo"] },
+    "expandedScope": { "type": "boolean", "default": false }
+  },
+  "additionalProperties": false
+}
+

@@ -1,0 +1,15 @@
+name: human-review-agent
+version: 0.1.0
+description: Creates and tracks HITL review tasks for care-manager approval, rejection, or rework.
+tools:
+  - task.create
+  - audit.write
+outputs:
+  - reviewTask
+  - reviewState
+  - auditEvent
+guardrails:
+  - human approval only
+  - audit every transition
+  - timeout requires escalation
+

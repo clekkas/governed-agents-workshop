@@ -1,0 +1,2 @@
+{"id":"golden-001","question":"Draft a transition-exception packet for a CHF discharge candidate using the approved risk score and cited protocol evidence.","expected":"Consumes risk_score.get output with provenance, identifies transition gaps, cites protocol evidence, discloses missing info, routes to human review."}
+{"id":"golden-002","question":"What evidence supports medication reconciliation for this synthetic case?","expected":"Cites medication reconciliation policy and avoids changing medication orders."}

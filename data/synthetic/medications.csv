@@ -1,0 +1,141 @@
+medication_id,patient_id,encounter_id,medication_name,frequency
+M0001-1,P0001,E0001-1,Furosemide,daily
+M0001-2,P0001,E0001-2,Albuterol,daily
+M0002-1,P0002,E0002-1,Furosemide,as needed
+M0003-1,P0003,E0003-1,Albuterol,as needed
+M0004-1,P0004,E0004-1,Metformin,as needed
+M0004-2,P0004,E0004-2,Metformin,as needed
+M0005-1,P0005,E0005-1,Furosemide,as needed
+M0005-2,P0005,E0005-2,Furosemide,daily
+M0005-3,P0005,E0005-3,Metformin,as needed
+M0006-1,P0006,E0006-1,Albuterol,daily
+M0006-2,P0006,E0006-2,Albuterol,twice daily
+M0007-1,P0007,E0007-1,Furosemide,as needed
+M0007-2,P0007,E0007-2,Albuterol,twice daily
+M0008-1,P0008,E0008-1,Metformin,daily
+M0008-2,P0008,E0008-2,Albuterol,daily
+M0008-3,P0008,E0008-3,Furosemide,as needed
+M0009-1,P0009,E0009-1,Metformin,twice daily
+M0009-2,P0009,E0009-2,Furosemide,daily
+M0009-3,P0009,E0009-3,Metformin,twice daily
+M0010-1,P0010,E0010-1,Metformin,twice daily
+M0010-2,P0010,E0010-2,Albuterol,twice daily
+M0011-1,P0011,E0011-1,Furosemide,twice daily
+M0011-2,P0011,E0011-2,Furosemide,as needed
+M0012-1,P0012,E0012-1,Albuterol,twice daily
+M0012-2,P0012,E0012-2,Metformin,daily
+M0012-3,P0012,E0012-3,Furosemide,twice daily
+M0013-1,P0013,E0013-1,Albuterol,daily
+M0013-2,P0013,E0013-2,Furosemide,daily
+M0013-3,P0013,E0013-3,Lisinopril,twice daily
+M0013-4,P0013,E0013-4,Lisinopril,twice daily
+M0014-1,P0014,E0014-1,Lisinopril,twice daily
+M0015-1,P0015,E0015-1,Furosemide,as needed
+M0015-2,P0015,E0015-2,Metformin,twice daily
+M0016-1,P0016,E0016-1,Albuterol,daily
+M0017-1,P0017,E0017-1,Albuterol,twice daily
+M0017-2,P0017,E0017-2,Albuterol,as needed
+M0017-3,P0017,E0017-3,Lisinopril,daily
+M0017-4,P0017,E0017-4,Albuterol,as needed
+M0018-1,P0018,E0018-1,Metformin,twice daily
+M0018-2,P0018,E0018-2,Metformin,daily
+M0018-3,P0018,E0018-3,Metformin,as needed
+M0019-1,P0019,E0019-1,Lisinopril,twice daily
+M0019-2,P0019,E0019-2,Metformin,twice daily
+M0020-1,P0020,E0020-1,Furosemide,daily
+M0020-2,P0020,E0020-2,Lisinopril,daily
+M0020-3,P0020,E0020-3,Furosemide,twice daily
+M0020-4,P0020,E0020-4,Lisinopril,as needed
+M0021-1,P0021,E0021-1,Furosemide,as needed
+M0021-2,P0021,E0021-2,Lisinopril,daily
+M0021-3,P0021,E0021-3,Lisinopril,daily
+M0022-1,P0022,E0022-1,Furosemide,daily
+M0022-2,P0022,E0022-2,Lisinopril,twice daily
+M0022-3,P0022,E0022-3,Albuterol,daily
+M0022-4,P0022,E0022-4,Lisinopril,daily
+M0023-1,P0023,E0023-1,Furosemide,twice daily
+M0023-2,P0023,E0023-2,Albuterol,as needed
+M0024-1,P0024,E0024-1,Albuterol,twice daily
+M0024-2,P0024,E0024-2,Metformin,twice daily
+M0025-1,P0025,E0025-1,Lisinopril,as needed
+M0026-1,P0026,E0026-1,Furosemide,daily
+M0026-2,P0026,E0026-2,Lisinopril,twice daily
+M0026-3,P0026,E0026-3,Metformin,daily
+M0026-4,P0026,E0026-4,Metformin,daily
+M0027-1,P0027,E0027-1,Metformin,twice daily
+M0027-2,P0027,E0027-2,Furosemide,as needed
+M0028-1,P0028,E0028-1,Lisinopril,as needed
+M0029-1,P0029,E0029-1,Albuterol,twice daily
+M0029-2,P0029,E0029-2,Furosemide,as needed
+M0029-3,P0029,E0029-3,Furosemide,as needed
+M0029-4,P0029,E0029-4,Furosemide,as needed
+M0030-1,P0030,E0030-1,Albuterol,twice daily
+M0031-1,P0031,E0031-1,Lisinopril,daily
+M0031-2,P0031,E0031-2,Metformin,twice daily
+M0031-3,P0031,E0031-3,Lisinopril,daily
+M0031-4,P0031,E0031-4,Albuterol,daily
+M0032-1,P0032,E0032-1,Furosemide,daily
+M0033-1,P0033,E0033-1,Furosemide,twice daily
+M0033-2,P0033,E0033-2,Lisinopril,as needed
+M0033-3,P0033,E0033-3,Metformin,as needed
+M0034-1,P0034,E0034-1,Albuterol,daily
+M0035-1,P0035,E0035-1,Albuterol,twice daily
+M0035-2,P0035,E0035-2,Lisinopril,daily
+M0036-1,P0036,E0036-1,Lisinopril,twice daily
+M0036-2,P0036,E0036-2,Albuterol,daily
+M0037-1,P0037,E0037-1,Furosemide,twice daily
+M0038-1,P0038,E0038-1,Albuterol,daily
+M0039-1,P0039,E0039-1,Metformin,as needed
+M0039-2,P0039,E0039-2,Albuterol,daily
+M0040-1,P0040,E0040-1,Albuterol,daily
+M0040-2,P0040,E0040-2,Albuterol,daily
+M0040-3,P0040,E0040-3,Furosemide,as needed
+M0040-4,P0040,E0040-4,Metformin,as needed
+M0041-1,P0041,E0041-1,Lisinopril,as needed
+M0042-1,P0042,E0042-1,Albuterol,as needed
+M0043-1,P0043,E0043-1,Albuterol,as needed
+M0043-2,P0043,E0043-2,Furosemide,twice daily
+M0043-3,P0043,E0043-3,Metformin,as needed
+M0044-1,P0044,E0044-1,Metformin,as needed
+M0044-2,P0044,E0044-2,Albuterol,as needed
+M0044-3,P0044,E0044-3,Lisinopril,daily
+M0045-1,P0045,E0045-1,Furosemide,twice daily
+M0045-2,P0045,E0045-2,Lisinopril,twice daily
+M0045-3,P0045,E0045-3,Albuterol,as needed
+M0045-4,P0045,E0045-4,Furosemide,twice daily
+M0046-1,P0046,E0046-1,Albuterol,twice daily
+M0046-2,P0046,E0046-2,Albuterol,twice daily
+M0047-1,P0047,E0047-1,Furosemide,daily
+M0048-1,P0048,E0048-1,Albuterol,as needed
+M0048-2,P0048,E0048-2,Lisinopril,twice daily
+M0048-3,P0048,E0048-3,Albuterol,twice daily
+M0049-1,P0049,E0049-1,Albuterol,as needed
+M0049-2,P0049,E0049-2,Furosemide,daily
+M0050-1,P0050,E0050-1,Lisinopril,daily
+M0050-2,P0050,E0050-2,Metformin,daily
+M0050-3,P0050,E0050-3,Albuterol,twice daily
+M0051-1,P0051,E0051-1,Albuterol,as needed
+M0051-2,P0051,E0051-2,Lisinopril,as needed
+M0051-3,P0051,E0051-3,Furosemide,as needed
+M0051-4,P0051,E0051-4,Furosemide,twice daily
+M0052-1,P0052,E0052-1,Lisinopril,twice daily
+M0052-2,P0052,E0052-2,Furosemide,daily
+M0052-3,P0052,E0052-3,Lisinopril,as needed
+M0052-4,P0052,E0052-4,Lisinopril,daily
+M0053-1,P0053,E0053-1,Furosemide,as needed
+M0053-2,P0053,E0053-2,Metformin,twice daily
+M0054-1,P0054,E0054-1,Albuterol,daily
+M0054-2,P0054,E0054-2,Albuterol,daily
+M0055-1,P0055,E0055-1,Albuterol,daily
+M0055-2,P0055,E0055-2,Metformin,twice daily
+M0055-3,P0055,E0055-3,Metformin,as needed
+M0056-1,P0056,E0056-1,Lisinopril,daily
+M0057-1,P0057,E0057-1,Albuterol,twice daily
+M0057-2,P0057,E0057-2,Lisinopril,as needed
+M0058-1,P0058,E0058-1,Metformin,twice daily
+M0058-2,P0058,E0058-2,Albuterol,daily
+M0059-1,P0059,E0059-1,Furosemide,as needed
+M0059-2,P0059,E0059-2,Lisinopril,twice daily
+M0059-3,P0059,E0059-3,Lisinopril,daily
+M0059-4,P0059,E0059-4,Albuterol,twice daily
+M0060-1,P0060,E0060-1,Albuterol,twice daily

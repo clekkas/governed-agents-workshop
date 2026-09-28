@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <defs>
+    <style>
+      .bg { fill: #111820; }
+      .box { fill: #151f2a; stroke: #d8f3ff; stroke-width: 2; rx: 4; }
+      .group { fill: none; stroke-width: 2; stroke-dasharray: 8 6; rx: 8; }
+      .text { fill: #ffffff; font-family: Consolas, 'Cascadia Code', monospace; font-size: 22px; }
+      .small { fill: #d8f3ff; font-family: Consolas, 'Cascadia Code', monospace; font-size: 16px; }
+      .label { fill: #9ee7ff; font-family: Consolas, 'Cascadia Code', monospace; font-size: 16px; font-weight: bold; }
+      .arrow { stroke: #d8f3ff; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 8 6; }
+      .blue { stroke: #60a5fa; }
+      .teal { stroke: #2dd4bf; }
+      .orange { stroke: #fbbf24; }
+      .red { stroke: #f87171; }
+      .green { stroke: #86efac; }
+      .purple { stroke: #c084fc; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d8f3ff"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="980"/>
+  <text class="text" x="40" y="50">Discharge Transition Exception Coordinator - Complete Solution Architecture</text>
+  <text class="small" x="40" y="82">Synthetic workshop system: approved risk score + transition gaps + grounded evidence + HITL + observability</text>
+
+  <!-- Experience and API -->
+  <rect class="group blue" x="40" y="120" width="380" height="215"/>
+  <text class="label" x="60" y="150">Experience Layer</text>
+  <rect class="box" x="75" y="180" width="300" height="70"/>
+  <text class="text" x="105" y="208">React UI</text>
+  <text class="small" x="105" y="232">Exception review surface</text>
+  <rect class="box" x="75" y="280" width="300" height="70"/>
+  <text class="text" x="105" y="308">Backend API</text>
+  <text class="small" x="105" y="332">FastAPI / App Service</text>
+
+  <!-- Foundry hosted agents -->
+  <rect class="group teal" x="500" y="120" width="600" height="365"/>
+  <text class="label" x="520" y="150">Microsoft Foundry Hosted Agent Runtime</text>
+  <rect class="box" x="640" y="180" width="320" height="70"/>
+  <text class="text" x="680" y="208">Discharge Transition</text>
+  <text class="small" x="680" y="232">Orchestrator</text>
+
+  <rect class="box" x="530" y="285" width="250" height="64"/>
+  <text class="small" x="555" y="313">Case Context Agent</text>
+  <text class="small" x="555" y="335">redacted context</text>
+  <rect class="box" x="820" y="285" width="250" height="64"/>
+  <text class="small" x="845" y="313">Risk Score Agent</text>
+  <text class="small" x="845" y="335">approved score only</text>
+  <rect class="box" x="530" y="380" width="250" height="64"/>
+  <text class="small" x="555" y="408">Evidence Retrieval</text>
+  <text class="small" x="555" y="430">Foundry IQ / RAG</text>
+  <rect class="box" x="820" y="380" width="250" height="64"/>
+  <text class="small" x="845" y="408">Transition Exception</text>
+  <text class="small" x="845" y="430">gap detection</text>
+
+  <rect class="box" x="1130" y="180" width="300" height="70"/>
+  <text class="text" x="1175" y="208">Policy Guardrail</text>
+  <text class="small" x="1175" y="232">PHI + citations + HITL</text>
+  <rect class="box" x="1130" y="280" width="300" height="70"/>
+  <text class="text" x="1175" y="308">Human Review</text>
+  <text class="small" x="1175" y="332">Task state + audit</text>
+
+  <!-- MCP and systems -->
+  <rect class="group orange" x="95" y="540" width="1410" height="245"/>
+  <text class="label" x="115" y="570">MCP Server / Toolboxes / Mock Systems</text>
+  <rect class="box" x="130" y="615" width="210" height="70"/>
+  <text class="small" x="158" y="644">Mock Epic/EHR</text>
+  <text class="small" x="158" y="666">read-only context</text>
+  <rect class="box" x="375" y="615" width="210" height="70"/>
+  <text class="small" x="405" y="644">risk_score.get</text>
+  <text class="small" x="405" y="666">approved + provenance</text>
+  <rect class="box" x="620" y="615" width="210" height="70"/>
+  <text class="small" x="650" y="644">Foundry IQ</text>
+  <text class="small" x="650" y="666">protocol knowledge</text>
+  <rect class="box" x="865" y="615" width="210" height="70"/>
+  <text class="small" x="895" y="644">Appointments</text>
+  <text class="small" x="895" y="666">options lookup</text>
+  <rect class="box" x="1110" y="615" width="210" height="70"/>
+  <text class="small" x="1140" y="644">Task Scheduler</text>
+  <text class="small" x="1140" y="666">HITL queue</text>
+  <rect class="box" x="1355" y="615" width="120" height="70"/>
+  <text class="small" x="1377" y="644">Audit</text>
+  <text class="small" x="1377" y="666">writer</text>
+
+  <rect class="box" x="620" y="710" width="210" height="50"/>
+  <text class="small" x="650" y="740">Approved protocol docs</text>
+
+  <!-- Observability -->
+  <rect class="group green" x="95" y="835" width="910" height="115"/>
+  <text class="label" x="115" y="865">Observability and Evaluation</text>
+  <rect class="box" x="130" y="890" width="250" height="45"/>
+  <text class="small" x="155" y="918">Application Insights</text>
+  <rect class="box" x="420" y="890" width="250" height="45"/>
+  <text class="small" x="445" y="918">Log Analytics / KQL</text>
+  <rect class="box" x="710" y="890" width="250" height="45"/>
+  <text class="small" x="735" y="918">Evaluations + dashboards</text>
+
+  <!-- Governance -->
+  <rect class="group purple" x="1070" y="835" width="435" height="115"/>
+  <text class="label" x="1090" y="865">Governance Foundation</text>
+  <rect class="box" x="1105" y="890" width="110" height="45"/>
+  <text class="small" x="1120" y="918">Entra ID</text>
+  <rect class="box" x="1240" y="890" width="110" height="45"/>
+  <text class="small" x="1258" y="918">Key Vault</text>
+  <rect class="box" x="1375" y="890" width="100" height="45"/>
+  <text class="small" x="1390" y="918">BYO ACR</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M225 250 V280"/>
+  <path class="arrow" d="M375 315 H500"/>
+  <path class="arrow" d="M420 315 H640 V250"/>
+  <path class="arrow" d="M800 250 V285"/>
+  <path class="arrow" d="M780 317 H820"/>
+  <path class="arrow" d="M800 250 C800 270 655 270 655 285"/>
+  <path class="arrow" d="M800 250 C800 355 655 355 655 380"/>
+  <path class="arrow" d="M800 250 C800 355 945 355 945 380"/>
+  <path class="arrow" d="M960 215 H1130"/>
+  <path class="arrow" d="M1280 250 V280"/>
+  <path class="arrow" d="M655 444 V540 H235 V615"/>
+  <path class="arrow" d="M945 349 V540 H480 V615"/>
+  <path class="arrow" d="M655 444 V540 H725 V615"/>
+  <path class="arrow" d="M945 444 V540 H970 V615"/>
+  <path class="arrow" d="M1280 350 V540 H1215 V615"/>
+  <path class="arrow" d="M1280 350 V540 H1415 V615"/>
+  <path class="arrow" d="M725 685 V710"/>
+  <path class="arrow dashed" d="M800 485 V835"/>
+  <path class="arrow dashed" d="M1215 685 V835"/>
+  <path class="arrow dashed" d="M1158 890 C1020 780 960 610 960 485"/>
+  <path class="arrow dashed" d="M1295 890 C1275 760 1280 590 1280 350"/>
+  <path class="arrow dashed" d="M1425 890 C1400 760 1415 710 1415 685"/>
+
+  <!-- Boundary note -->
+  <rect x="1130" y="410" width="360" height="75" rx="8" fill="#2b1720" stroke="#f87171" stroke-width="2"/>
+  <text class="small" x="1155" y="440">Hard boundary:</text>
+  <text class="small" x="1155" y="464">No autonomous discharge decision</text>
+</svg>
+

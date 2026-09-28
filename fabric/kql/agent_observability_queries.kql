@@ -1,0 +1,37 @@
+customEvents
+| where name == "PolicyDecisionMade"
+| summarize count() by tostring(customDimensions.policyName), tostring(customDimensions.policyDecision)
+
+customEvents
+| where name == "ToolCallCompleted"
+| summarize avgLatencyMs = avg(todouble(customDimensions.latencyMs)), denied = countif(tostring(customDimensions.denied) == "true") by tostring(customDimensions.toolName)
+
+customEvents
+| where name == "HumanReviewCompleted"
+| summarize avgReviewMinutes = avg(todouble(customDimensions.elapsedMinutes)), count() by tostring(customDimensions.action)
+
+customEvents
+| where name == "AgentOutputEvaluated"
+| summarize
+    avgGroundedness = avg(todouble(customDimensions.groundednessScore)),
+    missingCitations = countif(toint(customDimensions.citationCount) == 0),
+    total = count()
+  by tostring(customDimensions.agentVersion)
+
+customEvents
+| where name == "RetrievalCompleted"
+| summarize
+    p95LatencyMs = percentile(todouble(customDimensions.latencyMs), 95),
+    avgCitationCount = avg(todouble(customDimensions.citationCount)),
+    count()
+  by tostring(customDimensions.retrievalIndex)
+
+customEvents
+| where name == "PolicyDecisionMade"
+| where tostring(customDimensions.decision) in ("deny", "redact", "escalate", "review_required")
+| project timestamp,
+    correlationId=tostring(customDimensions.correlationId),
+    caseId=tostring(customDimensions.caseId),
+    policy=tostring(customDimensions.policyName),
+    decision=tostring(customDimensions.decision),
+    reason=tostring(customDimensions.reason)

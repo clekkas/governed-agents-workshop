@@ -1,0 +1,50 @@
+toolboxes:
+  clinical-context:
+    tools:
+      patient.get:
+        defaultScope: redacted
+        allowedActions: [read]
+        requiresCaseScope: true
+        audit: required
+      notes.get:
+        defaultScope: excerpt
+        allowedActions: [read]
+        requiresCaseScope: true
+        audit: required
+        expandedScopeRequires: explicit_logged_scope
+  protocol:
+    tools:
+      protocol.search:
+        defaultScope: approved_sources
+        allowedActions: [read]
+        requiresCitationMetadata: true
+        audit: required
+  utilization:
+    tools:
+      utilization.history:
+        defaultScope: aggregate
+        allowedActions: [read]
+        requiresCaseScope: true
+        audit: required
+  risk-scoring:
+    tools:
+      risk_score.get:
+        defaultScope: approved_score
+        allowedActions: [read]
+        requiresCaseScope: true
+        canGenerateScore: false
+        canOverrideScore: false
+        audit: required
+  care-coordination:
+    tools:
+      task.create:
+        defaultScope: draft_review_task
+        allowedActions: [create]
+        requiresHumanReview: true
+        audit: required
+  operations:
+    tools:
+      audit.write:
+        defaultScope: event
+        allowedActions: [create]
+        audit: always

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HumanReviewTask",
+  "type": "object",
+  "required": ["taskId", "patientId", "status", "draftPlan", "evidence", "createdAt"],
+  "properties": {
+    "taskId": { "type": "string" },
+    "patientId": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["DraftCreated", "PendingReview", "InReview", "Approved", "Rejected", "NeedsRework", "TimedOut"]
+    },
+    "draftPlan": { "type": "string" },
+    "evidence": { "type": "array", "items": { "type": "object" } },
+    "missingInformation": { "type": "array", "items": { "type": "string" } },
+    "assignedRole": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "reviewedAt": { "type": "string", "format": "date-time" },
+    "reviewerAction": { "type": "string" },
+    "reviewerRationale": { "type": "string" }
+  },
+  "additionalProperties": false
+}
+

@@ -1,0 +1,14 @@
+name: case-context-agent
+version: 0.1.0
+description: Retrieves and summarizes redacted synthetic discharge-candidate context through governed MCP tools.
+tools:
+  - patient.get
+  - utilization.history
+outputs:
+  - redactedCaseSummary
+  - utilizationSignals
+  - missingCaseFields
+guardrails:
+  - minimum necessary details only
+  - full notes require explicit logged scope
+  - cross-case lookup is denied

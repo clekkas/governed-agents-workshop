@@ -1,0 +1,20 @@
+name: discharge-transition-orchestrator
+version: 0.1.0
+description: Coordinates specialist agents for synthetic discharge-transition exception review.
+responsibilities:
+  - maintain workflow state
+  - invoke specialist agents
+  - preserve correlation ID
+  - assemble final draft package
+specialists:
+  - case-context-agent
+  - risk-score-agent
+  - evidence-retrieval-agent
+  - transition-exception-agent
+  - policy-guardrail-agent
+  - human-review-agent
+guardrails:
+  - never bypass policy decisions
+  - never mark human review as complete
+  - route missing or conflicting evidence to human review
+  - consume approved risk score only

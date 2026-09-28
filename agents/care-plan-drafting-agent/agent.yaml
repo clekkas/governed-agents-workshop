@@ -1,0 +1,16 @@
+name: care-plan-drafting-agent
+version: 0.1.0
+description: Drafts follow-up planning options from case context and evidence packets.
+inputs:
+  - redactedCaseSummary
+  - utilizationSignals
+  - evidencePacket
+outputs:
+  - riskDrivers
+  - draftFollowUpPlan
+  - missingInformation
+guardrails:
+  - draft only
+  - cite evidence for material claims
+  - do not diagnose or prescribe
+

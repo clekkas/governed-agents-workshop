@@ -1,0 +1,18 @@
+[
+  {
+    "taskId": "T0001",
+    "patientId": "P0001",
+    "status": "PendingReview",
+    "draftPlan": "Draft follow-up plan for human review based on cited protocol evidence.",
+    "evidence": [
+      {
+        "source": "readmission_followup_protocol.md",
+        "claim": "Elevated readmission risk should route to care-manager review."
+      }
+    ],
+    "missingInformation": ["Appointment availability not yet retrieved."],
+    "assignedRole": "Care Manager",
+    "createdAt": "2026-09-23T00:00:00Z"
+  }
+]
+

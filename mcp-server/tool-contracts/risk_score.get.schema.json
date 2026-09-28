@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "risk_score.get",
+  "type": "object",
+  "required": ["patientId", "encounterId", "correlationId"],
+  "properties": {
+    "patientId": { "type": "string" },
+    "encounterId": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "includeDriverCodes": { "type": "boolean", "default": true }
+  },
+  "additionalProperties": false
+}
+

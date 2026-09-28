@@ -1,0 +1,16 @@
+name: risk-score-agent
+version: 0.1.0
+description: Retrieves the approved transition support risk score as deterministic context.
+tools:
+  - risk_score.get
+outputs:
+  - approvedRiskScore
+  - scoreProvenance
+  - scoreTimestamp
+  - driverCodes
+guardrails:
+  - do not generate risk score
+  - do not recalculate risk score
+  - do not override risk score
+  - do not label a patient safe to discharge
+

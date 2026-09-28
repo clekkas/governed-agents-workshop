@@ -1,0 +1,18 @@
+name: readmissions-care-manager-agent
+version: 0.1.0
+description: Drafts discharge-transition exception packets for human review using synthetic data and approved risk-score context.
+runtime:
+  type: hosted-agent
+toolboxes:
+  - clinical-context
+  - protocol
+  - utilization
+  - care-coordination
+  - operations
+requiredTelemetry:
+  - AgentInvocationStarted
+  - RetrievalCompleted
+  - ToolCallCompleted
+  - PolicyDecisionMade
+  - HumanReviewTaskCreated
+  - AgentOutputEvaluated

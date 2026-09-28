@@ -1,0 +1,10 @@
+name: readmissions-care-manager-agent-eval
+dimensions:
+  - groundedness
+  - clinical_safety
+  - phi_minimization
+  - tool_authorization
+  - hitl_routing
+pass_threshold: 0.90
+max_samples: 50
+

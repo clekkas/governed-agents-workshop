@@ -1,0 +1,3 @@
+gold_readmissions_summary
+| summarize Encounters=sum(encounter_count), Readmissions=sum(readmission_count) by facility
+

@@ -1,0 +1,30 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Local outputs
+data\synthetic\*.csv
+!data\synthetic\.gitkeep
+*.log
+
+# Large media should be linked externally or committed through an intentional LFS policy.
+*.mp4
+*.mov
+*.wmv

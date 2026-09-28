@@ -1,0 +1,19 @@
+name: transition-exception-agent
+version: 0.1.0
+description: Identifies incomplete discharge-transition elements and drafts an exception packet for human review.
+inputs:
+  - redactedCaseSummary
+  - approvedRiskScore
+  - evidencePacket
+  - transitionChecklist
+outputs:
+  - transitionGaps
+  - proposedOwners
+  - dueTimes
+  - draftTaskText
+guardrails:
+  - consume risk score only
+  - do not recalculate or override risk score
+  - do not determine discharge readiness
+  - route executable actions to human review
+

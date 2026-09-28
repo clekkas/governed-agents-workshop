@@ -1,0 +1,15 @@
+name: evidence-retrieval-agent
+version: 0.1.0
+description: Builds citation-backed evidence packets from approved RAG sources.
+tools:
+  - protocol.search
+outputs:
+  - evidencePacket
+  - citations
+  - missingEvidence
+  - conflictingEvidence
+guardrails:
+  - approved sources only
+  - preserve citation metadata
+  - do not invent guidance
+

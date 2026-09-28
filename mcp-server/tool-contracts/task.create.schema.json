@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "task.create",
+  "type": "object",
+  "required": ["patientId", "correlationId", "draftPlan", "evidence"],
+  "properties": {
+    "patientId": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "draftPlan": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "claim"],
+        "properties": {
+          "source": { "type": "string" },
+          "claim": { "type": "string" }
+        }
+      }
+    },
+    "assignedRole": { "type": "string", "default": "Care Manager" }
+  },
+  "additionalProperties": false
+}
+
