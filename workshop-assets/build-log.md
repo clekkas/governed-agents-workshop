@@ -11,6 +11,7 @@ Decks:
 
 | Date | Work item | What shipped | Live demo | Slide added |
 | --- | --- | --- | --- | --- |
+| 2026-09-28 | Cloud activation (Option B, live) | Self-hosted runner on an Azure VNet + private endpoint to a private-only Terraform state account; OIDC federation (enterprise ID-embedded subject); GitHub Actions **Terraform Plan succeeded end-to-end (22 to add)**. | `gh workflow run "Terraform Plan"` → green on `[self-hosted, azure-vnet]`. | (covered by WI-09 CI/CD slide) |
 | 2026-09-28 | WI-09 CI/CD (staged hybrid) | GitHub Actions (`ci`, `terraform-plan`, `terraform-apply`), Stage-2 bootstrap scripts (remote state + OIDC), `backend.tf.example`, `infra/DEPLOYMENT.md`. | Workflow YAML validated; PR→plan→gated apply flow (activates once a remote repo is connected). | "CI/CD: staged hybrid (local → GitHub Actions)" |
 | 2026-09-28 | WI-08 Foundry hosted agent scaffold | Manifest loader + runtime conformance (`agent_manifests.py`), `GET /api/v1/agents`, deploy guide; fixed orchestrator-manifest drift. | `GET /api/v1/agents` (declared set + zero drift); `test_manifests.py`. | "Foundry hosted agent + manifest conformance" |
 | 2026-09-28 | WI-01/02/03 Quality & guardrail gates | Backend endpoint tests (`node --test`), dependency-free MCP contract validator (drift self-test), and a centralized policy/guardrail module encoding the matrix. | `npm test` (25 backend tests); `node mcp-server/validate-contracts.js`; `.\scripts\validate.ps1`. | "Quality & guardrail gates (WI-01/02/03)" |

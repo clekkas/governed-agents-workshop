@@ -85,10 +85,56 @@ short-lived OIDC token for an Azure token at run time.
   (the infra creates role assignments). Scope them to a resource group instead of the whole
   subscription where possible (`-Scope`).
 - **Plan-only option:** for a workshop you may not want CI to apply live at all — keep only
-  `terraform-plan.yml` active (safe, no changes) and run `apply` manually. Disable/delete
-  `terraform-apply.yml` to enforce that.
+  `terraform-plan.yml` active (safe, no changes) and run `apply` manually. `terraform-apply.yml` is
+  already `workflow_dispatch`-only.
 - **Images vs infra:** the workflows manage Terraform infrastructure. Container images are still
   built/pushed by `infra/scripts/deploy.ps1` (`az acr build`); add an image-build workflow when you
   want that in CI too.
 - **No secrets committed:** `.env` is gitignored; `backend.tf` (the activated remote-state file) is
   gitignored; state account/OIDC identifiers live in GitHub secrets/variables, not the repo.
+
+---
+
+## Constrained tenant (private-only storage) — what we actually deployed
+
+This subscription enforces Azure Policy that **disables public network access on storage accounts and
+blocks public IPs on VMs**. Microsoft-hosted GitHub runners (public internet) therefore cannot reach
+the Terraform state account. The working topology (all in `rg-tfstate-foundry-phase2`):
+
+1. **VNet** `vnet-tfrunner` (10.20.0.0/16) with `snet-runner` + `snet-pe`.
+2. **Private endpoint** `pe-tfstate-blob` to the state account's blob, plus a
+   `privatelink.blob.core.windows.net` **private DNS zone** linked to the VNet (so the account FQDN
+   resolves to the private IP `10.20.2.4`).
+3. **Self-hosted runner VM** `vm-ghrunner` (Ubuntu, no public IP) in `snet-runner`, registered to the
+   repo with labels `self-hosted, azure-vnet`. Configured entirely via `az vm run-command` (no
+   inbound/SSH). It has outbound to github.com and private access to the state account.
+4. Workflows run on `[self-hosted, azure-vnet]`; a step creates the state container on the runner
+   (`az storage container create --auth-mode login`) since the account is private-only and key auth
+   is disabled.
+
+### Gotchas hit (and fixes)
+
+- **Key auth + public access disabled by policy** → create the state container from the runner (which
+  has private access) with `--auth-mode login`, not from a laptop and not with account keys.
+- **Public IPs blocked** → runner VM has no public IP; egress still works, private state via PE.
+- **`setup-terraform` wrapper needs Node** → set `terraform_wrapper: false` (the runner has no system
+  node; actions bring their own).
+- **`azure/login` needs az CLI** → install az on the runner (`aka.ms/InstallAzureCLIDeb`).
+- **Enterprise OIDC subject claim** → this Microsoft-managed github.com customizes the token `sub` to
+  embed immutable IDs, e.g. `repo:clekkas@314357/governed-agents-inpractice-workshop@1393826284:ref:refs/heads/main`.
+  The Entra **federated credential subject must match that exact ID-embedded string** (not the plain
+  `repo:owner/repo:...`). Read the failing run's presented subject and create a matching credential.
+- **Storage data-plane RBAC propagation** takes several minutes after assigning
+  `Storage Blob Data Contributor` — expect a first 403 that clears on retry.
+
+### Cost & cleanup
+
+The runner VM (`Standard_D2s_v3`) and the private endpoint cost money while running. Between demos:
+
+```powershell
+az vm deallocate -g rg-tfstate-foundry-phase2 -n vm-ghrunner   # stop compute billing
+az vm start      -g rg-tfstate-foundry-phase2 -n vm-ghrunner   # restart for the next demo
+```
+
+To remove everything: `az group delete -n rg-tfstate-foundry-phase2 --yes` (also deletes the state
+account — only do this when you are done, and after `terraform destroy` for any deployed infra).
