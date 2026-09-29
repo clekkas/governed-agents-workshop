@@ -28,7 +28,7 @@ env:
 jobs:
   apply:
     name: Apply (gated)
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, azure-vnet]
     environment: production   # required reviewers on this environment gate the apply
     defaults:
       run:
