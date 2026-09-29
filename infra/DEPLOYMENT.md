@@ -70,10 +70,11 @@ Once Stage 2 is done, the workflows in `.github/workflows/` take over:
 | --- | --- | --- |
 | `ci.yml` | push / PR | Build + test app (backend `node --test`, MCP contracts, UI build, agent-service tests + eval gate). No cloud. |
 | `terraform-plan.yml` | PR touching `infra/**` | OIDC login → `fmt -check` → `init` (remote) → `validate` → `plan` (posted to the job summary). Read-only. |
-| `terraform-apply.yml` | push to `main` touching `infra/**`, or manual | Gated by the `production` environment → OIDC login → `init` → `apply`. |
+| `terraform-apply.yml` | manual (`workflow_dispatch`) | Gated by the `production` environment → OIDC login → `init` → `apply`. Manual-only so it never fires unintentionally. |
 
-Flow: open a PR → **plan** runs and shows the diff → review + approve → merge to `main` → **apply**
-waits for the environment reviewer → applies. No credentials are ever stored; GitHub exchanges a
+Flow: open a PR → **plan** runs and shows the diff → review + approve → merge to `main`. Then
+**apply** is triggered **manually** (Actions → Terraform Apply → Run workflow) and waits for the
+`production` environment reviewer before applying. No credentials are ever stored; GitHub exchanges a
 short-lived OIDC token for an Azure token at run time.
 
 ---

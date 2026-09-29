@@ -1,8 +1,9 @@
 name: Terraform Apply
 
-# Applies infrastructure changes AFTER human approval. Gated by the GitHub environment
-# 'production' (configure required reviewers on it). Runs on push to main touching infra/, or on
-# manual dispatch. OIDC login — no stored credentials.
+# Applies infrastructure changes AFTER human approval. Manual trigger only (workflow_dispatch) so an
+# apply never fires unintentionally on a push — the safe/gated stance for the workshop. It is further
+# gated by the GitHub environment 'production' (configure required reviewers on it). OIDC login — no
+# stored credentials.
 #
 # Requires (one-time bootstrap — see infra/DEPLOYMENT.md):
 #   Secrets:   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
@@ -12,11 +13,6 @@ name: Terraform Apply
 # infra/scripts/deploy.ps1 (az acr build) or a separate image workflow; wire that in when ready.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "infra/**"
-      - ".github/workflows/terraform-apply.yml"
   workflow_dispatch:
 
 permissions:
