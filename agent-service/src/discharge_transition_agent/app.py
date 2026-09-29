@@ -53,7 +53,16 @@ EXECUTION_MODE = os.environ.get("AGENT_EXECUTION_MODE", "foundry").strip().lower
 _foundry = FoundryClient()
 _local_orchestrator = DischargeTransitionOrchestrator(foundry=_foundry)
 _foundry_orchestrator = FoundryAgentOrchestrator() if EXECUTION_MODE == "foundry" else None
-_tasks = TaskStore()
+
+# Human-in-the-loop backend: "local" (in-memory, file-backed TaskStore) or "dts" (durable gate on
+# the Durable Task Scheduler). Both expose the same method surface, so the routes are identical.
+HITL_MODE = os.environ.get("HITL_MODE", "local").strip().lower()
+if HITL_MODE == "dts":
+    from .hitl_dts import DtsTaskStore
+
+    _tasks = DtsTaskStore()
+else:
+    _tasks = TaskStore()
 
 
 def _run_workflow(case: dict, correlation_id: str) -> tuple[Any, str]:
@@ -91,6 +100,7 @@ def health() -> dict:
         "status": "ok",
         "service": "discharge-transition-agent-service",
         "execution_mode": EXECUTION_MODE,
+        "hitl_mode": HITL_MODE,
         "foundry_agents_available": bool(_foundry_orchestrator and _foundry_orchestrator.available),
         "foundry_enabled": _foundry.enabled,
         "foundry_mode": _foundry.mode,

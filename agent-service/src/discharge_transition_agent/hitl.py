@@ -69,6 +69,57 @@ def _iso(dt: datetime) -> str:
     return dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def build_review_task(result: dict, case: Optional[dict], sla_seconds: int, now: Optional[datetime] = None) -> dict:
+    """Construct a durable review-task dict from an invoke result.
+
+    Single source of truth for the task shape, shared by the local ``TaskStore`` and the
+    Durable Task Scheduler adapter (``hitl_dts.DtsTaskStore``). Escalating policy decisions
+    yield a task already ``Escalated`` — a run a human cannot clear on the spot goes straight
+    to a specialist, never through silent approval.
+    """
+    case = case or {}
+    now = now or _now()
+    task_id = result["correlationId"]
+    escalate = result.get("policyDecision") == "escalate"
+    status = ESCALATED if escalate else PENDING
+    task = {
+        "taskId": task_id,
+        "correlationId": task_id,
+        "caseId": result.get("caseId"),
+        "patientLabel": case.get("patientLabel"),
+        "facility": case.get("facility"),
+        "diagnosis": case.get("diagnosis"),
+        "riskTier": (result.get("approvedRiskScore") or {}).get("tier"),
+        "status": status,
+        "assignedRole": None,
+        "policyDecision": result.get("policyDecision"),
+        "transitionGaps": result.get("transitionGaps", []),
+        "missingInformation": result.get("missingInformation", []),
+        "draftPlan": result.get("draftExceptionPacket", []),
+        "evidence": result.get("evidence", []),
+        "createdAt": _iso(now),
+        "updatedAt": _iso(now),
+        "dueAt": _iso(now + timedelta(seconds=sla_seconds)),
+        "history": [],
+    }
+    note = (
+        "Policy escalation on run — routed to specialist reviewer."
+        if escalate
+        else "Draft exception packet created; awaiting care-manager review."
+    )
+    task["history"].append(
+        {
+            "timestamp": _iso(now),
+            "from": None,
+            "to": status,
+            "action": "escalate" if escalate else "create",
+            "actor": "orchestrator",
+            "note": note,
+        }
+    )
+    return task
+
+
 class TaskStore:
     """Thread-safe, file-backed durable review-task store."""
 
@@ -101,46 +152,8 @@ class TaskStore:
         Escalating policy decisions create the task already ``Escalated`` — a run that a human
         cannot clear on the spot goes straight to a specialist, never through silent approval.
         """
-        case = case or {}
-        task_id = result["correlationId"]
-        escalate = result.get("policyDecision") == "escalate"
-        now = _now()
-        status = ESCALATED if escalate else PENDING
-        task = {
-            "taskId": task_id,
-            "correlationId": task_id,
-            "caseId": result.get("caseId"),
-            "patientLabel": case.get("patientLabel"),
-            "facility": case.get("facility"),
-            "diagnosis": case.get("diagnosis"),
-            "riskTier": (result.get("approvedRiskScore") or {}).get("tier"),
-            "status": status,
-            "assignedRole": None,
-            "policyDecision": result.get("policyDecision"),
-            "transitionGaps": result.get("transitionGaps", []),
-            "missingInformation": result.get("missingInformation", []),
-            "draftPlan": result.get("draftExceptionPacket", []),
-            "evidence": result.get("evidence", []),
-            "createdAt": _iso(now),
-            "updatedAt": _iso(now),
-            "dueAt": _iso(now + timedelta(seconds=self.sla_seconds)),
-            "history": [],
-        }
-        note = (
-            "Policy escalation on run — routed to specialist reviewer."
-            if escalate
-            else "Draft exception packet created; awaiting care-manager review."
-        )
-        task["history"].append(
-            {
-                "timestamp": _iso(now),
-                "from": None,
-                "to": status,
-                "action": "escalate" if escalate else "create",
-                "actor": "orchestrator",
-                "note": note,
-            }
-        )
+        task = build_review_task(result, case, self.sla_seconds)
+        task_id = task["taskId"]
         with self._lock:
             self._tasks[task_id] = task
             self._persist()
