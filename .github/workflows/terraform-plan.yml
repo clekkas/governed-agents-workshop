@@ -42,6 +42,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1.9"
+          terraform_wrapper: false
 
       - name: Enable remote state backend
         run: cp backend.tf.example backend.tf
