@@ -11,6 +11,7 @@ const { getCase } = require("../data/cases");
 const { runOrchestrator } = require("../orchestrator/localOrchestrator");
 const { store } = require("../hitl/taskStore");
 const { logBuffer } = require("../logs/logBuffer");
+const { traceStore } = require("../observability/traceStore");
 
 const router = express.Router();
 
@@ -60,6 +61,8 @@ router.post("/invoke", async (req, res) => {
       res.setHeader("x-agent-source", "agent-service");
       // Register the durable review task so the UI's approval gate has state to act on.
       const task = store.registerFromResult(result, reviewCase);
+      traceStore.recordInvoke(result, "agent-service");
+      traceStore.recordReviewCreated(task);
       logBuffer.event(
         `invoke ${caseId} → agent-service · policy=${result.policyDecision} · task=${task.status}`,
         res.locals.correlationId,
@@ -72,6 +75,8 @@ router.post("/invoke", async (req, res) => {
       res.setHeader("x-agent-source", "local-fallback");
       const local = runOrchestrator(reviewCase, res.locals.correlationId);
       const task = store.registerFromResult(local, reviewCase);
+      traceStore.recordInvoke(local, "local-fallback");
+      traceStore.recordReviewCreated(task);
       logBuffer.event(
         `invoke ${caseId} → local-fallback (agent-service unreachable) · task=${task.status}`,
         res.locals.correlationId,
@@ -83,6 +88,8 @@ router.post("/invoke", async (req, res) => {
   res.setHeader("x-agent-source", "local");
   const local = runOrchestrator(reviewCase, res.locals.correlationId);
   const task = store.registerFromResult(local, reviewCase);
+  traceStore.recordInvoke(local, "local");
+  traceStore.recordReviewCreated(task);
   logBuffer.event(
     `invoke ${caseId} → local · policy=${local.policyDecision} · task=${task.status}`,
     res.locals.correlationId,

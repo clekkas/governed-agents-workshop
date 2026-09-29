@@ -151,6 +151,38 @@ export async function fetchLogs(since = 0, limit = 100): Promise<{ logs: LogEntr
   return getJson<{ logs: LogEntry[]; lastSeq: number }>(`/api/v1/logs?since=${since}&limit=${limit}`);
 }
 
+// --- Correlation trace (WI-06) ---
+export interface TraceEvent {
+  seq: number;
+  timestamp: string;
+  type: string;
+  name?: string;
+  source?: string;
+  riskTier?: string;
+  decision?: string;
+  latencyMs?: number;
+  role?: string;
+  status?: string;
+  handoffTo?: string | null;
+  requiresHumanReview?: boolean;
+  action?: string;
+  actor?: string;
+  to?: string;
+  dueAt?: string | null;
+}
+
+export interface Trace {
+  correlationId: string;
+  caseId: string | null;
+  createdAt: string;
+  events: TraceEvent[];
+}
+
+// Fetch the complete, ordered event list for one correlation ID.
+export async function fetchTrace(correlationId: string): Promise<Trace> {
+  return getJson<Trace>(`/api/v1/traces/${encodeURIComponent(correlationId)}`);
+}
+
 // Merge a case summary and its invoke result into the render model the UI uses.
 export function toReviewCase(summary: CaseSummary, invoke: InvokeResult): ReviewCase {
   const evidence: EvidenceItem[] = invoke.evidence.map((item, index) => ({

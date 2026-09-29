@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { reviewCases } from "./sampleData";
-import { applyTaskAction, ApiError, fetchCases, fetchLogs, fetchTask, invokeAgent, toReviewCase } from "./api";
-import type { LogEntry } from "./api";
+import { applyTaskAction, ApiError, fetchCases, fetchLogs, fetchTask, fetchTrace, invokeAgent, toReviewCase } from "./api";
+import type { LogEntry, Trace, TraceEvent } from "./api";
 import type { ReviewCase, ReviewStatus } from "./types";
 
 const statusLabels: Record<ReviewStatus, string> = {
@@ -37,6 +37,8 @@ function App() {
   const logSeqRef = useRef(0);
   const [actionMessage, setActionMessage] = useState<{ text: string; kind: "success" | "error" | "info" } | null>(null);
   const [reviewerName, setReviewerName] = useState("");
+  const [trace, setTrace] = useState<Trace | null>(null);
+  const [traceError, setTraceError] = useState<string | null>(null);
 
   // Load cases from the backend on mount, invoking the orchestrator for each so
   // the worklist and detail panels reflect live agent output. Falls back to the
@@ -175,6 +177,22 @@ function App() {
         updateStatus(fallback[action], "offline");
         setActionMessage({ text: `Backend offline — reflected ${fallback[action]} locally only.`, kind: "info" });
       }
+    }
+  }
+
+  // Open the full correlation trace for a run (from a clickable log-line correlation ID).
+  async function openTrace(correlationId: string) {
+    setTraceError(null);
+    try {
+      const result = await fetchTrace(correlationId);
+      setTrace(result);
+    } catch (err) {
+      setTrace(null);
+      setTraceError(
+        err instanceof ApiError && err.status === 404
+          ? `No trace found for ${correlationId}.`
+          : `Could not load trace for ${correlationId}.`,
+      );
     }
   }
 
@@ -534,13 +552,75 @@ function App() {
                 <span className="log-time">{new Date(entry.timestamp).toLocaleTimeString()}</span>
                 <span className={`log-level ${entry.level}`}>{entry.level}</span>
                 <span className="log-msg">{entry.message}</span>
+                {entry.correlationId ? (
+                  <button
+                    type="button"
+                    className="log-trace-link"
+                    title={`Open trace ${entry.correlationId}`}
+                    onClick={() => openTrace(entry.correlationId as string)}
+                  >
+                    trace ↗
+                  </button>
+                ) : (
+                  <span />
+                )}
               </div>
             ))
           )}
         </div>
+        {traceError ? <p className="trace-error">{traceError}</p> : null}
       </section>
+
+      {trace ? (
+        <div className="trace-overlay" role="dialog" aria-label="Correlation trace" onClick={() => setTrace(null)}>
+          <div className="trace-drawer" onClick={(event) => event.stopPropagation()}>
+            <div className="trace-drawer-head">
+              <div>
+                <h3>Correlation trace</h3>
+                <p className="trace-meta">
+                  {trace.caseId ? `${trace.caseId} · ` : ""}
+                  <code>{trace.correlationId}</code> · {trace.events.length} events
+                </p>
+              </div>
+              <button type="button" className="trace-close" onClick={() => setTrace(null)} aria-label="Close trace">
+                ✕
+              </button>
+            </div>
+            <ol className="trace-events">
+              {trace.events.map((event) => (
+                <li className={`trace-event ${event.type.split(".")[0]}`} key={event.seq}>
+                  <span className="trace-seq">{event.seq}</span>
+                  <span className="trace-type">{event.type}</span>
+                  <span className="trace-detail">{describeTraceEvent(event)}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
+}
+
+function describeTraceEvent(event: TraceEvent): string {
+  switch (event.type) {
+    case "run.started":
+      return `${event.name ?? "invoke"} · source=${event.source ?? "?"}${event.riskTier ? ` · risk=${event.riskTier}` : ""}`;
+    case "tool.called":
+      return `${event.name} → ${event.decision}${event.latencyMs != null ? ` · ${event.latencyMs}ms` : ""}`;
+    case "agent.handoff":
+      return `${event.name} (${event.status})${event.handoffTo ? ` → ${event.handoffTo}` : ""}`;
+    case "policy.decision":
+      return `decision = ${event.decision}`;
+    case "run.completed":
+      return `requiresHumanReview = ${event.requiresHumanReview}`;
+    case "review.created":
+      return `task ${event.status}`;
+    case "review.transition":
+      return `${event.action} by ${event.actor} → ${event.to}`;
+    default:
+      return "";
+  }
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {

@@ -750,6 +750,133 @@ button {
   text-overflow: ellipsis;
 }
 
+.log-line {
+  grid-template-columns: 84px 60px 1fr auto;
+}
+
+.log-trace-link {
+  border: 1px solid #334155;
+  background: #0b1220;
+  color: #38bdf8;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.log-trace-link:hover {
+  background: #12263f;
+  border-color: #38bdf8;
+}
+
+.trace-error {
+  margin: 8px 16px 12px;
+  color: #f87171;
+  font-size: 12.5px;
+}
+
+.trace-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 50;
+}
+
+.trace-drawer {
+  width: min(560px, 92vw);
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -12px 0 40px rgba(2, 6, 23, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.trace-drawer-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.trace-drawer-head h3 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.trace-meta {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+.trace-meta code {
+  font-size: 12px;
+  color: #0f766e;
+}
+
+.trace-close {
+  border: 0;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  color: #475569;
+  line-height: 1;
+}
+
+.trace-events {
+  list-style: none;
+  margin: 0;
+  padding: 12px 16px;
+  overflow-y: auto;
+}
+
+.trace-event {
+  display: grid;
+  grid-template-columns: 30px 150px 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.trace-seq {
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+.trace-type {
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.trace-event.run .trace-type {
+  color: #6366f1;
+}
+
+.trace-event.tool .trace-type {
+  color: #0ea5e9;
+}
+
+.trace-event.policy .trace-type,
+.trace-event.review .trace-type {
+  color: #b45309;
+}
+
+.trace-detail {
+  color: #334155;
+}
+
 .ops-panel {
   display: grid;
   gap: 16px;

@@ -7,6 +7,7 @@
 const express = require("express");
 const { store, HitlError } = require("../hitl/taskStore");
 const { logBuffer } = require("../logs/logBuffer");
+const { traceStore } = require("../observability/traceStore");
 
 const router = express.Router();
 
@@ -49,6 +50,7 @@ router.post("/:id/action", (req, res) => {
   const { action, actor, note } = req.body || {};
   try {
     const task = store.applyAction(req.params.id, action, actor, note);
+    traceStore.recordTransition(req.params.id, task, action, actor);
     logBuffer.event(
       `HITL ${action} by ${actor || "unknown"} → ${task.status} · ${task.caseId}`,
       req.params.id,

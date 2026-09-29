@@ -16,6 +16,7 @@ const casesRoutes = require("./routes/cases");
 const agentRoutes = require("./routes/agent");
 const tasksRoutes = require("./routes/tasks");
 const logsRoutes = require("./routes/logs");
+const tracesRoutes = require("./routes/traces");
 const { logBuffer } = require("./logs/logBuffer");
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/v1/cases", casesRoutes);
 app.use("/api/v1/agent", agentRoutes);
 app.use("/api/v1/tasks", tasksRoutes);
 app.use("/api/v1/logs", logsRoutes);
+app.use("/api/v1/traces", tracesRoutes);
 
 // Optionally serve the built UI (app/readmission-review-tracker/dist) at root so the
 // whole demo can run from one process. Skipped gracefully if no build exists.
