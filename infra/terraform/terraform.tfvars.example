@@ -6,8 +6,8 @@ name_prefix = "dtec"
 location    = "eastus2"
 
 # Foundry model deployment
-model_name     = "gpt-4o-mini"
-model_version  = "2024-07-18"
+model_name     = "gpt-4o"
+model_version  = "2024-11-20"
 model_sku      = "GlobalStandard"
 model_capacity = 30
 

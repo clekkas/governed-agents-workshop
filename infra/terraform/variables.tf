@@ -35,13 +35,13 @@ variable "tags" {
 variable "model_name" {
   description = "Foundry model to deploy for the agent."
   type        = string
-  default     = "gpt-4o-mini"
+  default     = "gpt-4o"
 }
 
 variable "model_version" {
   description = "Model version for the deployment."
   type        = string
-  default     = "2024-07-18"
+  default     = "2024-11-20"
 }
 
 variable "model_capacity" {
