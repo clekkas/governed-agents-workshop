@@ -17,8 +17,8 @@ app_max_replicas = 3
 
 # Azure AI Search SKU (basic or standard for managed identity scenarios)
 search_sku = "basic"
-# Search region — consolidated with the workload in swedencentral.
-search_location = "swedencentral"
+# Search region — norwayeast (swedencentral lacks basic-SKU Search capacity).
+search_location = "norwayeast"
 
 # container_image is set automatically by the deploy script after the image is
 # built and pushed. Leave the default for the first apply.

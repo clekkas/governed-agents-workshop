@@ -87,7 +87,7 @@ variable "search_sku" {
 }
 
 variable "search_location" {
-  description = "Region for Azure AI Search. Separate from var.location so Search can be placed in a region with available capacity. Consolidated to swedencentral with the rest of the workload (eastus2/centralus had intermittent InsufficientResourcesAvailable)."
+  description = "Region for Azure AI Search. Separate from var.location because Search 'basic' SKU capacity is region-specific: swedencentral had no basic capacity (ResourcesForSkuUnavailable), so Search runs in norwayeast — a low-demand Nordic region near the rest of the workload."
   type        = string
-  default     = "swedencentral"
+  default     = "norwayeast"
 }
