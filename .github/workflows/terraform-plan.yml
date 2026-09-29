@@ -71,6 +71,11 @@ jobs:
 
       - name: Terraform plan
         id: plan
+        env:
+          TF_VAR_enable_dts: ${{ vars.ENABLE_DTS || 'false' }}
+          TF_VAR_hitl_mode: ${{ vars.HITL_MODE || 'local' }}
+          TF_VAR_container_image: ${{ vars.CONTAINER_IMAGE || 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest' }}
+          TF_VAR_container_image_agent: ${{ vars.CONTAINER_IMAGE_AGENT || 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest' }}
         run: terraform plan -no-color -input=false -out=tfplan | tee plan.txt
 
       - name: Post plan summary

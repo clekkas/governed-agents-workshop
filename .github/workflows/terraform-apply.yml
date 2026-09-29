@@ -67,4 +67,13 @@ jobs:
             -backend-config="use_azuread_auth=true"
 
       - name: Terraform apply
+        env:
+          # Feature/image configuration sourced from repo Variables, with fallbacks that
+          # preserve the original behavior (DTS off, local HITL, placeholder images) when unset.
+          # Setting CONTAINER_IMAGE* here also keeps real images in state, avoiding the
+          # placeholder-revert drift the imperative image roll would otherwise leave behind.
+          TF_VAR_enable_dts: ${{ vars.ENABLE_DTS || 'false' }}
+          TF_VAR_hitl_mode: ${{ vars.HITL_MODE || 'local' }}
+          TF_VAR_container_image: ${{ vars.CONTAINER_IMAGE || 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest' }}
+          TF_VAR_container_image_agent: ${{ vars.CONTAINER_IMAGE_AGENT || 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest' }}
         run: terraform apply -no-color -input=false -auto-approve
