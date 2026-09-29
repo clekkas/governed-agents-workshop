@@ -47,6 +47,13 @@ jobs:
       - name: Enable remote state backend
         run: cp backend.tf.example backend.tf
 
+      - name: Ensure state container exists
+        run: |
+          az storage container create \
+            --name "${{ vars.TFSTATE_CONTAINER }}" \
+            --account-name "${{ vars.TFSTATE_STORAGE_ACCOUNT }}" \
+            --auth-mode login --only-show-errors --output none
+
       - name: Terraform fmt (check)
         run: terraform fmt -check -recursive
 
