@@ -1,0 +1,6 @@
+# Optional: install to let the agents call Microsoft Foundry models.
+# Without these (or without AZURE_AI_PROJECT_ENDPOINT), the service runs fully offline
+# with deterministic reasoning.
+-r requirements.txt
+azure-identity>=1.17
+azure-ai-projects>=2.0.0

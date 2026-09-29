@@ -29,7 +29,7 @@ Prep the checkpoint before the room; demo one meaningful moment live; reveal the
 | --- | --- | --- | --- | --- | --- |
 | 9:00 | Recap & environment check | — | — | Reconfirm Day 1 decisions and technical assumptions. | — |
 | 9:15 | Ch 6 — LAW / Application Insights | Item 5 | WI-06 | Live: emit one custom event; hit `GET /api/v1/traces/:id`; walk the ordered event list; run a KQL sample. | chapter-06-observability |
-| 10:45 | Ch 7 — HITL: Data Task Scheduler | Item 6 | WI-05 | Live: approve → rework in the UI; show the state machine reject an invalid transition + audit record. | chapter-07-hitl |
+| 10:45 | Ch 7 — HITL: Data Task Scheduler | Item 6 | WI-05 | Live: invoke P0147 → approve as care-manager; try approve as `agent` → 403; invoke P0310 → task created `Escalated`; `POST /tasks/sweep` with a short SLA → auto-escalate. Open `orchestrations/function_app.py` to show the same branches on the Durable Task Scheduler (`wait_for_external_event` + timer). Doc: `docs/hitl-durable-task-scheduler.md`. | chapter-07-hitl |
 | 12:45 | Ch 8 — Toolboxes | Item 7 | WI-02 | Show the toolbox manifests + scopes; explain reuse across agents. | chapter-09-toolboxes |
 | 1:45 | Ch 9 — Closeout & roadmap | — | WI-07 | Run the eval harness (golden pass + adversarial fail-closed); capture governance owners + 30/60/90 roadmap. | chapter-final |
 

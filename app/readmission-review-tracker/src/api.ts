@@ -55,13 +55,31 @@ export interface InvokeResult {
   requiresHumanReview: boolean;
 }
 
+export class ApiError extends Error {
+  status: number;
+  detail: string;
+  constructor(status: number, detail: string) {
+    super(`Request failed (${status}): ${detail}`);
+    this.status = status;
+    this.detail = detail;
+  }
+}
+
 async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
     headers: { "Content-Type": "application/json" },
     ...init,
   });
   if (!res.ok) {
-    throw new Error(`Request failed: ${res.status} ${url}`);
+    // Try to surface the backend's Problem+JSON detail; fall back to the status text.
+    let detail = res.statusText;
+    try {
+      const body = await res.json();
+      detail = body.detail || body.title || detail;
+    } catch {
+      /* non-JSON error body */
+    }
+    throw new ApiError(res.status, detail);
   }
   return (await res.json()) as T;
 }
@@ -76,6 +94,61 @@ export async function invokeAgent(caseId: string): Promise<InvokeResult> {
     method: "POST",
     body: JSON.stringify({ caseId, actorRole: "care-manager" }),
   });
+}
+
+// --- HITL review tasks (Data Task Scheduler approval gate) ---
+export type TaskAction = "claim" | "approve" | "request_changes" | "reject" | "escalate" | "rework";
+
+export interface TaskHistoryEntry {
+  timestamp: string;
+  from: string | null;
+  to: string;
+  action: string;
+  actor: string;
+  note: string;
+}
+
+export interface ReviewTask {
+  taskId: string;
+  correlationId: string;
+  caseId: string;
+  status: string;
+  assignedRole?: string | null;
+  policyDecision?: string;
+  dueAt?: string;
+  history: TaskHistoryEntry[];
+}
+
+// Send a care-manager decision to the durable review task. The backend enforces the state
+// machine (illegal transitions -> 409, missing human actor on approve/reject -> 403).
+export async function applyTaskAction(
+  correlationId: string,
+  action: TaskAction,
+  actor = "care-manager",
+  note = "",
+): Promise<ReviewTask> {
+  return getJson<ReviewTask>(`/api/v1/tasks/${encodeURIComponent(correlationId)}/action`, {
+    method: "POST",
+    body: JSON.stringify({ action, actor, note }),
+  });
+}
+
+// Read the current durable review task (server truth) — used to re-sync the UI after an action.
+export async function fetchTask(correlationId: string): Promise<ReviewTask> {
+  return getJson<ReviewTask>(`/api/v1/tasks/${encodeURIComponent(correlationId)}`);
+}
+
+// --- Backend activity log (live observability preview) ---
+export interface LogEntry {
+  seq: number;
+  timestamp: string;
+  level: string;
+  message: string;
+  correlationId: string | null;
+}
+
+export async function fetchLogs(since = 0, limit = 100): Promise<{ logs: LogEntry[]; lastSeq: number }> {
+  return getJson<{ logs: LogEntry[]; lastSeq: number }>(`/api/v1/logs?since=${since}&limit=${limit}`);
 }
 
 // Merge a case summary and its invoke result into the render model the UI uses.
@@ -112,8 +185,10 @@ export function toReviewCase(summary: CaseSummary, invoke: InvokeResult): Review
     riskTier: invoke.approvedRiskScore.tier,
     riskScore: invoke.approvedRiskScore.score,
     riskScoreProvenance: invoke.approvedRiskScore.provenance,
-    status: "PendingReview",
-    due: "Pending review",
+    // Escalating policy decisions create the task already Escalated (terminal) on the server —
+    // reflect that from the start so the action buttons render correctly.
+    status: invoke.policyDecision === "escalate" ? "Escalated" : "PendingReview",
+    due: invoke.policyDecision === "escalate" ? "Escalated to specialist" : "Pending review",
     summary: invoke.summary,
     riskDrivers: [
       `Approved risk tier: ${invoke.approvedRiskScore.tier}.`,

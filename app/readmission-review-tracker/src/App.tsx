@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { reviewCases } from "./sampleData";
-import { fetchCases, invokeAgent, toReviewCase } from "./api";
+import { applyTaskAction, ApiError, fetchCases, fetchLogs, fetchTask, invokeAgent, toReviewCase } from "./api";
+import type { LogEntry } from "./api";
 import type { ReviewCase, ReviewStatus } from "./types";
 
 const statusLabels: Record<ReviewStatus, string> = {
@@ -9,6 +10,7 @@ const statusLabels: Record<ReviewStatus, string> = {
   Approved: "Approved",
   NeedsRework: "Needs rework",
   Rejected: "Rejected",
+  Escalated: "Escalated",
 };
 
 const riskDescriptions: Record<ReviewCase["riskTier"], string> = {
@@ -30,6 +32,11 @@ function App() {
   const [batchSelection, setBatchSelection] = useState(() => new Set(reviewCases.map((item) => item.id)));
   const [batchResults, setBatchResults] = useState<Record<string, "queued" | "complete">>({});
   const [dataSource, setDataSource] = useState<DataSource>("loading");
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [logsOffline, setLogsOffline] = useState(false);
+  const logSeqRef = useRef(0);
+  const [actionMessage, setActionMessage] = useState<{ text: string; kind: "success" | "error" | "info" } | null>(null);
+  const [reviewerName, setReviewerName] = useState("");
 
   // Load cases from the backend on mount, invoking the orchestrator for each so
   // the worklist and detail panels reflect live agent output. Falls back to the
@@ -57,6 +64,31 @@ function App() {
     };
   }, []);
 
+  // Poll the backend activity log so the UI shows a live feed of what the server is doing —
+  // a lightweight preview of the observability chapter. Silently no-ops when offline.
+  useEffect(() => {
+    let cancelled = false;
+    async function poll() {
+      try {
+        const { logs: fresh, lastSeq } = await fetchLogs(logSeqRef.current, 100);
+        if (cancelled) return;
+        setLogsOffline(false);
+        if (fresh.length) {
+          logSeqRef.current = lastSeq;
+          setLogs((prev) => [...prev, ...fresh].slice(-100));
+        }
+      } catch {
+        if (!cancelled) setLogsOffline(true);
+      }
+    }
+    poll();
+    const id = setInterval(poll, 2000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, []);
+
   const selectedCase = useMemo(
     () => cases.find((item) => item.id === selectedCaseId) ?? cases[0],
     [cases, selectedCaseId],
@@ -65,10 +97,24 @@ function App() {
   const selectedEvidence =
     selectedCase.evidence.find((item) => item.id === selectedEvidenceId) ?? selectedCase.evidence[0];
 
+  // Approve / request-changes / reject are only legal from PendingReview or InReview (matches the
+  // backend state machine). Everything else (NeedsRework, Approved, Rejected, Escalated) disables
+  // the action buttons so the UI never invites an action the server will reject.
+  const isActionable = ["PendingReview", "InReview"].includes(selectedCase.status);
+  // A reviewer must identify themselves before any decision — the name becomes the audited actor.
+  const reviewer = reviewerName.trim();
+  const canAct = isActionable && reviewer.length > 0;
+
   const payloadAudit = useMemo(() => buildPayloadAudit(selectedCase), [selectedCase]);
   const rawResponse = useMemo(() => buildRawResponse(selectedCase), [selectedCase]);
 
-  function updateStatus(status: ReviewStatus) {
+  // Reset per-case review inputs when the selected case changes.
+  useEffect(() => {
+    setActionMessage(null);
+    setReviewerName("");
+  }, [selectedCaseId]);
+
+  function updateStatus(status: ReviewStatus, note?: string, actor = "Care manager") {
     setCases((currentCases) =>
       currentCases.map((item) =>
         item.id === selectedCase.id
@@ -79,8 +125,8 @@ function App() {
                 ...item.timeline,
                 {
                   id: `${item.id}-${status}-${Date.now()}`,
-                  label: statusLabels[status],
-                  actor: "Care manager",
+                  label: note ? `${statusLabels[status]} · ${note}` : statusLabels[status],
+                  actor,
                   timestamp: "Now",
                 },
               ],
@@ -88,6 +134,48 @@ function App() {
           : item,
       ),
     );
+  }
+
+  // Send the decision to the durable review task (Data Task Scheduler gate). The backend is the
+  // source of truth: on success we reflect the returned state; on a server rejection (4xx) we
+  // re-sync to the real task state and show the reason — we never optimistically flip the UI to the
+  // attempted status. Only a genuine network failure falls back to a local (offline) update.
+  const actionVerb: Record<"approve" | "request_changes" | "reject", string> = {
+    approve: "Approved packet",
+    request_changes: "Requested rework",
+    reject: "Rejected packet",
+  };
+
+  async function applyReviewAction(action: "approve" | "request_changes" | "reject") {
+    if (!isActionable || !reviewer) return;
+    try {
+      const task = await applyTaskAction(selectedCase.correlationId, action, reviewer);
+      updateStatus(task.status as ReviewStatus, actionVerb[action], reviewer);
+      setActionMessage({ text: `${actionVerb[action]} by ${reviewer} — task is now ${task.status}.`, kind: "success" });
+    } catch (err) {
+      if (err instanceof ApiError) {
+        // The state machine refused this transition. Re-sync the UI to the true server state.
+        try {
+          const current = await fetchTask(selectedCase.correlationId);
+          updateStatus(current.status as ReviewStatus);
+          setActionMessage({
+            text: `Action not allowed — the task is ${current.status}. ${err.detail}`,
+            kind: "error",
+          });
+        } catch {
+          setActionMessage({ text: `Action not allowed. ${err.detail}`, kind: "error" });
+        }
+      } else {
+        // Network/unreachable (offline workshop against sample data) — local optimistic update.
+        const fallback: Record<typeof action, ReviewStatus> = {
+          approve: "Approved",
+          request_changes: "NeedsRework",
+          reject: "Rejected",
+        };
+        updateStatus(fallback[action], "offline");
+        setActionMessage({ text: `Backend offline — reflected ${fallback[action]} locally only.`, kind: "info" });
+      }
+    }
   }
 
   function openCase(caseId: string) {
@@ -322,17 +410,40 @@ function App() {
                   <li key={step}>{step}</li>
                 ))}
               </ol>
+              <div className="reviewer-field">
+                <label htmlFor="reviewer-name">Reviewer name</label>
+                <input
+                  id="reviewer-name"
+                  type="text"
+                  value={reviewerName}
+                  onChange={(event) => setReviewerName(event.target.value)}
+                  placeholder="Enter your name to enable review actions"
+                  autoComplete="off"
+                  disabled={!isActionable}
+                />
+              </div>
               <div className="review-actions">
-                <button type="button" onClick={() => updateStatus("Approved")}>
+                <button type="button" onClick={() => applyReviewAction("approve")} disabled={!canAct}>
                   Approve packet
                 </button>
-                <button type="button" onClick={() => updateStatus("NeedsRework")}>
+                <button type="button" onClick={() => applyReviewAction("request_changes")} disabled={!canAct}>
                   Request rework
                 </button>
-                <button type="button" onClick={() => updateStatus("Rejected")}>
+                <button type="button" onClick={() => applyReviewAction("reject")} disabled={!canAct}>
                   Reject
                 </button>
               </div>
+              {!isActionable ? (
+                <p className="action-hint">
+                  This packet is <strong>{statusLabels[selectedCase.status]}</strong> — no further care-manager
+                  action is available.
+                </p>
+              ) : !reviewer ? (
+                <p className="action-hint">Enter your reviewer name above — every decision is recorded against it.</p>
+              ) : null}
+              {actionMessage ? (
+                <p className={`action-message ${actionMessage.kind}`}>{actionMessage.text}</p>
+              ) : null}
             </Panel>
 
             <Panel title="Recommended next steps">
@@ -406,6 +517,28 @@ function App() {
         </aside>
       </section>
       )}
+
+      <section className="log-console" aria-label="Backend activity log">
+        <div className="log-console-head">
+          <h3>Backend activity log</h3>
+          <span className={logsOffline ? "log-status offline" : "log-status live"}>
+            {logsOffline ? "backend offline" : "live · polling /api/v1/logs"}
+          </span>
+        </div>
+        <div className="log-stream">
+          {logs.length === 0 ? (
+            <p className="log-empty">Waiting for backend activity…</p>
+          ) : (
+            [...logs].reverse().map((entry) => (
+              <div className={`log-line ${entry.level}`} key={entry.seq}>
+                <span className="log-time">{new Date(entry.timestamp).toLocaleTimeString()}</span>
+                <span className={`log-level ${entry.level}`}>{entry.level}</span>
+                <span className="log-msg">{entry.message}</span>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
     </main>
   );
 }

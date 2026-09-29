@@ -11,6 +11,9 @@ __pycache__/
 venv/
 .pytest_cache/
 
+# HITL durable task store (runtime state, not source)
+.hitl-store.json
+
 # Node
 node_modules/
 dist/
@@ -28,3 +31,6 @@ data\synthetic\*.csv
 *.mp4
 *.mov
 *.wmv
+
+# Office lock/temp files
+~$*

@@ -74,22 +74,17 @@ chapter/07-hitl
 chapter/08-evaluation
 ```
 
-## Script strategy
+## Checkpoint navigation
 
-Add a chapter advancement script:
+Advance between prepared chapter states with plain git:
 
 ```powershell
-.\scripts\chapter.ps1 03
+git checkout chapter-03-guardrails   # jump to a chapter checkpoint
+git checkout main                    # return to latest
 ```
 
-The script should:
-
-1. Confirm the working tree state.
-2. Move to the correct chapter checkpoint.
-3. Copy prepared files for the chapter if needed.
-4. Install dependencies only when required.
-5. Run targeted validation.
-6. Print the next instructor command.
+Keep each chapter's known-good state as a git tag or branch. Confirm the working tree is clean
+before switching, and re-run `.\scripts\validate-solution.ps1` after landing on a checkpoint.
 
 ## Demo reliability rules
 

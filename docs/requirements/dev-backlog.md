@@ -32,21 +32,65 @@ the guardrail matrix in `policy/guardrail-test-matrix.md` (prohibited claims, PH
 required, HITL bypass). Return structured policy decisions.
 **Acceptance:** each row in the matrix has a corresponding check + a test asserting the decision.
 
-## WI-04 — RAG evidence packet builder  [TODO]  (tag: chapter-04-rag)
-Implement an evidence-packet builder that reads `data/rag-docs/`, returns claim-level citations,
-and flags missing/conflicting evidence per `docs/rag-development-patterns.md`.
-**Acceptance:** golden case cites real docs; a missing-protocol case escalates, not guesses.
+## WI-04 — RAG evidence packet builder  [DONE]  (tag: chapter-04-rag)
+Implemented in the Python agent service: `agent-service/src/discharge_transition_agent/knowledge.py`
+reads `data/rag-docs/`, retrieves claim-level citations, scores confidence, keeps diagnosis-specific
+docs from leaking across diagnoses, and flags a missing specialty protocol so the workflow escalates.
+Wired through the `protocol.search` tool and the Evidence Retrieval Agent.
+**Acceptance met:** golden case cites real docs; missing-protocol (pneumonia) escalates, not guesses.
+Covered by tests in `agent-service/tests/test_contract.py`.
 
-## WI-05 — HITL state machine + persistence  [TODO]  (tag: chapter-05-hitl)
-Back the review actions (approve/rework/reject) with the state machine in `hitl/state-machine.md`
-and an in-memory task store exposed via new endpoints (e.g. `POST /api/v1/tasks/:id/action`).
-Emit audit events per transition.
-**Acceptance:** invalid transitions are rejected; every transition writes an audit record.
+## WI-04b — RAG best practices + retrieval evaluation  [DONE]  (tag: chapter-04-rag)
+Deep-scanned the Azure GPT-RAG accelerator and captured KP-facing patterns in
+`docs/rag-guidance-gpt-rag.md` (grounding approaches, OBO permission trimming, governance
+checklist, telemetry, "measure retrieval before you tune"). Built a working local retrieval
+evaluation harness at `agent-service/eval/` (`qrels.jsonl` rubric 0-4 with tune/held_out splits +
+`evaluate_retrieval.py` computing precision@k, recall@k, MRR, with an optional gate).
+**Acceptance met:** eval runs on both splits (tune P@3 ≈ 0.78, held_out ≈ 0.67, MRR 1.0);
+retrieval quality locked by `test_retrieval_ranks_specialty_first`.
 
-## WI-06 — Observability events + trace endpoint  [TODO]  (tag: chapter-06-observability)
-Emit the custom event taxonomy (see technical requirements) to a local structured log and add a
-dev-only `GET /api/v1/traces/:correlationId` that returns the ordered events for a run.
+## WI-05 — HITL state machine + persistence (Data Task Scheduler)  [DONE]  (tag: chapter-05-hitl)
+Durable review-task store backs the approve/rework/reject actions with the full state machine in
+`hitl/state-machine.md`. Implemented in both services with an identical contract:
+`agent-service/src/discharge_transition_agent/hitl.py` (file-backed, thread-safe) and
+`backend/src/hitl/taskStore.js` (Node mirror, source of truth on the app path). Endpoints:
+`GET /api/v1/tasks`, `GET /api/v1/tasks/:id`, `GET /api/v1/tasks/:id/audit`,
+`POST /api/v1/tasks/:id/action`, `POST /api/v1/tasks/sweep`. Every invoke registers a task; policy
+escalations create the task already `Escalated`; overdue tasks auto-escalate on sweep (timer branch).
+The UI action buttons call the API and reflect the returned state, with an offline fallback.
+The **Durable Task Scheduler** graduation target ships as reference code in
+`agent-service/orchestrations/` (`function_app.py` + `client_raise_event.py`) with the mapping doc
+`docs/hitl-durable-task-scheduler.md`.
+**Acceptance met:** illegal transitions -> 409; approve/reject without a human actor -> 403; every
+transition writes an audit record. Covered by `agent-service/tests/test_hitl.py` (8 tests).
+
+## WI-06 — Observability events + trace endpoint  [IN PROGRESS]  (tag: chapter-06-observability)
+Emit the custom event taxonomy (see technical requirements) to a structured log and add a dev-only
+`GET /api/v1/traces/:correlationId` that returns the ordered events for a run.
 **Acceptance:** a single invoke produces a complete, ordered, correlated event list.
+
+**Done so far (backend activity feed — the local preview of this chapter):**
+- `backend/src/logs/logBuffer.js` — dependency-free in-memory ring buffer (last 200 entries) with
+  `push()` / `event()` / incremental `list(sinceSeq, limit)`.
+- `GET /api/v1/logs?since=<seq>&limit=<n>` (`backend/src/routes/logs.js`) — incremental fetch with a
+  `lastSeq` cursor.
+- Structured domain events emitted from the routes: `invoke <case> → <source> · policy=… · task=…`
+  and `HITL <action> by <actor> → <status>`, plus rejected transitions as `warn`
+  (`HITL <action> rejected (409): …`). HTTP request lines are mirrored in (clean, no ANSI) via a
+  second morgan writer.
+- UI: full-width "Backend activity log" console panel polling `/api/v1/logs` every 2s (incremental,
+  newest-first, capped at 100), color-coded by level (event/http/warn), with a live/offline badge
+  and offline-safe fallback.
+
+**Still to do for WI-06:**
+- Add `GET /api/v1/traces/:correlationId` returning the ordered event list for one run (pivoted on
+  the correlation ID), sourced from the same event stream — this is the acceptance criterion.
+- Make each log line's correlation ID clickable in the UI to filter the feed to a single trace.
+- Formalize the custom event taxonomy (event names + fields) in the technical requirements and emit
+  the full set (tool calls with policy decision, agent handoffs, escalations), not just invoke/HITL.
+- Document the App Insights / Log Analytics graduation: the in-memory buffer is a teaching preview;
+  the real sink is App Insights with the correlation ID as the KQL pivot (LAW/App Insight agenda item).
+- Note: the buffer is process-local and not durable — call this out in the chapter.
 
 ## WI-07 — Evaluation harness runner  [TODO]  (tag: chapter-07-eval)
 Add a runner that executes `evaluation/golden-cases.jsonl` and `evaluation/adversarial-cases.jsonl`

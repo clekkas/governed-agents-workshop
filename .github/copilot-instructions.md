@@ -51,8 +51,11 @@ React UI  ->  Backend API  ->  Foundry Hosted Agent (Discharge Transition Orches
                               ->  App Insights + Log Analytics
 ```
 
-Today the multi-agent workflow runs as a **local orchestrator stub** in `backend/`. It will be
-replaced by a real Foundry hosted agent + MCP server later **without changing the API contract**.
+Today the multi-agent workflow can run two ways, both behind the same `/api/v1/agent/invoke`
+contract: (1) a **local orchestrator stub** in `backend/` (Node), and (2) a **code-first Python
+agent service** in `agent-service/` (orchestrator + 7 specialists, Foundry-ready). Set
+`AGENT_SERVICE_URL` on the backend to delegate to the Python agents. Either can be replaced by a
+real Foundry hosted agent later without changing the contract.
 
 ## Tech stack and locations
 
@@ -61,12 +64,14 @@ replaced by a real Foundry hosted agent + MCP server later **without changing th
 | Frontend | React 19 + TypeScript + Vite | `app/readmission-review-tracker/` |
 | Backend | Node.js + Express (CommonJS) | `backend/` |
 | Agents | Manifest YAML + prompts | `agents/` |
+| Agent service | Python code-first multi-agent (FastAPI) | `agent-service/` |
 | MCP tools | JSON Schemas | `mcp-server/tool-contracts/` |
 | RAG sources | Markdown | `data/rag-docs/` |
 | Policy/guardrails | Markdown | `policy/` |
 | Governance | YAML + Markdown | `governance/` |
 | Observability | Markdown + KQL | `observability/`, `fabric/kql/` |
 | Evaluation | JSONL + Markdown | `evaluation/` |
+| Infrastructure | Terraform + PowerShell | `infra/terraform/`, `infra/scripts/` |
 | Requirements | Markdown | `docs/requirements/` |
 
 ## API contract (do not break)

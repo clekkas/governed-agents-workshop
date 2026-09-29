@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="1140" viewBox="0 0 1560 1140">
+<defs><marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+<rect width="1560" height="1140" fill="#f8fafc"/>
+<text x="40" y="46" font-family="Segoe UI, Arial" font-size="26" font-weight="800" fill="#0f766e">Discharge Transition Exception Coordinator — Solution Architecture</text>
+<text x="40" y="72" font-family="Segoe UI, Arial" font-size="14.5" fill="#475569">Kaiser Permanente workshop · synthetic data only · every request carries an x-correlation-id</text>
+<rect x="590.0" y="96" width="380" height="52" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+<rect x="590.0" y="96" width="7" height="52" rx="3" fill="#6366f1"/>
+<text x="608.0" y="124" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Care Manager / ADT Nurse</text>
+<text x="608.0" y="148" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Browser</text>
+<rect x="120" y="186" width="1320" height="108" rx="14" fill="#ffffff" stroke="#0ea5e9" stroke-width="2"/>
+<rect x="120" y="186" width="7" height="108" rx="3" fill="#0ea5e9"/>
+<text x="138" y="214" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">React UI (Vite)  ·  app/readmission-review-tracker</text>
+<text x="138" y="238" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Dev server :5173  ·  or built dist served by the backend at :8080</text>
+<rect x="140" y="250" width="68" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="174" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Worklist</text>
+<rect x="222.4" y="250" width="90" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="268" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Case detail</text>
+<rect x="326.7" y="250" width="200" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="427" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Approved risk + provenance</text>
+<rect x="540.5" y="250" width="112" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="597" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Evidence (RAG)</text>
+<rect x="666.7" y="250" width="149" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="741" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Tool &amp; policy calls</text>
+<rect x="829.4000000000001" y="250" width="251" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="955" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">HITL actions + reviewer-name gate</text>
+<rect x="1094.3000000000002" y="250" width="156" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="1172" y="267" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Backend activity log</text>
+<rect x="120" y="340" width="1320" height="128" rx="14" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="120" y="340" width="7" height="128" rx="3" fill="#0f766e"/>
+<text x="138" y="368" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Node / Express API   :8080</text>
+<text x="138" y="392" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Serves the built UI  ·  resilient local-orchestrator fallback if the agent service is down</text>
+<rect x="140" y="406" width="134" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="207" y="423" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">GET /api/v1/cases</text>
+<rect x="288.1" y="406" width="192" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="384" y="423" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">POST /api/v1/agent/invoke</text>
+<rect x="494.6" y="406" width="324" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="657" y="423" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">/api/v1/tasks  (HITL state machine + audit)</text>
+<rect x="832.5" y="406" width="273" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="969" y="423" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">/api/v1/logs  (activity ring buffer)</text>
+<rect x="120" y="500" width="470" height="96" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+<rect x="120" y="500" width="7" height="96" rx="3" fill="#f59e0b"/>
+<text x="138" y="528" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Durable HITL TaskStore</text>
+<text x="138" y="552" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">PendingReview → Approved / NeedsRework / Rejected</text>
+<text x="138" y="573" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">policy escalate → Escalated · SLA timeout → Escalated</text>
+<text x="138" y="594" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">append-only audit (actor = reviewer name)</text>
+<rect x="120" y="612" width="470" height="74" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="138" y="640" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Durable Task Scheduler reference</text>
+<text x="138" y="664" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">agent-service/orchestrations — wait_for_external_event</text>
+<text x="138" y="685" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">+ durable timer → escalate (scales to zero while waiting)</text>
+<rect x="630" y="500" width="810" height="186" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+<rect x="630" y="500" width="7" height="186" rx="3" fill="#7c3aed"/>
+<text x="648" y="528" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Python FastAPI agent-service   :8081</text>
+<text x="648" y="552" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Discharge Transition Orchestrator coordinates 7 specialist agents (same invoke contract)</text>
+<rect x="650" y="568" width="98" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="699" y="585" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Case Context</text>
+<rect x="761.6" y="568" width="83" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="803" y="585" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Risk Score</text>
+<rect x="858.6" y="568" width="141" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="929" y="585" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Evidence Retrieval</text>
+<rect x="1014.0" y="568" width="156" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="1092" y="585" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Transition Exception</text>
+<rect x="1184.0" y="568" width="141" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="1255" y="585" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Care Plan Drafting</text>
+<rect x="650" y="602" width="127" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="713" y="619" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Policy Guardrail</text>
+<rect x="790.8" y="602" width="98" height="26" rx="13" fill="#ecfdf5" stroke="#99f6e4" stroke-width="1"/>
+<text x="840" y="619" font-family="Consolas, monospace" font-size="12.5" fill="#0f766e" text-anchor="middle">Human Review</text>
+<rect x="120" y="726" width="430" height="164" rx="14" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+<rect x="120" y="726" width="7" height="164" rx="3" fill="#0f766e"/>
+<text x="138" y="754" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">MCP tools (mock EHR)</text>
+<text x="138" y="778" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">patient.get            → redact (PHI minimization)</text>
+<text x="138" y="799" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">utilization.history    → allow</text>
+<text x="138" y="820" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">risk_score.get         → allow (consumed, never generated)</text>
+<text x="138" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">protocol.search        → allow / review_required</text>
+<text x="138" y="862" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">task.create            → review_required (draft only)</text>
+<text x="138" y="883" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">audit.write            → allow (always)</text>
+<rect x="580" y="726" width="430" height="164" rx="14" fill="#eff6ff" stroke="#0ea5e9" stroke-width="2"/>
+<rect x="580" y="726" width="7" height="164" rx="3" fill="#0ea5e9"/>
+<text x="598" y="754" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">RAG KnowledgeBase</text>
+<text x="598" y="778" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">data/rag-docs (effective-dated protocols)</text>
+<text x="598" y="799" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">diagnosis-scoped retrieval; claim-level citations</text>
+<text x="598" y="820" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">retrieval eval harness (precision@k / recall@k / MRR)</text>
+<text x="598" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">graduation target: Foundry IQ knowledge base</text>
+<rect x="1040" y="726" width="400" height="164" rx="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+<rect x="1040" y="726" width="7" height="164" rx="3" fill="#7c3aed"/>
+<text x="1058" y="754" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Microsoft Foundry</text>
+<text x="1058" y="778" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">gpt-5-mini deployment (workshop-demo-project)</text>
+<text x="1058" y="799" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">refine draft wording only — line-count guarded</text>
+<text x="1058" y="820" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">never adds owners/dates or clinical claims</text>
+<text x="1058" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">REST + az token (Win ARM64) or SDK (container)</text>
+<rect x="120" y="926" width="1320" height="62" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+<rect x="120" y="926" width="7" height="62" rx="3" fill="#dc2626"/>
+<text x="138" y="954" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Safety boundary (enforced in code)</text>
+<text x="138" y="978" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Never states a patient is safe to discharge · never alters discharge orders · never makes a clinical determination · consumes the approved risk score, never generates it · every run stops at the human gate</text>
+<line x1="780.0" y1="148" x2="780.0" y2="186" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="752" y="154" width="56" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="780" y="169" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">renders</text>
+<line x1="780.0" y1="294" x2="780.0" y2="340" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="679" y="304" width="201" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="780" y="319" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">HTTPS REST · x-correlation-id</text>
+<line x1="780.0" y1="468" x2="780.0" y2="500" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="590" y1="404" x2="630" y2="560" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="643" y="457" width="195" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="740" y="472" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">delegate · AGENT_SERVICE_URL</text>
+<line x1="300" y1="468" x2="300" y2="500" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="249" y="471" width="102" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="300" y="486" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">register / act</text>
+<line x1="355" y1="596" x2="355" y2="612" stroke="#94a3b8" stroke-width="2.2" stroke-dasharray="6 6" marker-end="url(#arrow)"/>
+<rect x="310" y="591" width="89" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="355" y="606" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">graduates to</text>
+<line x1="780" y1="686" x2="430" y2="726" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="525" y="693" width="69" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="560" y="708" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">MCP calls</text>
+<line x1="900" y1="686" x2="795" y2="726" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<line x1="1080" y1="686" x2="1180" y2="726" stroke="#94a3b8" stroke-width="2.2" marker-end="url(#arrow)"/>
+<rect x="1105" y="693" width="89" height="22" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+<text x="1150" y="708" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="middle">refine draft</text>
+</svg>

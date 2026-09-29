@@ -17,14 +17,58 @@ The assistant must not:
 
 All sample data is synthetic. Do not use real PHI in this workshop repo unless Kaiser Permanente governance explicitly approves the environment and data-handling process.
 
-## Repository modes
+## Architecture
 
-This repo runs in two modes — see `docs/workshop-modes.md`.
+![Solution architecture](workshop-assets/architecture-diagram.svg)
 
-| Mode | Purpose | Entry point |
-| --- | --- | --- |
-| **Mode 1 — Pre-Workshop Validation** | Build/deploy/validate the full solution on Azure + Foundry, then tag a known-good release. | `docs/mode-1-pre-workshop-validation.md` · `scripts/validate-solution.ps1` |
-| **Mode 2 — Workshop Run-of-Show** | Deliver the two-day workshop chapter by chapter from prepared checkpoints. | `workshop-assets/run-of-show.md` · `scripts/chapter.ps1` |
+The reference implementation is a three-tier app plus a governed data/model layer:
+
+- **React UI** (`app/readmission-review-tracker`) — worklist, case detail, approved-risk context, RAG evidence, tool/policy calls, the HITL review actions (with a required reviewer-name gate), and a live backend activity log.
+- **Node/Express API** (`backend`, port 8080) — serves the built UI, exposes cases/invoke/tasks/logs, holds the durable HITL task store and audit trail, and delegates agent work to the Python service (with a resilient local-orchestrator fallback).
+- **Python FastAPI agent-service** (`agent-service`, port 8081) — the Discharge Transition Orchestrator coordinating 7 specialist agents behind the same invoke contract, calling mock MCP tools and the RAG KnowledgeBase, and using Microsoft Foundry only to refine draft wording.
+
+Every request carries an `x-correlation-id`. The full write-up is in `docs/solution-architecture-overview.md`; the diagram source is `workshop-assets/build_arch_diagram.py`.
+
+## Run it locally
+
+The solution runs as two (optionally three) processes.
+
+```powershell
+# Terminal 1 — Python agent-service (multi-agent orchestrator)  :8081
+cd .\agent-service
+python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn discharge_transition_agent.app:app --app-dir src --host 127.0.0.1 --port 8081
+
+# Terminal 2 — Node backend + built UI  :8080
+cd .\backend
+npm install
+$env:AGENT_SERVICE_URL = "http://127.0.0.1:8081"   # omit to use the local-orchestrator fallback
+npm start        # http://127.0.0.1:8080
+```
+
+Rebuild the UI after changing it (the backend serves the built `dist`):
+
+```powershell
+cd .\app\readmission-review-tracker
+npm install
+npm run build
+# or, for hot reload during UI work: npm run dev  (http://127.0.0.1:5173, proxies /api to :8080)
+```
+
+One-shot local validation (repo scaffold + frontend build + backend smoke test):
+
+```powershell
+.\scripts\validate-solution.ps1
+```
+
+## Deploy to Azure + Foundry
+
+Infrastructure as code lives in `infra/terraform/`. See `infra/README.md`.
+
+```powershell
+cd .\infra\scripts
+.\deploy.ps1        # provisions Azure + Foundry, builds image, deploys the app
+```
 
 ## Workshop agenda
 
@@ -42,16 +86,20 @@ kaiser-readmissions-agent-workshop/
 ├── data/                 # Synthetic data generator and RAG source documents
 ├── fabric/               # Fabric notebooks, DAX, and KQL starter assets
 ├── agents/               # Hosted-agent starter contract and instructions
-├── backend/              # Node.js/Express API + local orchestrator stub
+├── agent-service/        # Python FastAPI multi-agent orchestrator + MCP tools + RAG + HITL store
+│                         #   (src/, tests/, eval/ retrieval harness, orchestrations/ DTS reference)
+├── backend/              # Node.js/Express API + HITL task store + activity log + local orchestrator
 ├── mcp-server/           # MCP tool contracts and future implementation surface
 ├── governance/           # Governance plan, approval matrix, tool permissions
 ├── observability/        # Trace scenarios, failure injection, runbook
 ├── policy/               # Guardrails, PHI minimization, prohibited claims, test prompts
 ├── hitl/                 # Data Task Scheduler schemas and state machine
 ├── evaluation/           # Golden cases, adversarial cases, judge rubric, calibration set
-├── app/                  # Optional review tracker app placeholder
+├── app/                  # React UI (discharge transition review tracker)
+├── Dockerfile            # Single image: backend API + built UI
+├── infra/                # Terraform for Azure + Foundry, deploy/destroy scripts
 ├── scripts/              # Setup and validation scripts
-└── workshop-assets/      # Agenda, deck outline, facilitator runbook
+└── workshop-assets/      # Agenda, decks, run-of-show, facilitator runbook
 ```
 
 ## Prerequisites
@@ -95,24 +143,35 @@ Day 2: Earn the right to trust it.
 
 Use one evolving synthetic use case across all modules: a multi-agent discharge-transition exception coordinator that retrieves, summarizes, consumes an approved risk score, cites protocols, detects transition gaps, drafts an exception packet, validates policy, and routes work for human review.
 
-The initial specialist agents are:
+The specialist agents are:
 
-1. Discharge Transition Orchestrator
+1. Discharge Transition Orchestrator (coordinator)
 2. Case Context Agent
-3. Evidence Retrieval Agent
-4. Policy Guardrail Agent
+3. Risk Score Agent
+4. Evidence Retrieval Agent
 5. Transition Exception Agent
-6. Transition Exception Agent
-7. Human Review Agent
+6. Care Plan Drafting Agent
+7. Policy Guardrail Agent
+8. Human Review Agent
 
 ## Architecture overview
 
-Start with `docs\solution-architecture-overview.md` for the complete solution architecture.
+See the [Architecture](#architecture) section above for the diagram, or `docs\solution-architecture-overview.md` for the complete write-up.
 
 Diagram artifacts:
 
-1. `workshop-assets\architecture-overview.svg`
-2. `workshop-assets\architecture-overview.excalidraw`
+1. `workshop-assets\architecture-diagram.svg` (embedded above) and its generator `workshop-assets\build_arch_diagram.py`
+2. `workshop-assets\architecture-overview.svg` / `.excalidraw` (earlier context diagram)
+
+## Human-in-the-loop (Data Task Scheduler)
+
+The review gate is a durable task store with a full state machine
+(`PendingReview → Approved / NeedsRework / Rejected`; policy escalation and SLA timeout →
+`Escalated`) and an append-only audit trail keyed on the reviewer name. It is implemented in both
+services with an identical contract (`agent-service/src/discharge_transition_agent/hitl.py` and
+`backend/src/hitl/taskStore.js`) and exposed at `/api/v1/tasks`. The Durable Task Scheduler
+graduation target ships as reference code in `agent-service/orchestrations/`. Full details:
+`docs\hitl-durable-task-scheduler.md`.
 
 ## BYO Registry note
 

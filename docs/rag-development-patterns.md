@@ -1,5 +1,10 @@
 # RAG Development Patterns
 
+> See also `docs/rag-guidance-gpt-rag.md` — best practices synthesized from the Azure GPT-RAG
+> accelerator (grounding approaches, permission trimming via OBO, governance checklist, telemetry
+> data classes, and the "measure retrieval before you tune" method). A working local retrieval
+> evaluation harness lives in `agent-service/eval/`.
+
 ## Goal
 
 Onboard developers to RAG as a production engineering pattern, not a demo technique. The workshop should teach how to build a grounded knowledge path, validate it, expose it to agents, and consume it safely across Microsoft AI surfaces.

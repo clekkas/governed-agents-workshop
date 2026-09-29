@@ -1,6 +1,6 @@
-# Mode 1 full-solution validation.
+# Full-solution local validation.
 # Runs repo scaffold validation, the frontend production build, and a backend smoke test.
-# Exit code is non-zero if any stage fails, so it can gate a release tag.
+# Exit code is non-zero if any stage fails.
 
 $ErrorActionPreference = "Stop"
 $root = Resolve-Path "$PSScriptRoot\.."

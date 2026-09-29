@@ -1,0 +1,21 @@
+# Azure Developer CLI (azd) config to deploy this folder as a Microsoft Foundry hosted agent.
+# Provision the Foundry project + model with infra/terraform first, then:
+#   cd agent-service
+#   azd ai agent deploy      (or: azd deploy)
+#
+# The hosted agent fulfills the same /api/v1/agent/invoke contract as the local run.
+
+name: discharge-transition-agent
+metadata:
+  template: foundry-phase2-agent@0.1.0
+
+services:
+  agent:
+    project: .
+    language: python
+    host: azure.ai.agent
+    config:
+      # Entry module exposing the FastAPI app / responses handler.
+      module: discharge_transition_agent.app:app
+      # Model deployment name; matches FOUNDRY_MODEL_DEPLOYMENT / Terraform output.
+      model: gpt-4o-mini

@@ -1,0 +1,30 @@
+# Copy to terraform.tfvars and adjust. All values are optional (sensible defaults exist).
+
+# subscription_id = "00000000-0000-0000-0000-000000000000"
+
+name_prefix = "dtec"
+location    = "eastus2"
+
+# Foundry model deployment
+model_name     = "gpt-4o-mini"
+model_version  = "2024-07-18"
+model_sku      = "GlobalStandard"
+model_capacity = 30
+
+# Container app scaling
+app_min_replicas = 1
+app_max_replicas = 3
+
+# Azure AI Search SKU (basic or standard for managed identity scenarios)
+search_sku = "basic"
+
+# container_image is set automatically by the deploy script after the image is
+# built and pushed. Leave the default for the first apply.
+# container_image = "acrdtec123456.azurecr.io/discharge-transition:latest"
+
+tags = {
+  workload    = "foundry-phase2"
+  environment = "workshop"
+  data        = "synthetic-only"
+  managed_by  = "terraform"
+}

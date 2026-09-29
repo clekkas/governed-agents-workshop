@@ -5,7 +5,8 @@ export type ReviewStatus =
   | "InReview"
   | "Approved"
   | "NeedsRework"
-  | "Rejected";
+  | "Rejected"
+  | "Escalated";
 
 export type PolicyDecision = "allow" | "redact" | "review_required" | "deny";
 

@@ -46,4 +46,4 @@ Each session uses the concept -> live edit -> run -> reveal-checkpoint rhythm
 
 - Day 1 covers the foundational build (Items 1-4); Day 2 covers operational readiness (Items 5-7).
 - Session slots are ~75 minutes to allow one live coding moment plus a prepared checkpoint reveal.
-- Prework and prerequisites: see `docs/facilitator-guide.md` and `docs/workshop-modes.md` (Mode 1).
+- Prework and prerequisites: see `docs/facilitator-guide.md`. Deployment to Azure + Foundry: see `infra/README.md`.

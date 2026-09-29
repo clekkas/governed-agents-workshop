@@ -14,6 +14,9 @@ const morgan = require("morgan");
 const { correlationId } = require("./middleware/correlationId");
 const casesRoutes = require("./routes/cases");
 const agentRoutes = require("./routes/agent");
+const tasksRoutes = require("./routes/tasks");
+const logsRoutes = require("./routes/logs");
+const { logBuffer } = require("./logs/logBuffer");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -22,6 +25,12 @@ const HOST = process.env.HOST || "127.0.0.1";
 app.set("trust proxy", 1);
 app.use(cors({ origin: process.env.FRONTEND_URL || "*" }));
 app.use(morgan("dev"));
+// Mirror each request line into the in-memory log buffer (clean, no ANSI) for the UI log panel.
+app.use(
+  morgan(":method :url :status :response-time ms", {
+    stream: { write: (line) => logBuffer.push({ level: "http", message: line }) },
+  }),
+);
 app.use(express.json({ limit: "2mb" }));
 app.use(correlationId);
 
@@ -32,6 +41,8 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/v1/cases", casesRoutes);
 app.use("/api/v1/agent", agentRoutes);
+app.use("/api/v1/tasks", tasksRoutes);
+app.use("/api/v1/logs", logsRoutes);
 
 // Optionally serve the built UI (app/readmission-review-tracker/dist) at root so the
 // whole demo can run from one process. Skipped gracefully if no build exists.
