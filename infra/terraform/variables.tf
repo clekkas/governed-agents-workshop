@@ -85,3 +85,9 @@ variable "search_sku" {
   type        = string
   default     = "basic"
 }
+
+variable "search_location" {
+  description = "Region for Azure AI Search. Separate from var.location so Search can be placed in a region with available capacity (eastus2 has intermittently returned InsufficientResourcesAvailable)."
+  type        = string
+  default     = "centralus"
+}

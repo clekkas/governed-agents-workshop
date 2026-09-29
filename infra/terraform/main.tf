@@ -95,7 +95,7 @@ resource "azurerm_storage_container" "rag" {
 
 resource "azurerm_search_service" "search" {
   name                         = "srch-${local.base}"
-  location                     = azurerm_resource_group.rg.location
+  location                     = var.search_location
   resource_group_name          = azurerm_resource_group.rg.name
   sku                          = var.search_sku
   local_authentication_enabled = false

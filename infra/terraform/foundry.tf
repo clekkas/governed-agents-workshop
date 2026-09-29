@@ -38,6 +38,19 @@ resource "azurerm_cognitive_deployment" "model" {
   }
 }
 
+# Enable project management on the Foundry account (required before a project can be created).
+# Not yet surfaced as a first-class azurerm argument, so patch it via azapi.
+resource "azapi_update_resource" "foundry_allow_projects" {
+  type        = "Microsoft.CognitiveServices/accounts@2025-04-01-preview"
+  resource_id = azurerm_ai_services.foundry.id
+
+  body = {
+    properties = {
+      allowProjectManagement = true
+    }
+  }
+}
+
 # Foundry project (new Foundry experience) as a sub-resource of the account.
 # API version may need to be updated as the platform evolves.
 resource "azapi_resource" "project" {
@@ -45,6 +58,8 @@ resource "azapi_resource" "project" {
   name      = local.project_name
   parent_id = azurerm_ai_services.foundry.id
   location  = azurerm_resource_group.rg.location
+
+  depends_on = [azapi_update_resource.foundry_allow_projects]
 
   identity {
     type = "SystemAssigned"
