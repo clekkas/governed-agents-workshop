@@ -76,13 +76,15 @@ resource "azurerm_key_vault" "kv" {
 # ------------------------------------------------------------------
 
 resource "azurerm_storage_account" "sa" {
-  name                     = "st${local.compact}"
-  location                 = azurerm_resource_group.rg.location
-  resource_group_name      = azurerm_resource_group.rg.name
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  min_tls_version          = "TLS1_2"
-  tags                     = local.tags
+  name                            = "st${local.compact}"
+  location                        = azurerm_resource_group.rg.location
+  resource_group_name             = azurerm_resource_group.rg.name
+  account_tier                    = "Standard"
+  account_replication_type        = "LRS"
+  min_tls_version                 = "TLS1_2"
+  shared_access_key_enabled       = false # tenant policy: Entra-only data-plane auth
+  allow_nested_items_to_be_public = false
+  tags                            = local.tags
 }
 
 resource "azurerm_storage_container" "rag" {
