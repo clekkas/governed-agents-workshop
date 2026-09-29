@@ -68,8 +68,17 @@ def health() -> dict:
         "status": "ok",
         "service": "discharge-transition-agent-service",
         "foundry_enabled": _foundry.enabled,
+        "foundry_mode": _foundry.mode,
         "version": __version__,
     }
+
+
+@app.get("/api/v1/agents")
+def agents() -> dict:
+    """Declared agents (from agents/*.yaml manifests) and their runtime conformance."""
+    from . import agent_manifests
+
+    return agent_manifests.summary()
 
 
 @app.get("/api/v1/cases")

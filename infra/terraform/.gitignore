@@ -13,3 +13,9 @@ override.tf.json
 *_override.tf.json
 .terraformrc
 terraform.rc
+
+# Remote-state activation file (copied from backend.tf.example locally / in CI)
+backend.tf
+# Plan artifacts
+tfplan
+plan.txt

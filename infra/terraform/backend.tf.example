@@ -1,0 +1,20 @@
+# Activates the Terraform remote state backend (Stage 2+ of the staged-hybrid rollout).
+#
+# Stage 1 (prove it) uses LOCAL state — leave this as-is and Terraform writes terraform.tfstate
+# locally. To move to remote state (required for GitHub Actions), copy this file to backend.tf:
+#
+#   cd infra/terraform
+#   cp backend.tf.example backend.tf
+#   terraform init -migrate-state \
+#     -backend-config="resource_group_name=<from bootstrap>" \
+#     -backend-config="storage_account_name=<from bootstrap>" \
+#     -backend-config="container_name=tfstate" \
+#     -backend-config="key=foundry-phase2.tfstate" \
+#     -backend-config="use_azuread_auth=true"
+#
+# The block is intentionally empty (partial configuration): the actual values are passed via
+# -backend-config so no account names are committed. The CI workflows create backend.tf automatically.
+
+terraform {
+  backend "azurerm" {}
+}

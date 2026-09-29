@@ -16,13 +16,7 @@ terraform {
     }
   }
 
-  # Optional remote state. Configure a storage account, container, and key, then
-  # run `terraform init`. Left commented so `terraform init` works locally first.
-  #
-  # backend "azurerm" {
-  #   resource_group_name  = "rg-tfstate"
-  #   storage_account_name = "sttfstateXXXXXX"
-  #   container_name       = "tfstate"
-  #   key                  = "foundry-phase2.tfstate"
-  # }
+  # Remote state (Stage 2+): activate by copying backend.tf.example to backend.tf and running
+  # `terraform init -migrate-state -backend-config=...`. Left out here so Stage 1 uses local state
+  # with zero friction. See infra/DEPLOYMENT.md.
 }

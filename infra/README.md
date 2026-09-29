@@ -5,6 +5,20 @@ infrastructure-as-code. Aimed at the DevOps / infrastructure track of the worksh
 
 Synthetic data only. This is a reference deployment, not a production clinical system.
 
+## Execution model — staged hybrid
+
+This infra follows a **local → GitHub Actions** rollout (see `DEPLOYMENT.md` for the full guide):
+
+| Stage | Runs where | State | Auth |
+| --- | --- | --- | --- |
+| 1. Prove it | Local `terraform apply` (`scripts/deploy.ps1`) | local file | `az login` |
+| 2. Bootstrap | `scripts/bootstrap-remote-state.ps1` + `scripts/setup-github-oidc.ps1` | → Azure blob | `az login` |
+| 3. Steady state | `.github/workflows/terraform-{plan,apply}.yml` | remote | OIDC (keyless) |
+
+Stage 1 uses local state for a friction-free first run. Stage 2 (one-time) creates the remote state
+backend and the GitHub→Azure OIDC federation. Stage 3 runs `plan` on PRs and a human-gated `apply`
+on merge — no credentials stored.
+
 ## What gets deployed
 
 ```

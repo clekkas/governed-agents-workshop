@@ -34,6 +34,8 @@ $env:PYTHONPATH = "src"
 ```powershell
 .\.venv\Scripts\python.exe tests\test_contract.py   # contract + RAG retrieval (8 tests)
 .\.venv\Scripts\python.exe tests\test_hitl.py       # durable HITL state machine (8 tests)
+.\.venv\Scripts\python.exe tests\test_eval.py       # evaluation safety gates
+.\.venv\Scripts\python.exe tests\test_manifests.py  # agents/ manifest <-> runtime conformance
 # or: python -m pytest
 ```
 
@@ -105,9 +107,16 @@ Verify connectivity:
 
 ## Deploy to Foundry (hosted agent)
 
-`azure.yaml` declares this folder as a Foundry hosted agent for `azd`. See `infra/README.md`
-for the Azure + Foundry provisioning that creates the project and model deployment. The invoke
-contract stays the same when hosted.
+`azure.yaml` declares this folder as a Foundry hosted agent for `azd`. The same app runs locally
+(deterministic, offline) and hosted; the invoke contract does not change. Full deploy path,
+prerequisites, and no-secrets configuration: **`docs/foundry-hosted-agent.md`**. Azure + Foundry
+provisioning is in `infra/README.md`.
+
+## Agent manifests & conformance
+
+The 7 specialist agents are declared in `agents/*/agent.yaml`. `agent_manifests.py` checks the
+manifests match the running orchestrator (no drift), covered by `tests/test_manifests.py`, and
+`GET /api/v1/agents` reports the declared set + any conformance issues.
 
 ## Contract
 

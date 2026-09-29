@@ -85,6 +85,23 @@ if (Test-Path $venvPy) {
   Write-Host "Skipped: agent-service\.venv not found (run pip install -r requirements.txt)." -ForegroundColor Yellow
 }
 
+# 3c. Agent manifest conformance — declared agents/ manifests must match the running orchestrator.
+Section "Agent manifest conformance"
+if (Test-Path $venvPy) {
+  try {
+    Push-Location $agent
+    & $venvPy "tests\test_manifests.py" | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "test_manifests.py exit $LASTEXITCODE (manifest/runtime drift)" }
+    Write-Host "Manifest conformance passed." -ForegroundColor Green
+  } catch {
+    $failures += "Manifest conformance: $($_.Exception.Message)"
+  } finally {
+    Pop-Location
+  }
+} else {
+  Write-Host "Skipped: agent-service\.venv not found." -ForegroundColor Yellow
+}
+
 # Summary + exit code.
 Section "Result"
 if ($failures.Count -eq 0) {

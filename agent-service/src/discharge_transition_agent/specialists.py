@@ -166,3 +166,25 @@ class HumanReviewAgent(Specialist):
         ctx.call(tools.task_create(ctx.case))
         ctx.call(tools.audit_write(ctx.case, "exception_packet_drafted"))
         ctx.record(self.name, self.role, "needs-review", "Created pending human review task and wrote audit event.")
+
+
+# Canonical registry of the specialist agents the orchestrator runs, in handoff order. Used to keep
+# the declarative manifests in agents/ in sync with the running code (see agent_manifests.py).
+ORCHESTRATOR_NAME = "Discharge Transition Orchestrator"
+SPECIALIST_CLASSES = [
+    CaseContextAgent,
+    RiskScoreAgent,
+    EvidenceRetrievalAgent,
+    TransitionExceptionAgent,
+    CarePlanDraftingAgent,
+    PolicyGuardrailAgent,
+    HumanReviewAgent,
+]
+SPECIALIST_NAMES = [cls.name for cls in SPECIALIST_CLASSES]
+
+
+def manifest_id(agent_name: str) -> str:
+    """Normalize a runtime agent name to its manifest folder id, e.g. 'Case Context Agent' ->
+    'case-context-agent'."""
+    return agent_name.strip().lower().replace(" ", "-")
+

@@ -11,6 +11,7 @@ specialists:
   - risk-score-agent
   - evidence-retrieval-agent
   - transition-exception-agent
+  - care-plan-drafting-agent
   - policy-guardrail-agent
   - human-review-agent
 guardrails:

@@ -169,4 +169,36 @@ function notes(s, t) { s.addNotes(t); }
   notes(s, "This is the build discipline behind the demos: automated tests, machine-checked tool contracts, and one policy module encoding the guardrail matrix. The point for a DevOps audience: safety and correctness are enforced by gates in the pipeline, not by hope or code review alone.");
 }
 
+// ---------- WI-08: Foundry hosted agent + manifest conformance ----------
+{
+  const s = slide("Foundry hosted agent + manifest conformance", "WI-08 - Prototype to production");
+  card(s, "Same contract, two homes", "The code-first agent service runs locally (deterministic, offline) and deploys as a Foundry hosted agent - the POST /api/v1/agent/invoke contract does not change. The local orchestrator stays the offline fallback.", 0.7, 1.6, 3.85, 2.05, C.violet);
+  card(s, "Declared == running", "The 7 specialists are declared in agents/*.yaml. agent_manifests.py checks the manifests match the running orchestrator; GET /api/v1/agents reports the set and any drift. It caught a real gap: a missing specialist in the orchestrator manifest.", 4.75, 1.6, 3.85, 2.05, C.teal);
+  card(s, "No keys, RBAC only", "The model is reached with managed identity (DefaultAzureCredential); there are no API keys in the repo or the deployed app. .env is gitignored; .env.example holds placeholders only.", 8.8, 1.6, 3.85, 2.05, C.green);
+  bullets(s, [
+    "Deploy paths: container sidecar (Terraform, implemented) or azd hosted agent (azure.yaml). Guide: docs/foundry-hosted-agent.md.",
+    "The model only refines draft wording - never generates a risk score, makes a determination, or bypasses human review.",
+  ], 0.7, 3.85, 12.0, 1.2, { fontSize: 11.5 });
+  mono(s, [
+    "GET /api/v1/agents   ->  7 specialists,  issues: []   (conformant)",
+    "tests/test_manifests.py                              PASS",
+  ], 0.7, 5.15, 12.0, 1.0);
+  notes(s, "The prototype-to-production bridge. Same code, same contract, local or hosted. The conformance check keeps the declared agent design honest against the running code - it already caught a manifest that was missing a specialist. Governance point: managed identity, no keys, no secrets committed.");
+}
+
+// ---------- WI-09: CI/CD staged hybrid ----------
+{
+  const s = slide("CI/CD: staged hybrid (local to GitHub Actions)", "WI-09 - Prototype to production");
+  card(s, "Stage 1 - prove it", "Local terraform apply (scripts/deploy.ps1) with local state and az login. One operator confirms the infra stands up end to end.", 0.7, 1.6, 3.85, 2.0, C.blue);
+  card(s, "Stage 2 - bootstrap", "One-time, local: bootstrap-remote-state.ps1 creates the Azure blob state backend; setup-github-oidc.ps1 federates GitHub to Azure (keyless, no secret).", 4.75, 1.6, 3.85, 2.0, C.amber);
+  card(s, "Stage 3 - steady state", "GitHub Actions: PR runs terraform plan (read-only); merge to main runs a human-gated apply on the 'production' environment. Remote state, OIDC.", 8.8, 1.6, 3.85, 2.0, C.green);
+  bullets(s, [
+    "Why staged: CI runners are stateless, so state must live in Azure and auth must be keyless (OIDC) - both created once in Stage 2 before CI can run.",
+    "ci.yml also runs the app build + tests + eval gate on every PR (no cloud). Workflows: .github/workflows/. Guide: infra/DEPLOYMENT.md.",
+    "No secrets committed: .env and backend.tf are gitignored; state/OIDC identifiers live in GitHub secrets/variables.",
+  ], 0.7, 3.8, 12.0, 1.9, { fontSize: 11.5 });
+  s.addText("Governance: apply is gated by an environment reviewer; roles (Contributor + User Access Administrator) can be scoped to a resource group. Plan-only is a safe workshop option.", { x: 0.7, y: 6.35, w: 12, h: 0.5, fontFace: "Aptos", fontSize: 10, italic: true, color: C.muted, margin: 0 });
+  notes(s, "The prototype-to-production pipeline. Emphasize the chicken-and-egg: remote state + OIDC must exist before CI, so there is always a one-time local bootstrap. The money story for DevOps: PR -> plan diff -> approve -> gated apply, no stored credentials. For a workshop you can keep plan-only and apply manually.");
+}
+
 pptx.writeFile({ fileName: OUT }).then(() => console.log("wrote", OUT));

@@ -1,0 +1,69 @@
+name: CI
+
+# Build + test the app on every push and PR. No cloud access — safe to run anywhere.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend tests + MCP contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install backend deps
+        working-directory: backend
+        run: npm install
+      - name: Backend tests (node --test)
+        working-directory: backend
+        run: npm test
+      - name: MCP tool contract validation
+        run: node mcp-server/validate-contracts.js
+
+  frontend:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install UI deps
+        working-directory: app/readmission-review-tracker
+        run: npm install
+      - name: Build UI
+        working-directory: app/readmission-review-tracker
+        run: npm run build
+
+  agent-service:
+    name: Agent service tests + eval gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install agent-service deps
+        working-directory: agent-service
+        run: pip install -r requirements.txt
+      - name: Contract + RAG tests
+        working-directory: agent-service
+        run: python tests/test_contract.py
+      - name: HITL tests
+        working-directory: agent-service
+        run: python tests/test_hitl.py
+      - name: Manifest conformance
+        working-directory: agent-service
+        run: python tests/test_manifests.py
+      - name: Evaluation release gate (golden + adversarial)
+        working-directory: agent-service
+        run: python eval/evaluate_agent.py

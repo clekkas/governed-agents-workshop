@@ -110,11 +110,33 @@ unchanged with `risk_score.get` provenance — the agent has no path to regenera
 machine-readable summary. Covered by `agent-service/tests/test_eval.py` (incl. a broken-result
 negative test) and run as a stage in `scripts/validate-solution.ps1`.
 
-## WI-08 — Foundry hosted agent scaffold  [TODO]  (tag: chapter-08-foundry)
-Scaffold the code-first hosted agent that fulfills the same invoke contract, using the specialist
-agent manifests in `agents/`. Keep the local orchestrator as the offline fallback.
-**Acceptance:** same request/response contract; documented deploy path; no secrets committed.
-Coordinate with Scout before any cloud deployment.
+## WI-08 — Foundry hosted agent scaffold  [DONE]  (tag: chapter-08-foundry)
+The code-first agent service already fulfills the invoke contract; WI-08 ties the declared agents to
+the running code and documents the deploy path. Added `agent_manifests.py` (dependency-free reader +
+`check_conformance()`), a canonical runtime registry (`SPECIALIST_CLASSES/NAMES`, `manifest_id`) in
+`specialists.py`, `GET /api/v1/agents` (declared set + drift), and `tests/test_manifests.py` (3
+tests). Fixed real drift: the orchestrator manifest was missing `care-plan-drafting-agent`. Deploy
+guide in `docs/foundry-hosted-agent.md` (azd + container-sidecar paths, contract stability table,
+managed-identity/no-keys config). `azure.yaml` unchanged; local orchestrator remains the offline
+fallback. Wired conformance into `scripts/validate-solution.ps1`.
+**Acceptance met:** same request/response contract; documented deploy path; no secrets committed
+(`.env` gitignored; `.env.example` sub/tenant IDs replaced with placeholders; secret scan clean).
+Coordinate with the workshop owner before any cloud deployment.
+
+## WI-09 — CI/CD (staged hybrid: local → GitHub Actions)  [IN PROGRESS]  (tag: chapter-cicd)
+Staged-hybrid Terraform execution: local apply now, GitHub Actions as the destination.
+**Authored (ready to run):**
+- `.github/workflows/ci.yml` — app build + tests (backend `node --test`, MCP contracts, UI build,
+  agent-service tests + eval gate); no cloud.
+- `.github/workflows/terraform-plan.yml` — PR `plan` (OIDC, remote backend via `-backend-config`,
+  fmt/validate/plan to the job summary).
+- `.github/workflows/terraform-apply.yml` — gated `apply` on the `production` environment (OIDC).
+- `infra/scripts/bootstrap-remote-state.ps1` + `setup-github-oidc.ps1` — one-time Stage-2 bootstrap
+  (remote state storage + keyless GitHub→Azure federation), plus `infra/terraform/backend.tf.example`.
+- `infra/DEPLOYMENT.md` — the three-stage guide; `.gitignore` covers `backend.tf`/plan artifacts.
+**Remaining (needs the user):** connect a remote GitHub repo; run the Stage-2 bootstrap scripts; set
+the repo secrets/variables + `production` environment reviewers; then push to activate the workflows.
+Workflow YAML validated (parses); live CI runs require the remote repo.
 
 ---
 

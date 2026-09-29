@@ -1,0 +1,66 @@
+name: Terraform Apply
+
+# Applies infrastructure changes AFTER human approval. Gated by the GitHub environment
+# 'production' (configure required reviewers on it). Runs on push to main touching infra/, or on
+# manual dispatch. OIDC login — no stored credentials.
+#
+# Requires (one-time bootstrap — see infra/DEPLOYMENT.md):
+#   Secrets:   AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+#   Variables: TFSTATE_RESOURCE_GROUP, TFSTATE_STORAGE_ACCOUNT, TFSTATE_CONTAINER, TFSTATE_KEY
+#
+# Note: this applies the Terraform infrastructure. Container images are still built/pushed by
+# infra/scripts/deploy.ps1 (az acr build) or a separate image workflow; wire that in when ready.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".github/workflows/terraform-apply.yml"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  ARM_USE_OIDC: "true"
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+jobs:
+  apply:
+    name: Apply (gated)
+    runs-on: ubuntu-latest
+    environment: production   # required reviewers on this environment gate the apply
+    defaults:
+      run:
+        working-directory: infra/terraform
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.9"
+
+      - name: Enable remote state backend
+        run: cp backend.tf.example backend.tf
+
+      - name: Terraform init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ vars.TFSTATE_RESOURCE_GROUP }}" \
+            -backend-config="storage_account_name=${{ vars.TFSTATE_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ vars.TFSTATE_CONTAINER }}" \
+            -backend-config="key=${{ vars.TFSTATE_KEY }}" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Terraform apply
+        run: terraform apply -no-color -input=false -auto-approve
