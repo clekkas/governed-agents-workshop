@@ -15,12 +15,14 @@ from __future__ import annotations
 import os
 import uuid
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import JSONResponse
 
 from . import __version__, cases
 from .foundry import FoundryClient
+from .foundry_agents import FoundryAgentOrchestrator, FoundryAgentsUnavailable
 from .hitl import HitlError, TaskStore
 from .models import InvokeRequest
 from .orchestrator import DischargeTransitionOrchestrator
@@ -43,9 +45,30 @@ _load_dotenv()
 
 app = FastAPI(title="Discharge Transition Agent Service", version=__version__)
 
+# Execution mode: "foundry" (default) drives the published Foundry hosted agents; "local" runs the
+# deterministic in-process specialists (best for offline local tests and cloud-free deployment).
+# Either mode enforces the same governed safety boundary and returns the same response contract.
+EXECUTION_MODE = os.environ.get("AGENT_EXECUTION_MODE", "foundry").strip().lower()
+
 _foundry = FoundryClient()
-_orchestrator = DischargeTransitionOrchestrator(foundry=_foundry)
+_local_orchestrator = DischargeTransitionOrchestrator(foundry=_foundry)
+_foundry_orchestrator = FoundryAgentOrchestrator() if EXECUTION_MODE == "foundry" else None
 _tasks = TaskStore()
+
+
+def _run_workflow(case: dict, correlation_id: str) -> tuple[Any, str]:
+    """Run the workflow with the configured mode; fall back to local on any Foundry problem.
+
+    Returns (result, effective_mode) so callers/telemetry can see which path actually ran.
+    """
+    if EXECUTION_MODE == "foundry" and _foundry_orchestrator is not None:
+        try:
+            return _foundry_orchestrator.run(case, correlation_id=correlation_id), "foundry"
+        except FoundryAgentsUnavailable:
+            pass  # hosted agents unreachable — degrade to the deterministic local path
+        except Exception:  # noqa: BLE001 — never fail the request because of the hosted path
+            pass
+    return _local_orchestrator.run(case, correlation_id=correlation_id), "local"
 
 
 def _correlation_id(request: Request) -> str:
@@ -67,6 +90,8 @@ def health() -> dict:
     return {
         "status": "ok",
         "service": "discharge-transition-agent-service",
+        "execution_mode": EXECUTION_MODE,
+        "foundry_agents_available": bool(_foundry_orchestrator and _foundry_orchestrator.available),
         "foundry_enabled": _foundry.enabled,
         "foundry_mode": _foundry.mode,
         "version": __version__,
@@ -117,7 +142,7 @@ def invoke(body: InvokeRequest, request: Request) -> JSONResponse:
                 "correlationId": getattr(request.state, "correlation_id", None),
             },
         )
-    result = _orchestrator.run(case, correlation_id=getattr(request.state, "correlation_id", None))
+    result = _run_workflow(case, correlation_id=getattr(request.state, "correlation_id", None))[0]
     payload = result.model_dump(by_alias=True)
     # Register the durable human-review task — the Data Task Scheduler approval gate. The run
     # drafts the packet; a care manager must act on it before anything downstream happens.

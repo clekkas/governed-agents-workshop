@@ -4,3 +4,4 @@
 -r requirements.txt
 azure-identity>=1.17
 azure-ai-projects>=2.0.0
+azure-ai-agents>=1.1.0
