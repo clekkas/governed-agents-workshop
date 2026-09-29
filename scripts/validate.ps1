@@ -33,4 +33,11 @@ if ($unsafeMatches) {
   throw "Unsafe sample phrase found in repository content."
 }
 
+# MCP tool contract validation (WI-02): fails loudly if a tool invocation drifts from its schema.
+$contractValidator = Join-Path $root "mcp-server\validate-contracts.js"
+if (Test-Path $contractValidator) {
+  & node $contractValidator
+  if ($LASTEXITCODE -ne 0) { throw "MCP contract validation failed." }
+}
+
 Write-Host "Repository scaffold validation passed."

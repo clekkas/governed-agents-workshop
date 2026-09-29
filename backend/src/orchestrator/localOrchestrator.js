@@ -11,6 +11,7 @@
 //   - missing/blocked evidence escalates instead of guessing
 
 const tools = require("./mockTools");
+const policy = require("./policy");
 
 function proposeOwners(reviewCase) {
   // Map each gap to a proposed owner + due time. Draft only; never executed.
@@ -89,13 +90,15 @@ function runOrchestrator(reviewCase, correlationId) {
   const draftExceptionPacket = proposeOwners(reviewCase);
   record("Care Plan Drafting Agent", "Drafting", "completed", "Prepared draft exception packet with proposed owners and due times.", "Policy Guardrail Agent");
 
-  // 7. Policy Guardrail Agent — validate and decide.
-  let policyDecision = "allow";
-  if (evidenceBlocked || reviewCase.context.specialtyProtocol === "missing") {
-    policyDecision = "escalate";
-  } else if (reviewCase.transitionGaps.length > 0) {
-    policyDecision = "review_required";
-  }
+  // 7. Policy Guardrail Agent — validate and decide (centralized in policy.js).
+  const policyResult = policy.decide({
+    evidence: reviewCase.evidence,
+    missingInformation: reviewCase.missingInformation || [],
+    transitionGaps: reviewCase.transitionGaps,
+    evidenceBlocked,
+    conflictingEvidence: reviewCase.context.specialtyProtocol === "missing",
+  });
+  const policyDecision = policyResult.decision;
   record(
     "Policy Guardrail Agent",
     "Safety",

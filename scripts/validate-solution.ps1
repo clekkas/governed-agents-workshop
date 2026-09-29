@@ -66,6 +66,25 @@ try {
   Pop-Location
 }
 
+# 3b. Agent evaluation harness — golden + adversarial safety gates (if the venv is present).
+Section "Agent evaluation harness"
+$agent = Join-Path $root "agent-service"
+$venvPy = Join-Path $agent ".venv\Scripts\python.exe"
+if (Test-Path $venvPy) {
+  try {
+    Push-Location $agent
+    & $venvPy "eval\evaluate_agent.py" | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "evaluate_agent.py exit $LASTEXITCODE (a safety gate failed)" }
+    Write-Host "Evaluation harness passed." -ForegroundColor Green
+  } catch {
+    $failures += "Eval harness: $($_.Exception.Message)"
+  } finally {
+    Pop-Location
+  }
+} else {
+  Write-Host "Skipped: agent-service\.venv not found (run pip install -r requirements.txt)." -ForegroundColor Yellow
+}
+
 # Summary + exit code.
 Section "Result"
 if ($failures.Count -eq 0) {

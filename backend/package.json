@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "node --test"
+    "test": "node --test",
+    "validate:contracts": "node ../mcp-server/validate-contracts.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

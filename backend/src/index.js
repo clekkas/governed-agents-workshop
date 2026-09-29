@@ -64,11 +64,15 @@ if (uiDist) {
   app.use(express.static(uiDist));
 }
 
-app.listen(PORT, HOST, () => {
-  // eslint-disable-next-line no-console
-  console.log(`[discharge-transition-backend] listening on http://${HOST}:${PORT}`);
-  // eslint-disable-next-line no-console
-  console.log(uiDist ? `[ui] serving static build from ${uiDist}` : "[ui] no dist build found; API only");
-});
+// Only bind a port when run directly (node src/index.js). Under `node --test` the app is imported
+// and mounted on an ephemeral port, so we must not listen on import.
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    // eslint-disable-next-line no-console
+    console.log(`[discharge-transition-backend] listening on http://${HOST}:${PORT}`);
+    // eslint-disable-next-line no-console
+    console.log(uiDist ? `[ui] serving static build from ${uiDist}` : "[ui] no dist build found; API only");
+  });
+}
 
 module.exports = app;

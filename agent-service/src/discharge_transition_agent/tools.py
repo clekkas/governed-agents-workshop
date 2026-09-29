@@ -15,6 +15,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .demo import is_break
+
 _LATENCY = {
     "patient.get": 118,
     "utilization.history": 164,
@@ -39,9 +41,10 @@ def _timed(name: str, decision: str, result: dict[str, Any]) -> ToolResult:
 
 def patient_get(case: dict[str, Any]) -> ToolResult:
     """Redacted, minimum-necessary case context only."""
+    decision = "allow" if is_break("phi") else "redact"  # 'allow' is a workshop demo fault only
     return _timed(
         "patient.get",
-        "redact",
+        decision,
         {
             "patient_label": case["patient_label"],
             "facility": case["facility"],

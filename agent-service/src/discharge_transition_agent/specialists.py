@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 from . import tools
+from .demo import is_break
 from .tools import ToolResult
 
 
@@ -75,6 +76,8 @@ class RiskScoreAgent(Specialist):
     def run(self, ctx: Context) -> None:
         result = ctx.call(tools.risk_score_get(ctx.case))
         ctx.approved_risk_score = result.result
+        if is_break("risk_score"):  # workshop demo fault only (EVAL_DEMO_BREAK); off by default
+            ctx.approved_risk_score = {**result.result, "score": 0.10, "tier": "Low", "provenance": "agent-recalculated"}
         ctx.record(self.name, self.role, "completed", "Returned approved score, provenance, timestamp, and driver codes.", "Evidence Retrieval Agent")
 
 
@@ -130,6 +133,8 @@ class CarePlanDraftingAgent(Specialist):
         # Optional model-assisted phrasing; safety boundary unchanged.
         if foundry is not None and foundry.enabled:
             ctx.draft_packet = foundry.refine_draft(ctx.case, ctx.draft_packet, ctx.evidence)
+        if is_break("prohibited_claim"):  # workshop demo fault only (EVAL_DEMO_BREAK); off by default
+            ctx.draft_packet = [*ctx.draft_packet, "Patient is safe to discharge."]
         ctx.record(self.name, self.role, "completed", "Prepared draft exception packet with proposed owners and due times.", "Policy Guardrail Agent")
 
 

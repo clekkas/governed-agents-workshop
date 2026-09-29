@@ -16,21 +16,26 @@ Status legend: TODO / IN PROGRESS / DONE / BLOCKED.
 
 ---
 
-## WI-01 — Backend endpoint tests  [TODO]  (tag: chapter-01-backend-tests)
-Add a minimal Node test (built-in `node:test`) covering health, cases list/get (200 + 404),
-and invoke (200 + 400 on missing caseId, correct `policyDecision` for P0310).
-**Acceptance:** `node --test` passes; no new heavy deps; documented in `backend/README.md`.
+## WI-01 — Backend endpoint tests  [DONE]  (tag: chapter-01-backend-tests)
+`backend/test/endpoints.test.js` (Node built-in `node:test`, no deps) covers health, cases list/get
+(200 + 404), invoke (200 + `requiresHumanReview`, 400 on missing caseId, 404 unknown, P0310
+`escalate`) and `x-correlation-id`. App only binds a port under `require.main === module` so tests
+mount it on an ephemeral port. `npm test` runs all backend tests; documented in `backend/README.md`.
 
-## WI-02 — MCP tool contract validation  [TODO]  (tag: chapter-02-mcp-validate)
-Add a script that validates each mock tool's output against the JSON schema in
-`mcp-server/tool-contracts/`. Wire it into `scripts/validate.ps1` or an npm script.
-**Acceptance:** validation fails loudly if a tool output drifts from its schema.
+## WI-02 — MCP tool contract validation  [DONE]  (tag: chapter-02-mcp-validate)
+`mcp-server/validate-contracts.js` (dependency-free minimal JSON Schema validator) checks the
+canonical invocation for each tool against `mcp-server/tool-contracts/*.schema.json`, runs a drift
+self-test (a broken invocation for every tool MUST be rejected), and cross-checks every implemented
+mock tool has a schema. Wired into `scripts/validate.ps1` and `npm run validate:contracts`.
+**Acceptance met:** fails loudly (non-zero exit) on drift — verified across enum, maximum,
+extra-property, missing-required, and nested-item violations.
 
-## WI-03 — Policy/guardrail enforcement module  [TODO]  (tag: chapter-03-guardrails)
-Extract policy checks from the orchestrator into `backend/src/orchestrator/policy.js` implementing
-the guardrail matrix in `policy/guardrail-test-matrix.md` (prohibited claims, PHI, citation
-required, HITL bypass). Return structured policy decisions.
-**Acceptance:** each row in the matrix has a corresponding check + a test asserting the decision.
+## WI-03 — Policy/guardrail enforcement module  [DONE]  (tag: chapter-03-guardrails)
+`backend/src/orchestrator/policy.js` centralizes the guardrail matrix: request/output screens
+(`screenText` → prohibited claim, order/medication change, HITL bypass, prompt injection) and
+run-condition checks (missing citation, PHI scope, evidence conflict), plus `decide(run)` returning a
+structured `{decision, code, reason, blocking}`. The orchestrator now calls `policy.decide(...)`.
+**Acceptance met:** every matrix row has a check + a test (`backend/test/policy.test.js`, 12 tests).
 
 ## WI-04 — RAG evidence packet builder  [DONE]  (tag: chapter-04-rag)
 Implemented in the Python agent service: `agent-service/src/discharge_transition_agent/knowledge.py`
@@ -92,11 +97,18 @@ run.completed → review.created → review.transition).
   drawer rendering the full ordered event list from `GET /api/v1/traces/:id`
   (`app/readmission-review-tracker`, `fetchTrace` + `describeTraceEvent`). Verified live.
 
-## WI-07 — Evaluation harness runner  [TODO]  (tag: chapter-07-eval)
-Add a runner that executes `evaluation/golden-cases.jsonl` and `evaluation/adversarial-cases.jsonl`
-against the invoke endpoint and asserts expectations (cites evidence, escalates, refuses risk-score
-recalculation, requires human review).
-**Acceptance:** runner reports pass/fail per case; adversarial risk-score-override case must fail-closed.
+## WI-07 — Evaluation harness runner  [DONE]  (tag: chapter-07-eval)
+Runner `agent-service/eval/evaluate_agent.py` executes `evaluation/golden-cases.jsonl` and
+`evaluation/adversarial-cases.jsonl` against the orchestrator and asserts the passing gates from
+`evaluation/evaluation-plan.md` on the structured invoke result (deterministic, offline, no LLM
+judge). The JSONL cases carry a `caseId` and a `checks` list; checks are `cites_evidence`,
+`discloses_missing_or_cites`, `routes_to_human_review`, `risk_score_consumed`, `no_prohibited_claim`,
+`phi_minimized`, `no_autonomous_approval`, `escalates_when_missing`.
+**Acceptance met:** reports pass/fail per case (6/6, 28/28 checks); exits non-zero on any failure;
+the critical adversarial risk-score-override case (adv-003) is verified fail-closed (score consumed
+unchanged with `risk_score.get` provenance — the agent has no path to regenerate it). `--json` for a
+machine-readable summary. Covered by `agent-service/tests/test_eval.py` (incl. a broken-result
+negative test) and run as a stage in `scripts/validate-solution.ps1`.
 
 ## WI-08 — Foundry hosted agent scaffold  [TODO]  (tag: chapter-08-foundry)
 Scaffold the code-first hosted agent that fulfills the same invoke contract, using the specialist

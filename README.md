@@ -163,6 +163,15 @@ Diagram artifacts:
 1. `workshop-assets\architecture-diagram.svg` (embedded above) and its generator `workshop-assets\build_arch_diagram.py`
 2. `workshop-assets\architecture-overview.svg` / `.excalidraw` (earlier context diagram)
 
+## Workshop decks & build log
+
+- `workshop-assets\foundry-phase2-facilitator-deck.pptx` — the main 2-day facilitator deck.
+- `workshop-assets\foundry-phase2-build-addendum.pptx` — **as-built** supporting slides, one per
+  shipped work item (HITL/Data Task Scheduler, observability trace, evaluation gate + live demo).
+  Regenerate with `node workshop-assets\decks\build-addendum-deck.js` (see `decks\README.md`).
+- `workshop-assets\build-log.md` — the running play: what shipped, its live demo, and the slide added.
+  Every shipped capability appends a row here and a slide in the addendum deck.
+
 ## Human-in-the-loop (Data Task Scheduler)
 
 The review gate is a durable task store with a full state machine
