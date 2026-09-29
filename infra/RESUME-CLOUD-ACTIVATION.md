@@ -34,12 +34,18 @@ GitHub repo **`clekkas/governed-agents-inpractice-workshop`**:
 az vm start -g rg-tfstate-foundry-phase2 -n vm-ghrunner
 
 # 2. Confirm the runner is back online (wait ~60s after start)
-gh api repos/clekkas/governed-agents-inpractice-workshop/actions/runners --jq '.runners[] | {name,status}'
+gh api repos/clekkas/governed-agents-workshop/actions/runners --jq '.runners[] | {name,status}'
 
 # 3. Re-run the plan to confirm the chain still works
-gh workflow run "Terraform Plan" --repo clekkas/governed-agents-inpractice-workshop --ref main
-gh run watch (gh run list --repo clekkas/governed-agents-inpractice-workshop --workflow "Terraform Plan" --limit 1 --json databaseId --jq '.[0].databaseId') --repo clekkas/governed-agents-inpractice-workshop --exit-status
+gh workflow run "Terraform Plan" --repo clekkas/governed-agents-workshop --ref main
+gh run watch (gh run list --repo clekkas/governed-agents-workshop --workflow "Terraform Plan" --limit 1 --json databaseId --jq '.[0].databaseId') --repo clekkas/governed-agents-workshop --exit-status
 ```
+
+> **If a plan fails with `AADSTS700213 No matching federated identity record`:** the repo was
+> **renamed**. The OIDC subject embeds the repo slug (e.g.
+> `repo:clekkas@314357/<new-slug>@1393826284:ref:refs/heads/main`), so add federated credentials for
+> the new slug. On 2026-09-29 the repo was renamed `governed-agents-inpractice-workshop` →
+> `governed-agents-workshop`; new credentials were added and the git remote updated.
 
 ## Next steps (tomorrow's decisions)
 
