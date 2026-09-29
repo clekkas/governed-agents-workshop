@@ -62,6 +62,12 @@ Configure the repo (values are printed by the scripts):
 - **Environment**: create an environment named `production` with **required reviewers** so `apply`
   is gated by a human.
 
+  > Environment protection rules (required reviewers) need a **public** repo on the free plan, or
+  > **GitHub Pro/Team/Enterprise** for a private repo (else the API returns HTTP 422). This repo is
+  > **public**; `production` is configured with required reviewer `clekkas` + a protected-branch
+  > policy (only `main` deploys). Set via `gh api --method PUT repos/<owner>/<repo>/environments/production`
+  > with body `{ "reviewers":[{"type":"User","id":<user-id>}], "deployment_branch_policy":{"protected_branches":true,"custom_branch_policies":false} }`.
+
 ## Stage 3 — GitHub Actions (remote state, OIDC)
 
 Once Stage 2 is done, the workflows in `.github/workflows/` take over:
