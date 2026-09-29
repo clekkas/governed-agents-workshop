@@ -5,3 +5,8 @@
 azure-identity>=1.17
 azure-ai-projects>=2.0.0
 azure-ai-agents>=1.1.0
+
+# Durable Task Scheduler (DTS) HITL gate — worker host + DtsGate client (see dts.py).
+# Only needed when HITL_MODE=dts; harmless to install otherwise.
+durabletask>=1.10
+durabletask-azuremanaged>=1.10

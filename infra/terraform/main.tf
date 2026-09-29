@@ -286,6 +286,21 @@ resource "azurerm_container_app" "app" {
         name  = "APPLICATIONINSIGHTS_CONNECTION_STRING"
         value = azurerm_application_insights.appi.connection_string
       }
+      # Human-in-the-loop backend selector. 'local' uses the in-memory TaskStore; 'dts'
+      # routes the approval gate through the Durable Task Scheduler (see dts.tf). The DTS
+      # endpoint/taskhub are inert placeholders until enable_dts=true and hitl_mode=dts.
+      env {
+        name  = "HITL_MODE"
+        value = var.hitl_mode
+      }
+      env {
+        name  = "DTS_ENDPOINT"
+        value = local.dts_endpoint
+      }
+      env {
+        name  = "DTS_TASKHUB"
+        value = local.dts_taskhub
+      }
     }
   }
 

@@ -53,3 +53,13 @@ output "app_identity_client_id" {
   description = "Client ID of the app's user-assigned managed identity."
   value       = azurerm_user_assigned_identity.app.client_id
 }
+
+output "dts_endpoint" {
+  description = "Durable Task Scheduler endpoint (empty unless enable_dts=true)."
+  value       = local.dts_endpoint
+}
+
+output "dts_taskhub" {
+  description = "Durable Task Scheduler task hub name (empty unless enable_dts=true)."
+  value       = var.enable_dts ? local.dts_taskhub : ""
+}

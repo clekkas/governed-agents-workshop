@@ -91,3 +91,48 @@ variable "search_location" {
   type        = string
   default     = "norwayeast"
 }
+
+# ------------------------------------------------------------------
+# Durable Task Scheduler (DTS) — durable HITL approval gate
+# ------------------------------------------------------------------
+
+variable "enable_dts" {
+  description = "Provision the Durable Task Scheduler, its task hub, the data-plane role, and the worker Container App. Default false keeps the standard gated apply unchanged. Requires the Microsoft.DurableTask provider to be registered on the subscription."
+  type        = bool
+  default     = false
+}
+
+variable "dts_taskhub_name" {
+  description = "Name of the DTS task hub the worker and client bind to."
+  type        = string
+  default     = "discharge"
+}
+
+variable "dts_sku_name" {
+  description = "DTS scheduler SKU name (e.g. Dedicated)."
+  type        = string
+  default     = "Dedicated"
+}
+
+variable "dts_sku_capacity" {
+  description = "DTS scheduler SKU capacity (dedicated throughput units)."
+  type        = number
+  default     = 1
+}
+
+variable "hitl_mode" {
+  description = "Human-in-the-loop backend the agent service uses: 'local' (in-memory TaskStore) or 'dts' (Durable Task Scheduler). Set to 'dts' only once enable_dts=true and the service DtsGate integration is in place."
+  type        = string
+  default     = "local"
+
+  validation {
+    condition     = contains(["local", "dts"], var.hitl_mode)
+    error_message = "hitl_mode must be 'local' or 'dts'."
+  }
+}
+
+variable "hitl_sla_seconds" {
+  description = "Durable review SLA in seconds before an undecided run auto-escalates."
+  type        = number
+  default     = 86400
+}

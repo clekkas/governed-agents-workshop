@@ -20,6 +20,17 @@ search_sku = "basic"
 # Search region — norwayeast (swedencentral lacks basic-SKU Search capacity).
 search_location = "norwayeast"
 
+# --- Durable Task Scheduler (DTS) HITL gate ---
+# Off by default. Set enable_dts=true to provision the scheduler, task hub, data-plane
+# role, and worker Container App. Requires: az provider register --namespace Microsoft.DurableTask
+# Flip hitl_mode to "dts" only once enable_dts=true AND the service DtsGate integration is in place.
+# enable_dts       = false
+# hitl_mode        = "local"   # "local" | "dts"
+# dts_taskhub_name = "discharge"
+# dts_sku_name     = "Dedicated"
+# dts_sku_capacity = 1
+# hitl_sla_seconds = 86400
+
 # container_image is set automatically by the deploy script after the image is
 # built and pushed. Leave the default for the first apply.
 # container_image = "acrdtec123456.azurecr.io/discharge-transition:latest"
