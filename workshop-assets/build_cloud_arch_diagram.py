@@ -62,9 +62,9 @@ box(64, 250, 420, 104, "GitHub Actions workflows", [
     "terraform-apply -> gated apply, environment 'production' (self-hosted)"], fill="#ffffff", border=AZURE, accent=AZURE)
 box(64, 372, 420, 70, "OIDC token issuer", [
     "token.actions.githubusercontent.com",
-    "sub: repo:clekkas@314357/...@1393826284:ref:refs/heads/main"], fill="#eef2ff", border=VIOLET, accent=VIOLET)
+    "sub: repo:clekkas@<OWNER_ID>/...@<REPO_ID>:ref:refs/heads/main"], fill="#eef2ff", border=VIOLET, accent=VIOLET)
 box(64, 460, 420, 92, "Entra Workload Identity Federation", [
-    "App reg gh-oidc-foundry-phase2 (client 0882f573...)",
+    "App reg gh-oidc-foundry-phase2 (client <OIDC_APP_CLIENT_ID>)",
     "Federated credentials match the ID-embedded subject",
     "No client secret — short-lived token exchange"], fill="#eef2ff", border=VIOLET, accent=VIOLET)
 
@@ -73,7 +73,7 @@ zone(560, 100, 1080, 1010, "AZURE SUBSCRIPTION  ·  MCAPS  ·  Policy: private-o
 
 # Entra / identity
 box(590, 140, 480, 96, "Microsoft Entra ID", [
-    "OIDC app + service principal (04779896...)",
+    "OIDC app + service principal (<OIDC_SP_OBJECT_ID>)",
     "Roles: Contributor + User Access Administrator (subscription)",
     "Storage Blob Data Contributor (state account)"], fill="#ffffff", border=VIOLET, accent=VIOLET)
 

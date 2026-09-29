@@ -10,18 +10,18 @@ tomorrow we restart the runner and (optionally) run the gated apply. Non-secret 
 - **Terraform Apply:** authored, `workflow_dispatch`-only, gated by the `production` environment. **Not run** (no infra deployed yet).
 - **Runner VM:** **deallocated** overnight to stop compute billing.
 
-## Live resources (subscription `0e494a0c-e2e6-41f8-8a50-6064d842225e`, tenant `16b3c013-d300-468d-ac64-7eda0820b6d3`)
+## Live resources (subscription `<SUBSCRIPTION_ID>`, tenant `<TENANT_ID>`)
 
 Resource group **`rg-tfstate-foundry-phase2`** (eastus2):
 - State account **`sttfstategovagent01`**, container `tfstate`, key `foundry-phase2.tfstate` (public access disabled; key auth disabled; reachable only via the private endpoint).
 - VNet `vnet-tfrunner` (10.20.0.0/16): `snet-runner` (10.20.1.0/24), `snet-pe` (10.20.2.0/24).
 - Private endpoint `pe-tfstate-blob` (10.20.2.4) + private DNS zone `privatelink.blob.core.windows.net`.
-- Runner VM **`vm-ghrunner`** (`Standard_D2s_v3`, private IP 10.20.1.4, no public IP). Has az CLI, git, the GitHub runner service (systemd, auto-start), and a system managed identity (`e88380de-7493-4907-a4ca-20c9ed9974f0`) with Storage Blob Data Contributor on the state account.
+- Runner VM **`vm-ghrunner`** (`Standard_D2s_v3`, private IP 10.20.1.4, no public IP). Has az CLI, git, the GitHub runner service (systemd, auto-start), and a system managed identity (`<VM_MI_PRINCIPAL_ID>`) with Storage Blob Data Contributor on the state account.
 
 GitHub repo **`clekkas/governed-agents-inpractice-workshop`**:
-- OIDC app `gh-oidc-foundry-phase2` — client id `0882f573-10d6-4f32-940d-0354b760c3bb`, SP object id `04779896-8997-4816-b11e-d8338fb06684`.
+- OIDC app `gh-oidc-foundry-phase2` — client id `<OIDC_APP_CLIENT_ID>`, SP object id `<OIDC_SP_OBJECT_ID>`.
 - Federated credentials include the **enterprise ID-embedded subjects**, e.g.
-  `repo:clekkas@314357/governed-agents-inpractice-workshop@1393826284:ref:refs/heads/main`
+  `repo:clekkas@<OWNER_ID>/governed-agents-inpractice-workshop@<REPO_ID>:ref:refs/heads/main`
   (plus `:pull_request` and `:environment:production`).
 - Secrets: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`.
 - Variables: `TFSTATE_RESOURCE_GROUP`, `TFSTATE_STORAGE_ACCOUNT`, `TFSTATE_CONTAINER`, `TFSTATE_KEY`.
@@ -43,7 +43,7 @@ gh run watch (gh run list --repo clekkas/governed-agents-workshop --workflow "Te
 
 > **If a plan fails with `AADSTS700213 No matching federated identity record`:** the repo was
 > **renamed**. The OIDC subject embeds the repo slug (e.g.
-> `repo:clekkas@314357/<new-slug>@1393826284:ref:refs/heads/main`), so add federated credentials for
+> `repo:clekkas@<OWNER_ID>/<new-slug>@<REPO_ID>:ref:refs/heads/main`), so add federated credentials for
 > the new slug. On 2026-09-29 the repo was renamed `governed-agents-inpractice-workshop` →
 > `governed-agents-workshop`; new credentials were added and the git remote updated.
 
@@ -71,5 +71,5 @@ az vm start      -g rg-tfstate-foundry-phase2 -n vm-ghrunner   # restart for the
 #   gh workflow run "Terraform Apply" ... is apply-only; run `terraform destroy` via a runner session or add a destroy workflow.
 az group delete -n rg-tfstate-foundry-phase2 --yes   # removes runner, VNet, PE, and the state account
 # Also remove the OIDC app + role assignments:
-az ad app delete --id 0882f573-10d6-4f32-940d-0354b760c3bb
+az ad app delete --id <OIDC_APP_CLIENT_ID>
 ```

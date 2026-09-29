@@ -121,7 +121,7 @@ the Terraform state account. The working topology (all in `rg-tfstate-foundry-ph
   node; actions bring their own).
 - **`azure/login` needs az CLI** → install az on the runner (`aka.ms/InstallAzureCLIDeb`).
 - **Enterprise OIDC subject claim** → this Microsoft-managed github.com customizes the token `sub` to
-  embed immutable IDs, e.g. `repo:clekkas@314357/governed-agents-inpractice-workshop@1393826284:ref:refs/heads/main`.
+  embed immutable IDs, e.g. `repo:clekkas@<OWNER_ID>/governed-agents-inpractice-workshop@<REPO_ID>:ref:refs/heads/main`.
   The Entra **federated credential subject must match that exact ID-embedded string** (not the plain
   `repo:owner/repo:...`). Read the failing run's presented subject and create a matching credential.
 - **Storage data-plane RBAC propagation** takes several minutes after assigning

@@ -30,15 +30,15 @@ Federation (OIDC)**.
 
 | Thing | Value |
 | --- | --- |
-| Subscription | `0e494a0c-e2e6-41f8-8a50-6064d842225e` (MCAPS) |
-| Tenant | `16b3c013-d300-468d-ac64-7eda0820b6d3` |
+| Subscription | `<SUBSCRIPTION_ID>` (MCAPS) |
+| Tenant | `<TENANT_ID>` |
 | Resource group | `rg-tfstate-foundry-phase2` (eastus2) |
 | State account / container / key | `sttfstategovagent01` / `tfstate` / `foundry-phase2.tfstate` |
 | VNet / subnets | `vnet-tfrunner` 10.20.0.0/16 · `snet-runner` .1.0/24 · `snet-pe` .2.0/24 |
 | Private endpoint | `pe-tfstate-blob` → 10.20.2.4 |
 | Runner VM | `vm-ghrunner` (Standard_D2s_v3, no public IP, private IP 10.20.1.4) |
 | GitHub repo | `clekkas/governed-agents-inpractice-workshop` |
-| OIDC app / SP | client `0882f573-10d6-4f32-940d-0354b760c3bb` / SP obj `04779896-8997-4816-b11e-d8338fb06684` |
+| OIDC app / SP | client `<OIDC_APP_CLIENT_ID>` / SP obj `<OIDC_SP_OBJECT_ID>` |
 
 ---
 
@@ -118,14 +118,14 @@ created an app registration + service principal and 3 federated credentials (mai
 
 **The enterprise twist.** This Microsoft-managed github.com **customizes the token `sub` claim** to
 embed immutable numeric IDs, e.g.
-`repo:clekkas@314357/governed-agents-inpractice-workshop@1393826284:ref:refs/heads/main`.
+`repo:clekkas@<OWNER_ID>/governed-agents-inpractice-workshop@<REPO_ID>:ref:refs/heads/main`.
 The plain `repo:owner/name:...` federated subject is rejected with `AADSTS700213`. We read the
 presented subject from the failing run log and created matching ID-embedded credentials.
 
 **Validate manually.**
 ```powershell
-az ad app federated-credential list --id 0882f573-10d6-4f32-940d-0354b760c3bb --query "[].subject" -o tsv
-# expect BOTH the plain and the ID-embedded (repo:clekkas@314357/...@1393826284:...) subjects
+az ad app federated-credential list --id <OIDC_APP_CLIENT_ID> --query "[].subject" -o tsv
+# expect BOTH the plain and the ID-embedded (repo:clekkas@<OWNER_ID>/...@<REPO_ID>:...) subjects
 ```
 
 ## Step 6 — Roles
@@ -138,8 +138,8 @@ clears on retry.
 
 **Validate manually.**
 ```powershell
-$sub='0e494a0c-e2e6-41f8-8a50-6064d842225e'
-az role assignment list --assignee 0882f573-10d6-4f32-940d-0354b760c3bb `
+$sub='<SUBSCRIPTION_ID>'
+az role assignment list --assignee <OIDC_APP_CLIENT_ID> `
   --query "[].{role:roleDefinitionName, scope:scope}" -o table
 # expect Contributor + User Access Administrator (subscription) and Storage Blob Data Contributor (state account)
 ```
@@ -212,7 +212,7 @@ az vm start      -g rg-tfstate-foundry-phase2 -n vm-ghrunner
 
 # full teardown when finished (also removes the state account)
 az group delete -n rg-tfstate-foundry-phase2 --yes
-az ad app delete --id 0882f573-10d6-4f32-940d-0354b760c3bb
+az ad app delete --id <OIDC_APP_CLIENT_ID>
 ```
 
 ## Lessons (the workshop takeaways)
