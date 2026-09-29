@@ -18,7 +18,7 @@ variable "name_prefix" {
 variable "location" {
   description = "Azure region for all resources."
   type        = string
-  default     = "eastus2"
+  default     = "swedencentral"
 }
 
 variable "tags" {
@@ -87,7 +87,7 @@ variable "search_sku" {
 }
 
 variable "search_location" {
-  description = "Region for Azure AI Search. Separate from var.location so Search can be placed in a region with available capacity (eastus2 has intermittently returned InsufficientResourcesAvailable)."
+  description = "Region for Azure AI Search. Separate from var.location so Search can be placed in a region with available capacity. Consolidated to swedencentral with the rest of the workload (eastus2/centralus had intermittent InsufficientResourcesAvailable)."
   type        = string
-  default     = "centralus"
+  default     = "swedencentral"
 }

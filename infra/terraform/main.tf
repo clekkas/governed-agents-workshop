@@ -153,6 +153,15 @@ resource "azurerm_role_assignment" "app_ai_user" {
   principal_id         = azurerm_user_assigned_identity.app.principal_id
 }
 
+# Drive Foundry hosted agents (create threads/runs against the project). Required for the
+# agent service's default AGENT_EXECUTION_MODE=foundry path; "Cognitive Services User" alone
+# grants model inference but not the Agents data-plane operations.
+resource "azurerm_role_assignment" "app_ai_developer" {
+  scope                = azurerm_ai_services.foundry.id
+  role_definition_name = "Azure AI Developer"
+  principal_id         = azurerm_user_assigned_identity.app.principal_id
+}
+
 # Search service reads blobs for indexing.
 resource "azurerm_role_assignment" "search_storage_reader" {
   scope                = azurerm_storage_account.sa.id
