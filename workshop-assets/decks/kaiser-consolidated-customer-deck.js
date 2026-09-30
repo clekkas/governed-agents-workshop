@@ -346,6 +346,10 @@ imageSlide("rag-domain-architecture.png",
   notes(s, "Matt wanted decision criteria. Give the spectrum, the tipping factors, and why our use case is hosted.");
 }
 
+// ============================================================ 13b. BYOR (diagram)
+imageSlide("byor-jfrog-githubactions-architecture.png",
+  "Bring Your Own Registry for hosted agents - the supply-chain slide (agenda: hands-on lab). GitHub Actions builds the agent image, runs the eval release gate + contract/policy checks, and pushes to JFrog Artifactory with KEYLESS OIDC (no stored creds); Foundry Hosted Agents / Azure Container Apps pull the governed image via managed identity. The point for KP: KP keeps image provenance, Xray scanning, and dev->staging->prod promotion in its OWN registry - Foundry consumes, does not own, the supply chain. Every hop uses short-lived federated identity (GitHub OIDC -> Entra WIF; Azure MI -> JFrog OIDC). Proposed / reference design, synthetic data only; icons are simplified glyphs. Diagram source: workshop-assets/build_byor_diagram.py.");
+
 // ============================================================ 14. Observability + CMK/AMPLS
 {
   const s = slide("Observability, and protecting PHI in logs", "Priority - Lee / Day 2");

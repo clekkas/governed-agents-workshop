@@ -8,7 +8,7 @@ Pairs with: `run-of-show.md` (chapter/checkpoint table), `demo-eval-runbook.md` 
 `facilitator-cheatsheet.md` (who-asks-what → which brief).
 
 > The consolidated deck is a *customer storyline*, not a linear click-through. Day 1 uses slides
-> **1–18 + 22**; Day 2 uses **19–21 + 23–26**. Present the slides listed per block, then break to the
+> **1–19 + 23**; Day 2 uses **20–22 + 24–27**. Present the slides listed per block, then break to the
 > live surface. Chapter numbers (Ch0…Ch9) are stable topic tags from the run-of-show.
 
 ## Before you start (once, off-screen)
@@ -197,23 +197,33 @@ benign clinical prompt passes but 'patient is safe to discharge' is still blocke
 
 ## 2:15–2:30 · Break
 
-## 2:30–3:45 · Ch 1 — Hosted Agents + BYO Registry · Slide 18
+## 2:30–3:45 · Ch 1 — Hosted Agents + BYO Registry · Slides 18–19
 
 **Slide 18 (Agent-type decision).** "You asked for the decision criteria. Default to a **prompt
 agent**; graduate to a **hosted agent** the moment you need custom orchestration, multi-agent
 handoffs, an existing framework, or your own code — which is exactly why *this* discharge use case is
 hosted. BYO Registry we'll show as a sample end-to-end only; it's not something we pre-staged."
 
-**▶ DEMO CUE — after Slide 18 (show, don't live-edit).**
+**Slide 19 (BYOR — supply chain).** "And here's the registry story, which is the hands-on-lab topic:
+GitHub Actions builds the agent image, runs the **eval release gate** plus contract/policy checks,
+and pushes it to **JFrog Artifactory** — your registry — with **keyless OIDC**, no stored creds.
+Foundry Hosted Agents pull the governed image by **managed identity**. The point for KP: you keep
+**image provenance, Xray scanning, and dev→staging→prod promotion in your own registry** — Foundry
+consumes the supply chain, it doesn't own it. Diagram:
+`workshop-assets/byor-jfrog-githubactions-architecture.png`. This is a proposed/reference design —
+JFrog OIDC claim-shape and enterprise-GitHub OIDC are validation items."
+
+**▶ DEMO CUE — after Slides 18–19 (show, don't live-edit).**
 - Open the `agents/` manifests and the `backend/` orchestrator; explain the hosted-agent target.
 - Prove it's alive: `curl http://127.0.0.1:8080/api/health`. Checkpoint `chapter-01-backend-tests`.
-- Doc: `docs/agent-type-decision.md`. Frame BYO AKS as roadmap/futures.
+- Walk the BYOR diagram: CI → JFrog (push, OIDC) → Foundry (pull, managed identity); federated
+  identity band. Docs: `docs/agent-type-decision.md`. Frame BYO AKS as roadmap/futures.
 
-## 3:45–4:00 · Ch 5 — Day 1 playback · Slide 22
+## 3:45–4:00 · Ch 5 — Day 1 playback · Slide 23
 
-**Slide 22 (End-to-end).** "Let's see the whole thing work before we close." Then break to the demo.
+**Slide 23 (End-to-end).** "Let's see the whole thing work before we close." Then break to the demo.
 
-**▶ DEMO CUE — after Slide 22.**
+**▶ DEMO CUE — after Slide 23.**
 - Run **one case start to finish** in the UI, then pull its trace and walk the ordered events:
   ```powershell
   $r = Invoke-RestMethod -Method Post http://127.0.0.1:8080/api/v1/agent/invoke `
@@ -230,14 +240,14 @@ hosted. BYO Registry we'll show as a sample end-to-end only; it's not something 
 ## 9:00–9:15 · Recap & environment check
 Reconfirm Day 1 decisions; re-run the health check. (Optionally re-show Slides 5–6 for the boundary.)
 
-## 9:15–10:30 · Ch 6 — LAW / Application Insights · Slide 19
+## 9:15–10:30 · Ch 6 — LAW / Application Insights · Slide 20
 
-**Slide 19 (Observability + CMK/AMPLS).** "Two things at once: how we see what the agent did, and how
+**Slide 20 (Observability + CMK/AMPLS).** "Two things at once: how we see what the agent did, and how
 we keep PHI safe while doing it. Every request carries an `x-correlation-id`; we can replay the exact
 ordered event list. And because request/response content in Foundry logs can hold PHI, the posture
 is a **dedicated Log Analytics cluster + customer-managed keys + AMPLS** — Lee leads this one."
 
-**▶ DEMO CUE — after Slide 19.**
+**▶ DEMO CUE — after Slide 20.**
 - Invoke a case, copy its `x-correlation-id`, then `GET /api/v1/traces/:id` and walk the
   **tool.called** policy decisions, the **agent.handoff** chain, and the **review.transition**:
   ```powershell
@@ -250,13 +260,13 @@ is a **dedicated Log Analytics cluster + customer-managed keys + AMPLS** — Lee
 
 ## 10:30–10:45 · Break
 
-## 10:45–12:00 · Ch 7 — HITL: Data Task Scheduler · Slide 20
+## 10:45–12:00 · Ch 7 — HITL: Data Task Scheduler · Slide 21
 
-**Slide 20 (HITL / Durable Task Scheduler).** "This is the capstone and it's running today — where
+**Slide 21 (HITL / Durable Task Scheduler).** "This is the capstone and it's running today — where
 the human stays in control. Three behaviors: a valid approval goes through, an illegal transition is
 refused, and an overdue task auto-escalates on an SLA timer."
 
-**▶ DEMO CUE — after Slide 20.** Primary surface is the **UI** (worklist → case → Approve with the
+**▶ DEMO CUE — after Slide 21.** Primary surface is the **UI** (worklist → case → Approve with the
 required reviewer name). Under-the-hood / backup via API:
 - **Approve** P0147 as the care manager → task moves to Approved.
 - **Wrong actor** (approve as `agent`) → **403**, refused.
@@ -271,17 +281,17 @@ required reviewer name). Under-the-hood / backup via API:
 
 ## 12:00–12:45 · Lunch
 
-## 12:45–1:45 · Ch 9 — Ops & governance Q&A · Slide 21 (+ recall 15)
-**Slide 21 (divider: "Prove it + plan it").** Open Q&A. Drive answers with the cheat-sheet: reuse +
+## 12:45–1:45 · Ch 9 — Ops & governance Q&A · Slide 22 (+ recall 15)
+**Slide 22 (divider: "Prove it + plan it").** Open Q&A. Drive answers with the cheat-sheet: reuse +
 cost (`capability-host-reuse-and-cost.md`) and secure MCP (`securing-mcp-servers.md`); recall Slide 15
 for the cost point. Cover BYO AKS + Foundry roadmap as futures.
 
-## 1:45–2:00 · Ch 9 — Closeout & roadmap · Slides 23–26
+## 1:45–2:00 · Ch 9 — Closeout & roadmap · Slides 24–27
 
-**Slide 23 (Evaluation gate).** "Before you trust it, prove it — safety is testable and enforced in
+**Slide 24 (Evaluation gate).** "Before you trust it, prove it — safety is testable and enforced in
 CI." Then run the eval demo.
 
-**▶ DEMO CUE — Slide 23 (the money demo, ~4 min, offline, no code editing).**
+**▶ DEMO CUE — Slide 24 (the money demo, ~4 min, offline, no code editing).**
 ```powershell
 .\scripts\demo-eval.ps1        # Enter advances each step
 ```
@@ -290,13 +300,13 @@ Arc: **green (6/6, exit 0)** → inject one flag `EVAL_DEMO_BREAK=risk_score` �
 the approved score. The gate named the violation and returned non-zero; in CI this **blocks the
 merge**. Same command a GitHub Actions job runs on every PR." Full script: `demo-eval-runbook.md`.
 
-**Slide 24 (Roadmap).** "Here's a concrete, cost-aware 30/60/90 tied to your priorities and the
+**Slide 25 (Roadmap).** "Here's a concrete, cost-aware 30/60/90 tied to your priorities and the
 two-quarter window you care about." Capture governance owners.
 
-**Slide 25 (Where to go deeper).** "Leave-behind: source-grounded briefs by topic, each citing
+**Slide 26 (Where to go deeper).** "Leave-behind: source-grounded briefs by topic, each citing
 current Microsoft Learn. The facilitator cheat-sheet maps each of your questions to the right brief."
 
-**Slide 26 (Close).** "The through-line for two days: we didn't choose between capability and
+**Slide 27 (Close).** "The through-line for two days: we didn't choose between capability and
 governance — we built them together, in the order you asked for. Thank you."
 
 ---
