@@ -12,6 +12,7 @@
 param(
   [switch]$SkipBuild,      # skip az acr build (reuse existing image tag)
   [switch]$AutoApprove,    # pass -auto-approve to terraform
+  [switch]$EnableMcpServer, # also build + deploy the hosted (internal) MCP server
   [string]$ImageTag = "latest"
 )
 
@@ -53,10 +54,22 @@ try {
     az acr build --registry $acrName --image $agentImage --file (Join-Path $agentDir "Dockerfile") $agentDir | Out-Host
     $fullAgentImage = "$loginServer/$agentImage"
 
+    # Optional: hosted (internal-ingress) MCP server image.
+    $mcpArgs = @()
+    if ($EnableMcpServer.IsPresent) {
+      Write-Host "`n== 2b/3  Build + push MCP server image ==" -ForegroundColor Cyan
+      $mcpDir   = Join-Path $repoRoot "mcp-server"
+      $mcpImage = "discharge-transition-mcp:$ImageTag"
+      az acr build --registry $acrName --image $mcpImage --file (Join-Path $mcpDir "Dockerfile") $mcpDir | Out-Host
+      $fullMcpImage = "$loginServer/$mcpImage"
+      $mcpArgs = @("-var", "enable_mcp_server=true", "-var", "container_image_mcp=$fullMcpImage")
+    }
+
     Write-Host "`n== 3/3  Terraform apply (roll real images) ==" -ForegroundColor Cyan
     terraform apply -input=false $approve `
       -var "container_image=$fullAppImage" `
-      -var "container_image_agent=$fullAgentImage"
+      -var "container_image_agent=$fullAgentImage" `
+      @mcpArgs
   } else {
     Write-Host "Skipping image build (-SkipBuild)." -ForegroundColor Yellow
   }

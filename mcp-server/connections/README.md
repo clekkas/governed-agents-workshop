@@ -32,5 +32,21 @@ server ourselves**. See `docs/work-iq-overview.md` for the full, source-grounded
 
 The agent-service consumes the clinical tools **in-process by default** (identical governed logic).
 To route through the external MCP server instead, set `USE_EXTERNAL_MCP=1` (see
-`agent-service/src/discharge_transition_agent/mcp_client.py`). Work IQ is added as a **separate**
-connection alongside the clinical server, never merged with it.
+`agent-service/src/discharge_transition_agent/mcp_client.py`). Two transports are chosen
+automatically:
+
+- **Hosted HTTP:** when `MCP_SERVER_URL` is set (the deployed internal Container App), calls go over
+  the streamable-http transport.
+- **Local stdio:** otherwise `server.py` is launched as a subprocess.
+
+Work IQ is added as a **separate** connection alongside the clinical server, never merged with it.
+Its agent seam is `agent-service/src/discharge_transition_agent/workiq_client.py`, gated by
+`ENABLE_WORKIQ` and requiring an Entra delegated / on-behalf-of user token at request time (no
+app-only auth). See `docs/work-iq-overview.md`.
+
+## Hosted deployment (Azure)
+
+`enable_mcp_server=true` deploys the clinical server as an internal-ingress Container App
+(`infra/terraform/mcp.tf`); `enable_workiq=true` advertises the Work IQ endpoint to the app/agent
+(no resource is provisioned — Work IQ is Microsoft-hosted and consumed via OBO). Deploy both with
+`infra\scripts\deploy.ps1 -EnableMcpServer` and the relevant tfvars.

@@ -182,8 +182,21 @@ services with an identical contract (`agent-service/src/discharge_transition_age
 graduation target ships as reference code in `agent-service/orchestrations/`. Full details:
 `docs\hitl-durable-task-scheduler.md`.
 
-## BYO Registry note
+## MCP server (governed tool boundary)
 
+The seven clinical tools run behind a governed MCP boundary with two transports from the same code
+(`mcp-server/server.py`):
+
+- **Local stdio** (default) — launched as a subprocess; zero infra.
+- **Remote HTTP** — deployable as an **internal-ingress** Azure Container App
+  (`infra/terraform/mcp.tf`, `enable_mcp_server=true`), private to the environment/VNet.
+
+The agent uses the tools in-process by default and can route to the hosted server via
+`USE_EXTERNAL_MCP` + `MCP_SERVER_URL`. **Work IQ** (Microsoft's governed M365 work-context service)
+is consumed as a **separate lane** — Entra delegated / on-behalf-of only, `enable_workiq=true` — never
+merged with the clinical tools. See `mcp-server/README.md` and `docs/work-iq-overview.md`.
+
+## BYO Registry note
 The BYO Registry module is intentionally scaffolded but not implemented yet. A separate local sample repo will be provided and incorporated when that module is built.
 
 ## License

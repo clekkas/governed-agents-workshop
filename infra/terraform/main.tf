@@ -301,6 +301,27 @@ resource "azurerm_container_app" "app" {
         name  = "DTS_TASKHUB"
         value = local.dts_taskhub
       }
+      # External MCP routing (Layer 1 secure MCP). When enable_mcp_server=true, the agent can call
+      # the governed clinical tools over the internal MCP endpoint instead of in-process. Off by
+      # default (empty endpoint) so the in-process governed tools remain the default path.
+      env {
+        name  = "USE_EXTERNAL_MCP"
+        value = var.enable_mcp_server ? "1" : ""
+      }
+      env {
+        name  = "MCP_SERVER_URL"
+        value = var.enable_mcp_server ? "https://${try(azurerm_container_app.mcp[0].ingress[0].fqdn, "")}" : ""
+      }
+      # Work IQ (M365 work-context lane) — SEPARATE from the clinical MCP server. Advertised only;
+      # consumed via Entra delegated/OBO at runtime, no app-only secret. See docs/work-iq-overview.md.
+      env {
+        name  = "ENABLE_WORKIQ"
+        value = var.enable_workiq ? "1" : ""
+      }
+      env {
+        name  = "WORKIQ_ENDPOINT"
+        value = var.enable_workiq ? var.workiq_endpoint : ""
+      }
     }
   }
 

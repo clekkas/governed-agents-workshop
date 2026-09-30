@@ -45,18 +45,40 @@ def use_external_mcp() -> bool:
     return os.environ.get("USE_EXTERNAL_MCP", "").strip() in ("1", "true", "True")
 
 
+def mcp_server_url() -> str:
+    """Internal URL of the hosted MCP server, if deployed (empty for stdio-only)."""
+    return os.environ.get("MCP_SERVER_URL", "").strip()
+
+
 def clinical_server_command() -> list[str]:
-    """The stdio command that launches the governed clinical MCP server."""
+    """The stdio command that launches the governed clinical MCP server (local transport)."""
     return ["python", "mcp-server/server.py"]
 
 
 async def call_external(tool: str, args: dict[str, Any]) -> dict[str, Any]:  # pragma: no cover - live path
-    """Route one governed tool call through the external MCP server over stdio.
+    """Route one governed tool call through the external MCP server.
+
+    Two transports, chosen automatically:
+    - **HTTP (hosted):** when ``MCP_SERVER_URL`` is set (the deployed internal Container App), use the
+      streamable-http transport.
+    - **stdio (local):** otherwise launch ``server.py`` as a subprocess.
 
     Lazy-imports the MCP client SDK so the default (in-process) path never requires it. Enabled only
     when ``USE_EXTERNAL_MCP=1``.
     """
-    from mcp import ClientSession, StdioServerParameters
+    from mcp import ClientSession
+
+    url = mcp_server_url()
+    if url:
+        from mcp.client.streamable_http import streamablehttp_client
+
+        async with streamablehttp_client(url.rstrip("/") + "/mcp") as (read, write, _):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                result = await session.call_tool(tool, arguments=args)
+                return {"content": [c.text for c in result.content if getattr(c, "type", "") == "text"]}
+
+    from mcp import StdioServerParameters
     from mcp.client.stdio import stdio_client
 
     params = StdioServerParameters(command=clinical_server_command()[0], args=clinical_server_command()[1:])

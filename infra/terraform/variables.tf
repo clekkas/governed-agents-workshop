@@ -80,6 +80,40 @@ variable "app_max_replicas" {
   default     = 3
 }
 
+# ------------------------------------------------------------------
+# Remote/hosted MCP server (governed clinical tool boundary)
+# ------------------------------------------------------------------
+variable "enable_mcp_server" {
+  description = "Deploy the governed clinical MCP server as an internal-ingress Container App. Default false keeps the base deploy unchanged (stdio/in-process tools still work)."
+  type        = bool
+  default     = false
+}
+
+variable "container_image_mcp" {
+  description = "Full image reference for the remote MCP server container. On first apply use a public placeholder; the deploy script builds mcp-server/Dockerfile and re-applies with the real image."
+  type        = string
+  default     = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+}
+
+# ------------------------------------------------------------------
+# Work IQ — consumed M365 work-context service (Entra delegated / OBO only)
+# ------------------------------------------------------------------
+# Work IQ is a Microsoft-hosted, governed MCP/A2A/REST service. We do NOT provision it — these
+# variables only plumb the endpoint + a feature flag into the app/agent so they can call it as a
+# SEPARATE lane from the clinical MCP server. Auth is delegated/on-behalf-of at request time; there
+# is no app-only credential to store here. See docs/work-iq-overview.md.
+variable "enable_workiq" {
+  description = "Advertise Work IQ (M365 work context) to the app/agent. Requires Entra delegated/OBO sign-in at runtime; no secret is provisioned."
+  type        = bool
+  default     = false
+}
+
+variable "workiq_endpoint" {
+  description = "Work IQ endpoint base URL the agent uses for M365 work context (confirm per tenant against Microsoft Learn). Only used when enable_workiq=true."
+  type        = string
+  default     = "https://workiq.svc.cloud.microsoft/"
+}
+
 variable "search_sku" {
   description = "Azure AI Search SKU (basic or standard recommended for managed identity)."
   type        = string

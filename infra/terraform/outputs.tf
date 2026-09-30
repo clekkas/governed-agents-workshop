@@ -63,3 +63,13 @@ output "dts_taskhub" {
   description = "Durable Task Scheduler task hub name (empty unless enable_dts=true)."
   value       = var.enable_dts ? local.dts_taskhub : ""
 }
+
+output "mcp_internal_endpoint" {
+  description = "Internal (private) URL of the hosted MCP server. Empty unless enable_mcp_server=true. Reachable only inside the Container App Environment / VNet."
+  value       = var.enable_mcp_server ? "https://${try(azurerm_container_app.mcp[0].ingress[0].fqdn, "")}" : ""
+}
+
+output "workiq_endpoint" {
+  description = "Work IQ endpoint advertised to the app/agent (empty unless enable_workiq=true). Consumed via Entra delegated/OBO at runtime; not provisioned here."
+  value       = var.enable_workiq ? var.workiq_endpoint : ""
+}

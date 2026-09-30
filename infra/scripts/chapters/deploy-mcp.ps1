@@ -10,10 +10,11 @@ try {
   node mcp-server/validate-contracts.js
   python mcp-server/test_server.py
   if ($Mode -eq "deploy") {
-    Write-Host "[mcp] deploy: publish governed MCP server (stdio) alongside the agent" -ForegroundColor Cyan
-    Write-Host "      -> pip install -r mcp-server/requirements.txt; python mcp-server/server.py"
-    Write-Host "      -> register mcp-server/connections/clinical.mcp.json in the client/Foundry project"
-    Write-Host "      -> attach Work IQ separately via mcp-server/connections/workiq.mcp.json (Entra OBO, tenant sign-in)"
+    Write-Host "[mcp] deploy: build + provision the hosted (internal-ingress) MCP server on Azure" -ForegroundColor Cyan
+    Write-Host "      -> infra\scripts\deploy.ps1 -EnableMcpServer   (az acr build mcp-server/Dockerfile; terraform enable_mcp_server=true)"
+    Write-Host "      -> internal Container App, http transport; agent routes via USE_EXTERNAL_MCP + MCP_SERVER_URL"
+    Write-Host "      -> local/stdio still works: python mcp-server/server.py (MCP_TRANSPORT=stdio default)"
+    Write-Host "      -> Work IQ (M365 context) attaches SEPARATELY: enable_workiq=true (Entra OBO, no app secret)"
   }
 }
 finally { Pop-Location }

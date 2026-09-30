@@ -24,6 +24,34 @@ server** in addition to the contracts.
   Entra / on-behalf-of identity. We don't build it. See `docs/work-iq-overview.md` and
   `connections/README.md`.
 
+## Transports: local stdio **and** remote HTTP
+
+The same `server.py` runs two ways:
+
+- **stdio (default):** launched as a subprocess by an MCP client. Zero infra — ships with the app.
+- **remote HTTP (streamable-http):** a hosted network endpoint, deployable as an Azure Container App
+  with **internal ingress** (private to the environment/VNet — Layer 1 of secure MCP).
+
+Select with `MCP_TRANSPORT` (`stdio` default, or `http`) or `--http` / `--stdio`. HTTP binds
+`HOST`:`PORT` (default `0.0.0.0:8080`).
+
+```powershell
+python mcp-server/server.py                 # local stdio (default)
+$env:MCP_TRANSPORT="http"; python mcp-server/server.py   # remote HTTP on :8080
+```
+
+## Deploy the hosted server to Azure
+
+```powershell
+infra\scripts\deploy.ps1 -EnableMcpServer   # builds mcp-server/Dockerfile, provisions the Container App
+# or, per-chapter:
+infra\scripts\deploy-chapters.ps1 -Chapters mcp -Deploy
+```
+
+This sets `enable_mcp_server=true` in Terraform (`infra/terraform/mcp.tf`) — an **internal-ingress**
+Container App using the shared managed identity. The agent then routes tool calls to it via
+`USE_EXTERNAL_MCP=1` + `MCP_SERVER_URL` (wired automatically). Local stdio still works unchanged.
+
 ## Run the server
 
 ```powershell

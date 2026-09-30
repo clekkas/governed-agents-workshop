@@ -1,16 +1,21 @@
-"""Discharge-transition MCP server (real, runnable).
+"""Discharge-transition MCP server (real, runnable) — stdio **and** remote HTTP.
 
 A governed Model Context Protocol server that exposes the seven clinical tools of the
-discharge-transition trust boundary over stdio. It is the graduation target for the in-process
-"mock" tools in ``agent-service``: same tool names, same JSON contracts, same governed decisions —
-now reachable by any MCP-capable client (a Foundry agent, an IDE, the ``workiq``-style CLI pattern).
+discharge-transition trust boundary. It runs in two transports from the *same code*:
 
-Run it directly:
+- **stdio** (default): launched as a subprocess by an MCP client. Zero infra — ships with the app.
+- **remote HTTP** (streamable-http): a hosted network endpoint, for deployment as an Azure Container
+  App with private/internal ingress (see infra/terraform/mcp.tf).
 
-    pip install -r mcp-server/requirements.txt
-    python mcp-server/server.py            # speaks MCP over stdio
+Pick the transport with the ``MCP_TRANSPORT`` env var (``stdio`` default, or ``http`` / ``sse``), or
+``--http`` / ``--stdio`` on the command line. Host/port for HTTP come from ``HOST`` / ``PORT``
+(default 0.0.0.0:8080).
 
-Or wire it into an MCP client config (see ``mcp-server/connections/clinical.mcp.json``).
+    # local stdio (default)
+    python mcp-server/server.py
+
+    # remote HTTP on :8080
+    MCP_TRANSPORT=http python mcp-server/server.py
 
 Governance note: every tool validates its arguments against the published JSON contract before
 running, enforces its policy decision (redact / allow / review_required) in code, and returns a
@@ -19,6 +24,8 @@ structured result. All data is synthetic — never point this at real PHI.
 
 from __future__ import annotations
 
+import os
+import sys
 from typing import Any
 
 try:
@@ -31,7 +38,11 @@ except ImportError as exc:  # pragma: no cover - clear message when the SDK isn'
 
 import governed_tools as gt
 
-mcp = FastMCP("discharge-transition-clinical-tools")
+# HTTP host/port are read at construction time by FastMCP; harmless for stdio.
+_HOST = os.environ.get("HOST", "0.0.0.0")
+_PORT = int(os.environ.get("PORT", "8080"))
+
+mcp = FastMCP("discharge-transition-clinical-tools", host=_HOST, port=_PORT)
 
 
 @mcp.tool(name="patient.get", description="Redacted, minimum-necessary case context for a patient.")
@@ -69,5 +80,22 @@ def notes_get(patientId: str, encounterId: str, correlationId: str, redactedOnly
     return gt.notes_get(patientId, encounterId, correlationId, redactedOnly).to_dict()
 
 
+def _resolve_transport() -> str:
+    """stdio (default) unless MCP_TRANSPORT or a CLI flag selects an HTTP transport."""
+    if "--http" in sys.argv:
+        return "streamable-http"
+    if "--stdio" in sys.argv:
+        return "stdio"
+    t = os.environ.get("MCP_TRANSPORT", "stdio").strip().lower()
+    if t in ("http", "streamable-http", "streamable_http"):
+        return "streamable-http"
+    if t == "sse":
+        return "sse"
+    return "stdio"
+
+
 if __name__ == "__main__":
-    mcp.run()
+    transport = _resolve_transport()
+    if transport != "stdio":
+        print(f"[mcp] starting '{mcp.name}' transport={transport} on {_HOST}:{_PORT}", file=sys.stderr)
+    mcp.run(transport=transport)

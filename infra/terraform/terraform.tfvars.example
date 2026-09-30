@@ -35,6 +35,22 @@ search_location = "norwayeast"
 # built and pushed. Leave the default for the first apply.
 # container_image = "acrdtec123456.azurecr.io/discharge-transition:latest"
 
+# --- Hosted (remote) MCP server ---
+# Off by default. Set enable_mcp_server=true (or run deploy.ps1 -EnableMcpServer) to deploy the
+# governed clinical MCP server as an INTERNAL-ingress Container App (private to the environment/VNet)
+# over the streamable-http transport. The agent then routes tool calls to it (USE_EXTERNAL_MCP +
+# MCP_SERVER_URL). Local stdio (python mcp-server/server.py) keeps working regardless.
+# enable_mcp_server   = false
+# container_image_mcp = "acrdtec123456.azurecr.io/discharge-transition-mcp:latest"
+
+# --- Work IQ (M365 work-context lane) ---
+# Off by default. Set enable_workiq=true to advertise Work IQ to the app/agent as a SEPARATE lane
+# from the clinical MCP server. Work IQ is Microsoft-hosted and consumed via Entra delegated/
+# on-behalf-of at runtime — NO app-only secret is provisioned here. Confirm the endpoint/scopes for
+# your tenant against Microsoft Learn (see docs/work-iq-overview.md).
+# enable_workiq   = false
+# workiq_endpoint = "https://workiq.svc.cloud.microsoft/"
+
 tags = {
   workload    = "foundry-phase2"
   environment = "workshop"
