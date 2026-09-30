@@ -10,9 +10,10 @@ Generators for the workshop PowerPoint decks.
   secure MCP, existing-vs-Foundry Search, agent-type decision, healthcare content safety,
   CMK/AMPLS, SharePoint RAG, attendee→brief map). Each slide maps to a `docs/*.md` brief.
 - `kaiser-consolidated-customer-deck.js` → `../kaiser-consolidated-customer-deck.pptx` — the
-  **single consolidated customer presentation** (22 slides): title → agenda → why governed agents →
-  scenario + safety boundary → reference architecture → the eight priority briefs (re-sequenced to
-  the 9/29 order) → end-to-end → evaluation gate → 30/60/90 roadmap → deeper-reading index → close.
+  **single consolidated customer presentation** (23 slides): title → agenda → why governed agents →
+  scenario + safety boundary → reference architecture → the priority briefs (re-sequenced to
+  the 9/29 order, including a dedicated **Work IQ** slide) → end-to-end → evaluation gate → 30/60/90
+  roadmap → deeper-reading index → close.
 
 ## Delivering the deck
 

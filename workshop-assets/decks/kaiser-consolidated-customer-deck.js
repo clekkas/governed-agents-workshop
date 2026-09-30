@@ -175,11 +175,26 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
   card(s, "Identity over keys", "Prefer managed / agentic identity; user-Entra-token for per-user data; treat static keys as a last resort.", 8.8, 1.6, 3.85, 2.0, C.blue);
   bullets(s, [
     "KP-owned tools over sensitive data should be private, internal-ingress, on their own subnet.",
-    "Work IQ is a permission-aware pattern: the agent never bypasses user permissions.",
+    "Work IQ is Microsoft's governed M365 context service (next slide) - the agent never bypasses user permissions.",
     "Brief: docs/securing-mcp-servers.md.",
   ], 0.7, 3.85, 12.0, 2.2, { fontSize: 11.5 });
   tell(s, "Sarita's core question - a concrete, layered secure-MCP standard your app teams can adopt.");
   notes(s, "Lead the priorities block with secure MCP. Give the six layers, emphasize identity-based auth and the Toolbox as the governed endpoint.");
+}
+
+// ============================================================ 7b. Work IQ (M365 work context)
+{
+  const s = slide("Work IQ: governed M365 work context", "Priority - Sarita/Matt: enterprise context");
+  card(s, "What it is", "Microsoft's workplace intelligence layer over Microsoft 365. Reasons over mail, Teams, files, people, calendar, Planner, and enterprise search - with built-in permission-aware governance.", 0.7, 1.6, 3.85, 2.15, C.teal);
+  card(s, "How you consume it", "A governed service, not something you build: a remote MCP server (about 10 generic fetch/create/update tools), plus A2A and REST. Point the agent at it.", 4.75, 1.6, 3.85, 2.15, C.violet);
+  card(s, "Governed by identity", "Entra delegated / on-behalf-of only (no app-only). User-scoped: honors permissions, sensitivity labels, and DLP; an OPA policy engine and audit run on every call.", 8.8, 1.6, 3.85, 2.15, C.blue);
+  bullets(s, [
+    "In our design: clinical / PHI data stays on our own governed MCP tools; Work IQ covers the surrounding M365 work context.",
+    "Usage-based billing via Copilot Credits, independent of Copilot licensing; governed and cost-managed in the M365 admin center.",
+    "Brief: docs/work-iq-overview.md (cites Microsoft Learn).",
+  ], 0.7, 4.0, 12.0, 2.1, { fontSize: 11.5 });
+  tell(s, "Consume Microsoft's governed M365 context layer - you do not build or secure that server yourself.");
+  notes(s, "Reframe from earlier: Work IQ is a shipping, consumable service (MCP/A2A/REST), not just a pattern. Emphasize delegated-identity-only + OPA + audit as the governance story, and the clean split - our MCP for clinical tools, Work IQ for M365 context. Cost is usage-based Copilot Credits.");
 }
 
 // ============================================================ 8. Toolboxes

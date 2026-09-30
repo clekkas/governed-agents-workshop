@@ -17,7 +17,21 @@ Design a governed tool boundary for patient context, protocol lookup, utilizatio
 
 ## Work IQ pattern
 
-Use Work IQ as a permission-aware enterprise context pattern where appropriate. The agent should not bypass user permissions or tool authorization.
+**Work IQ is Microsoft's governed workplace-intelligence layer over Microsoft 365** — a shipping,
+consumable service (not a server you build) that an agent reaches via **MCP, A2A, or REST**. It
+reasons over mail, Teams, files, people, calendar, Planner, and enterprise search, and runs on
+**Microsoft Entra delegated / on-behalf-of identity only**: the agent sees only what the signed-in
+user can, with sensitivity labels, DLP, and an OPA policy engine enforced on every call.
+
+In this workshop's trust model, keep two lanes clean:
+
+- **Clinical / PHI → our own governed MCP tools** (the table above), with PHI minimization.
+- **M365 work context → Work IQ**, on the user's identity — surrounding, non-clinical collaboration
+  context (Teams threads, meeting summaries, SharePoint SOPs). We consume Microsoft's governed
+  server; we do not build or secure it.
+
+The agent must never bypass user permissions or tool authorization. Work IQ is usage-billed via
+Copilot Credits, independent of Copilot licensing. Full brief: **`docs/work-iq-overview.md`**.
 
 ## Securing the MCP server (core question)
 
