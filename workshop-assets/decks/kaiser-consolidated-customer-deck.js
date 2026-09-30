@@ -361,20 +361,9 @@ imageSlide("rag-domain-architecture.png",
   notes(s, "Two-in-one: the correlation-trace story plus the PHI-protection posture. The driver is request/response content in Foundry logs.");
 }
 
-// ============================================================ 15. HITL / DTS
-{
-  const s = slide("Human in the loop: the durable approval gate", "Priority - Day 2");
-  card(s, "The gate", "Every run drafts an exception packet, then STOPS at a care-manager approval gate. The agent drafts and reworks only; a human owns approve / reject.", 0.7, 1.6, 3.85, 2.0, C.amber);
-  card(s, "Durable + auditable", "PendingReview -> Approved / NeedsRework / Rejected; SLA timeout or policy -> Escalated. Every transition writes an append-only audit record.", 4.75, 1.6, 3.85, 2.0, C.teal);
-  card(s, "Scales to zero waiting", "On the Durable Task Scheduler the run pauses on an external event + durable timer - a review can safely take hours or days, consuming no compute.", 8.8, 1.6, 3.85, 2.0, C.violet);
-  bullets(s, [
-    "Guardrails in code: illegal transition -> 409; an agent trying to approve -> 403.",
-    "Live and verified end to end in the deployed app against the real Durable Task Scheduler.",
-    "Brief / doc: docs/hitl-durable-task-scheduler.md.",
-  ], 0.7, 3.85, 12.0, 2.2, { fontSize: 11.5 });
-  tell(s, "A governed workflow must pause for a human - durably, with an audit trail.");
-  notes(s, "The human-control capstone. This is built and running today; demo approve, a blocked illegal transition, and SLA auto-escalation.");
-}
+// ============================================================ 15. HITL / DTS (diagram)
+imageSlide("dts-hitl-architecture.png",
+  "The human-control capstone. Durable Task Scheduler HITL: every run drafts an exception packet then STOPS at a care-manager approval gate - the agent drafts/reworks only; a human owns approve/reject. The orchestrator waits on an external event (ReviewDecision) raced with a durable SLA timer (24h), so a review can take hours/days consuming no compute, and resumes after restart. States: PendingReview -> Approved / NeedsRework / Rejected; timer/policy -> Escalated, each an append-only audit record. Guardrails in code: illegal transition -> 409; an agent trying to approve -> 403. Built and running today; demo approve, a blocked illegal transition, and SLA auto-escalation. Doc: docs/hitl-durable-task-scheduler.md. Icons are simplified glyphs (not official Azure product icons); synthetic data only.");
 
 // ============================================================ Divider: prove + plan
 divider("Earn the right to trust it", "Prove it, then pilot it",

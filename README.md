@@ -213,8 +213,20 @@ The agent uses the tools in-process by default and can route to the hosted serve
 is consumed as a **separate lane** — Entra delegated / on-behalf-of only, `enable_workiq=true` — never
 merged with the clinical tools. See `mcp-server/README.md` and `docs/work-iq-overview.md`.
 
-## BYO Registry note
-The BYO Registry module is intentionally scaffolded but not implemented yet. A separate local sample repo will be provided and incorporated when that module is built.
+## BYO Registry (BYOR) for Hosted Agents
+
+The BYO Registry module lets Kaiser keep image **provenance, scanning, and promotion** in its own
+registry (JFrog Artifactory): GitHub Actions builds, tests, and gates the agent image, then pushes it
+to Artifactory with **keyless OIDC**; Microsoft Foundry Hosted Agents / Azure Container Apps pull the
+governed image using a **managed identity**. Every hop uses short-lived, federated identity — no
+stored registry credentials. This aligns with the workshop's keyless-CI posture (OIDC / Workload
+Identity Federation; see `docs/retrospective-cloud-activation.md`).
+
+![BYOR — JFrog Artifactory + GitHub Actions](workshop-assets/byor-jfrog-githubactions-architecture.svg)
+
+> Proposed / reference design (synthetic data only). Diagram source:
+> `workshop-assets/build_byor_diagram.py` (SVG + PNG). The module is scaffolded; a separate local
+> sample repo will be incorporated when it is built.
 
 ## License
 

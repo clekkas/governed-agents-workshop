@@ -9,6 +9,11 @@ workflows: not an in-memory flag, but a **durable orchestration** that pauses on
 survives restarts, escalates on a timer, and audits every transition. The workshop ships two
 implementations of the *same* contract:
 
+![Discharge-transition HITL on the Durable Task Scheduler](../workshop-assets/dts-hitl-architecture.svg)
+
+> Architecture diagram source: `workshop-assets/build_dts_hitl_diagram.py` (SVG + PNG). Synthetic
+> data only; icons are simplified glyphs in the Azure palette, not the official product icons.
+
 | | Local store (runnable) | Durable Task Scheduler (target) |
 | --- | --- | --- |
 | Code | `agent-service/src/discharge_transition_agent/hitl.py` | `agent-service/orchestrations/function_app.py` |
