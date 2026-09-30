@@ -1,0 +1,41 @@
+name: Deploy chapter — Observability
+
+# Child runner for LAW / Application Insights observability (Ch 6).
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: validate
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [validate, deploy]
+        default: validate
+
+permissions:
+  contents: read
+
+jobs:
+  observability:
+    name: Observability (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install backend deps
+        working-directory: backend
+        run: npm install
+      - name: Correlation trace-store tests
+        working-directory: backend
+        run: node --test test/traceStore.test.js
+      - name: Deploy (gated)
+        if: ${{ inputs.mode == 'deploy' }}
+        run: |
+          echo "Deploy Observability: LAW + Application Insights."
+          echo " -> terraform apply (azurerm_log_analytics_workspace.law + azurerm_application_insights.appi)."
+          echo " -> dedicated LAW cluster + CMK + AMPLS for request/response content."

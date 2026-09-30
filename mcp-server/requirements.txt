@@ -1,0 +1,3 @@
+# Runtime dependency for the real MCP stdio server (server.py).
+# The governed tool logic (governed_tools.py) and its tests (test_server.py) are dependency-free.
+mcp>=1.2.0

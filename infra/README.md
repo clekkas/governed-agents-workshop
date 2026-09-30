@@ -19,6 +19,22 @@ Stage 1 uses local state for a friction-free first run. Stage 2 (one-time) creat
 backend and the GitHub→Azure OIDC federation. Stage 3 runs `plan` on PRs and a human-gated `apply`
 on merge — no credentials stored.
 
+## Chapter deploy runner (per-capability, for demos)
+
+Deploy the solution capability-by-capability (mapped to workshop chapters) via a **master → child**
+runner, so a demo can stand up (or just validate) one chapter at a time:
+
+```powershell
+scripts\deploy-chapters.ps1                       # validate every chapter, in order
+scripts\deploy-chapters.ps1 -Chapters mcp,rag     # just MCP + RAG
+scripts\deploy-chapters.ps1 -Chapters mcp -Deploy # run the MCP chapter's deploy action
+```
+
+Each chapter has a child runner in `scripts/chapters/deploy-<chapter>.ps1` (mcp, rag, guardrails,
+hosted-agents, observability, hitl) that owns that capability's validation and deploy step. The CI
+mirror is the master workflow `.github/workflows/deploy-chapters.yml`, which calls the reusable
+child workflows `.github/workflows/deploy-<chapter>.yml`.
+
 ## What gets deployed
 
 ```

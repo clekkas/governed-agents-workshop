@@ -58,6 +58,8 @@ jobs:
       - name: Contract + RAG tests
         working-directory: agent-service
         run: python tests/test_contract.py
+      - name: MCP server governed logic
+        run: python mcp-server/test_server.py
       - name: HITL tests
         working-directory: agent-service
         run: python tests/test_hitl.py

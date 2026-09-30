@@ -1,0 +1,88 @@
+name: Deploy chapters (master)
+
+# Master runner: orchestrates the per-chapter CHILD runners (reusable workflows) so a demo can
+# deploy the whole solution capability-by-capability, or any subset, from one place.
+#
+# Manual trigger only. Pick a mode (validate = cloud-free checks; deploy = gated deploy actions) and
+# toggle which chapters to run. Each chapter maps to a reusable workflow (deploy-<chapter>.yml) that
+# owns that capability's validation and deploy steps. Mirrors infra/scripts/deploy-chapters.ps1.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: validate (cloud-free) or deploy (gated)
+        type: choice
+        options: [validate, deploy]
+        default: validate
+      run_mcp:
+        description: Ch 2/8 — MCP + tool boundary
+        type: boolean
+        default: true
+      run_rag:
+        description: Ch 4 — Foundry IQ / RAG
+        type: boolean
+        default: true
+      run_guardrails:
+        description: Ch 3 — Policy + guardrails
+        type: boolean
+        default: true
+      run_hosted_agents:
+        description: Ch 1 — Hosted agents + BYO registry
+        type: boolean
+        default: true
+      run_observability:
+        description: Ch 6 — LAW / App Insights
+        type: boolean
+        default: true
+      run_hitl:
+        description: Ch 7 — HITL / Durable Task Scheduler
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  mcp:
+    if: ${{ inputs.run_mcp }}
+    uses: ./.github/workflows/deploy-mcp.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit
+
+  rag:
+    if: ${{ inputs.run_rag }}
+    uses: ./.github/workflows/deploy-rag.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit
+
+  guardrails:
+    if: ${{ inputs.run_guardrails }}
+    uses: ./.github/workflows/deploy-guardrails.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit
+
+  hosted-agents:
+    if: ${{ inputs.run_hosted_agents }}
+    uses: ./.github/workflows/deploy-hosted-agents.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit
+
+  observability:
+    if: ${{ inputs.run_observability }}
+    uses: ./.github/workflows/deploy-observability.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit
+
+  hitl:
+    if: ${{ inputs.run_hitl }}
+    uses: ./.github/workflows/deploy-hitl.yml
+    with:
+      mode: ${{ inputs.mode }}
+    secrets: inherit

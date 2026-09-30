@@ -1,0 +1,41 @@
+name: Deploy chapter — HITL
+
+# Child runner for HITL / Durable Task Scheduler (Ch 7).
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: validate
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [validate, deploy]
+        default: validate
+
+permissions:
+  contents: read
+
+jobs:
+  hitl:
+    name: HITL (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install agent-service deps
+        working-directory: agent-service
+        run: pip install -r requirements.txt
+      - name: Review state-machine + task tests
+        working-directory: agent-service
+        run: python tests/test_hitl.py
+      - name: Deploy (gated)
+        if: ${{ inputs.mode == 'deploy' }}
+        run: |
+          echo "Deploy HITL: Durable Task Scheduler graduation target."
+          echo " -> terraform apply (dts.tf: dts_scheduler + dts_taskhub + worker container app)."
+          echo " -> set TF_VAR_enable_dts=true, TF_VAR_hitl_mode=dts."

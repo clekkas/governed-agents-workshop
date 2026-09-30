@@ -1,0 +1,12 @@
+{
+  "//": "MCP client config for the LOCAL governed clinical tool server (mcp-server/server.py).",
+  "//run": "pip install -r mcp-server/requirements.txt, then any MCP-capable client can launch it over stdio.",
+  "mcpServers": {
+    "discharge-transition-clinical": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["mcp-server/server.py"],
+      "description": "Seven governed clinical tools (patient.get, notes.get, utilization.history, risk_score.get, protocol.search, task.create, audit.write). Synthetic data only."
+    }
+  }
+}

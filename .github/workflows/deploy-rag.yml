@@ -1,0 +1,41 @@
+name: Deploy chapter — RAG
+
+# Child runner for Foundry IQ / RAG (Ch 4).
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: validate
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [validate, deploy]
+        default: validate
+
+permissions:
+  contents: read
+
+jobs:
+  rag:
+    name: RAG (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install agent-service deps
+        working-directory: agent-service
+        run: pip install -r requirements.txt
+      - name: Retrieval contract + citation tests
+        working-directory: agent-service
+        run: python tests/test_contract.py
+      - name: Deploy (gated)
+        if: ${{ inputs.mode == 'deploy' }}
+        run: |
+          echo "Deploy RAG: Azure AI Search index + knowledge source."
+          echo " -> terraform apply (azurerm_search_service.search + storage rag container); load data/rag-docs."
+          echo " -> reuse existing Search where present (capability-host-reuse-and-cost.md)."

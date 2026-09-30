@@ -1,0 +1,20 @@
+{
+  "//": "MCP client config for Microsoft Work IQ - the GOVERNED M365 work-context server you consume (do not build).",
+  "//identity": "Work IQ is Entra delegated / on-behalf-of ONLY. Application-only auth is NOT supported. Every call runs as the signed-in user, honoring permissions, sensitivity labels, DLP, and an OPA policy engine. Requires tenant sign-in - cannot run offline.",
+  "//billing": "Usage-based via Copilot Credits, managed in the Microsoft 365 admin center.",
+  "mcpServers": {
+    "workiq-local": {
+      "type": "stdio",
+      "command": "workiq",
+      "args": ["mcp"],
+      "description": "Local Work IQ MCP via the workiq CLI. ~10 generic tools (fetch/create/update) over mail, calendar, files, people, chat, sites."
+    },
+    "workiq-remote": {
+      "type": "http",
+      "url": "https://workiq.svc.cloud.microsoft/",
+      "auth": "entra-oauth-obo",
+      "description": "Remote Work IQ MCP server. Requires a Microsoft Entra delegated / on-behalf-of token for the signed-in user.",
+      "//note": "Exact remote MCP endpoint path and scopes are provisioned per tenant - see docs/work-iq-overview.md and Microsoft Learn. Placeholder base URL shown; confirm against current product docs before use."
+    }
+  }
+}

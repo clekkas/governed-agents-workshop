@@ -1,0 +1,44 @@
+name: Deploy chapter — MCP
+
+# Child (reusable) runner for the MCP / tool-boundary capability (Ch 2 + Ch 8).
+# Called by deploy-chapters.yml, or reusable on its own. Validate is cloud-free and safe anywhere.
+
+on:
+  workflow_call:
+    inputs:
+      mode:
+        description: validate | deploy
+        type: string
+        default: validate
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [validate, deploy]
+        default: validate
+
+permissions:
+  contents: read
+
+jobs:
+  mcp:
+    name: MCP (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate tool contracts
+        run: node mcp-server/validate-contracts.js
+      - name: Governed server logic tests
+        run: python mcp-server/test_server.py
+      - name: Deploy (gated)
+        if: ${{ inputs.mode == 'deploy' }}
+        run: |
+          echo "Deploy MCP: publish the governed stdio server alongside the agent."
+          echo " -> pip install -r mcp-server/requirements.txt; python mcp-server/server.py"
+          echo " -> register mcp-server/connections/clinical.mcp.json; attach Work IQ via workiq.mcp.json (Entra OBO)."
