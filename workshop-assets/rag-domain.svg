@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="1040" viewBox="0 0 1640 1040" font-family="Segoe UI, Arial">
+<defs><marker id="arw" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#64748b"/></marker></defs>
+<rect x="0" y="0" width="1640" height="1040" fill="#f8fafc"/>
+<text x="40" y="46" font-family="Segoe UI, Arial" font-size="24" font-weight="800" fill="#0f172a">RAG domain — grounding the discharge-transition agent</text>
+<text x="40" y="72" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Sources to cited answer, with missing-evidence escalation and measured retrieval. Local KnowledgeBase today; Foundry IQ / Azure AI Search tomorrow — same retrieval contract. Synthetic data only.</text>
+<rect x="40" y="100" width="1560" height="560" rx="16" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="3 5"/>
+<text x="58" y="126" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#0f766e" letter-spacing="1">RAG DOMAIN  (query -&gt; cited evidence + coverage signal)</text>
+<rect x="70" y="170" width="280" height="300" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="70" y="170" width="6" height="300" rx="3" fill="#b45309"/>
+<text x="86" y="195" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">1 · Sources</text>
+<text x="86" y="217" font-family="Segoe UI, Arial" font-size="11" fill="#475569">data/rag-docs (effective-dated):</text>
+<text x="86" y="234" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> CHF / readmission protocols,</text>
+<text x="86" y="251" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> med-rec, escalation, care SOP</text>
+<text x="86" y="268" font-family="Segoe UI, Arial" font-size="11" fill="#475569">SharePoint / O365 (future):</text>
+<text x="86" y="285" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> PDF · PPT · Word · Excel</text>
+<text x="86" y="302" font-family="Segoe UI, Arial" font-size="11" fill="#475569">each carries ACLs + labels</text>
+<rect x="380" y="170" width="280" height="300" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="380" y="170" width="6" height="300" rx="3" fill="#0ea5e9"/>
+<text x="396" y="195" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">2 · Ingest</text>
+<text x="396" y="217" font-family="Segoe UI, Arial" font-size="11" fill="#475569">extract text</text>
+<text x="396" y="234" font-family="Segoe UI, Arial" font-size="11" fill="#475569">chunk</text>
+<text x="396" y="251" font-family="Segoe UI, Arial" font-size="11" fill="#475569">embed</text>
+<text x="396" y="268" font-family="Segoe UI, Arial" font-size="11" fill="#475569">index</text>
+<text x="396" y="285" font-family="Segoe UI, Arial" font-size="11" fill="#475569">ACL-trimmed at index time</text>
+<text x="396" y="302" font-family="Segoe UI, Arial" font-size="11" fill="#475569">(permissions honored)</text>
+<rect x="690" y="170" width="280" height="300" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="690" y="170" width="6" height="300" rx="3" fill="#2563eb"/>
+<text x="706" y="195" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">3 · Retrieve</text>
+<text x="706" y="217" font-family="Segoe UI, Arial" font-size="11" fill="#475569">build query from the case</text>
+<text x="706" y="234" font-family="Segoe UI, Arial" font-size="11" fill="#475569">diagnosis-scoping filter:</text>
+<text x="706" y="251" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> specialty doc only for its dx</text>
+<text x="706" y="268" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> (CHF never surfaces for COPD)</text>
+<text x="706" y="285" font-family="Segoe UI, Arial" font-size="11" fill="#475569">top-k + score boost</text>
+<text x="706" y="302" font-family="Segoe UI, Arial" font-size="11" fill="#475569">confidence band (High/Med/Low)</text>
+<rect x="1000" y="170" width="280" height="300" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="1000" y="170" width="6" height="300" rx="3" fill="#7c3aed"/>
+<text x="1016" y="195" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">4 · Ground</text>
+<text x="1016" y="217" font-family="Segoe UI, Arial" font-size="11" fill="#475569">evidence packet BEFORE answer</text>
+<text x="1016" y="234" font-family="Segoe UI, Arial" font-size="11" fill="#475569">claim-level citations</text>
+<text x="1016" y="251" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> (best-sentence + source file)</text>
+<text x="1016" y="268" font-family="Segoe UI, Arial" font-size="11" fill="#475569">missing specialty protocol -&gt;</text>
+<text x="1016" y="285" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> review_required -&gt; HITL</text>
+<text x="1016" y="302" font-family="Segoe UI, Arial" font-size="11" fill="#475569">escalate, never guess</text>
+<rect x="1310" y="170" width="280" height="300" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="1310" y="170" width="6" height="300" rx="3" fill="#16a34a"/>
+<text x="1326" y="195" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">5 · Measure</text>
+<text x="1326" y="217" font-family="Segoe UI, Arial" font-size="11" fill="#475569">retrieval eval harness</text>
+<text x="1326" y="234" font-family="Segoe UI, Arial" font-size="11" fill="#475569">precision@k · recall@k · MRR</text>
+<text x="1326" y="251" font-family="Segoe UI, Arial" font-size="11" fill="#475569">qrels.jsonl (tune / held_out)</text>
+<text x="1326" y="268" font-family="Segoe UI, Arial" font-size="11" fill="#475569">gate: min precision@k</text>
+<text x="1326" y="285" font-family="Segoe UI, Arial" font-size="11" fill="#475569">measure BEFORE you tune</text>
+<text x="1326" y="302" font-family="Segoe UI, Arial" font-size="11" fill="#475569">(GPT-RAG accelerator pattern)</text>
+<line x1="350" y1="320.0" x2="380" y2="320.0" stroke="#0f766e" stroke-width="2.6" marker-end="url(#arw)"/>
+<line x1="660" y1="320.0" x2="690" y2="320.0" stroke="#0f766e" stroke-width="2.6" marker-end="url(#arw)"/>
+<line x1="970" y1="320.0" x2="1000" y2="320.0" stroke="#0f766e" stroke-width="2.6" marker-end="url(#arw)"/>
+<line x1="1280" y1="320.0" x2="1310" y2="320.0" stroke="#0f766e" stroke-width="2.6" marker-end="url(#arw)"/>
+<line x1="1140.0" y1="470" x2="1140.0" y2="700" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="6 5" marker-end="url(#arw)"/>
+<rect x="40" y="700" width="1090" height="280" rx="16" fill="#ffffff" stroke="#0f172a" stroke-width="1.8" stroke-dasharray="3 5"/>
+<text x="58" y="726" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#0f172a" letter-spacing="1">SAME RETRIEVAL CONTRACT  —  swap the backend, keep qrels + metrics</text>
+<rect x="70" y="740" width="500" height="210" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="70" y="740" width="6" height="210" rx="3" fill="#0f766e"/>
+<text x="86" y="765" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">Today — local KnowledgeBase</text>
+<text x="86" y="787" font-family="Segoe UI, Arial" font-size="11" fill="#475569">agent-service/.../knowledge.py</text>
+<text x="86" y="804" font-family="Segoe UI, Arial" font-size="11" fill="#475569">keyword scoring over data/rag-docs</text>
+<text x="86" y="821" font-family="Segoe UI, Arial" font-size="11" fill="#475569">diagnosis-scoped, cited, offline &amp; deterministic</text>
+<text x="86" y="838" font-family="Segoe UI, Arial" font-size="11" fill="#475569">same query -&gt; cited evidence contract</text>
+<text x="86" y="855" font-family="Segoe UI, Arial" font-size="11" fill="#475569">no cloud, no vector store to manage</text>
+<rect x="600" y="740" width="500" height="210" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="600" y="740" width="6" height="210" rx="3" fill="#0ea5e9"/>
+<text x="616" y="765" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">Graduation — Foundry IQ / Azure AI Search</text>
+<text x="616" y="787" font-family="Segoe UI, Arial" font-size="11" fill="#475569">swap the retriever; agents unchanged</text>
+<text x="616" y="804" font-family="Segoe UI, Arial" font-size="11" fill="#475569">existing vs Foundry search (docs/existing-vs-foundry-search.md)</text>
+<text x="616" y="821" font-family="Segoe UI, Arial" font-size="11" fill="#475569">capability-host reuse + cost:</text>
+<text x="616" y="838" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> one always-on Search for agent + app indexes</text>
+<text x="616" y="855" font-family="Segoe UI, Arial" font-size="11" fill="#475569"> build on SEPARATE indexes (immutable connections)</text>
+<line x1="570" y1="845" x2="600" y2="845" stroke="#0f172a" stroke-width="2.6" marker-end="url(#arw)"/>
+<rect x="540" y="832" width="91" height="22" rx="6" fill="#ffffff" stroke="#0f172a" stroke-width="1"/>
+<text x="585" y="847" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">same contract</text>
+<rect x="1160" y="740" width="440" height="210" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="1160" y="740" width="6" height="210" rx="3" fill="#dc2626"/>
+<text x="1176" y="765" font-family="Segoe UI, Arial" font-size="14" font-weight="700" fill="#0f172a">Human review gate (HITL)</text>
+<text x="1176" y="787" font-family="Segoe UI, Arial" font-size="11" fill="#475569">missing / low-coverage evidence -&gt;</text>
+<text x="1176" y="804" font-family="Segoe UI, Arial" font-size="11" fill="#475569">review_required -&gt; care-manager approval</text>
+<text x="1176" y="821" font-family="Segoe UI, Arial" font-size="11" fill="#475569">Durable Task Scheduler (SLA + escalate)</text>
+<text x="1176" y="838" font-family="Segoe UI, Arial" font-size="11" fill="#475569">the agent drafts + cites; a human decides</text>
+<text x="1176" y="855" font-family="Segoe UI, Arial" font-size="11" fill="#475569">nothing proceeds on ungrounded evidence</text>
+<rect x="1088" y="687" width="104" height="22" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="1140" y="702" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">review_required</text>
+<text x="40" y="1018" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Grounded in knowledge.py (retrieve / diagnosis-scoping / has_protocol_for), data/rag-docs, and agent-service/eval. See docs/rag-guidance-gpt-rag.md, existing-vs-foundry-search.md, capability-host-reuse-and-cost.md.</text>
+</svg>

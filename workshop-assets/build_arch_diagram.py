@@ -1,5 +1,7 @@
 """Generate the workshop solution architecture diagram as an SVG (rendered to PNG separately)."""
 
+import os
+
 W, H = 1560, 1140
 
 TEAL = "#0f766e"
@@ -148,11 +150,15 @@ box(120, 726, 430, 164, "MCP tools (mock EHR)",
      "audit.write            → allow (always)"],
     fill="#f0fdfa", border=TEAL, accent=TEAL)
 
+# RAG domain zone — groups the grounding subsystem (drawn before the box so the box sits on top).
+parts.append('<rect x="565" y="698" width="460" height="208" rx="16" fill="#ecfeff" stroke="#0ea5e9" stroke-width="1.6" stroke-dasharray="3 5"/>')
+parts.append('<text x="583" y="716" font-family="Segoe UI, Arial" font-size="12.5" font-weight="800" fill="#0ea5e9" letter-spacing="1">RAG DOMAIN (grounding)</text>')
+
 box(580, 726, 430, 164, "RAG KnowledgeBase",
-    ["data/rag-docs (effective-dated protocols)",
+    ["ingest -> retrieve -> ground -> measure",
      "diagnosis-scoped retrieval; claim-level citations",
-     "retrieval eval harness (precision@k / recall@k / MRR)",
-     "graduation target: Foundry IQ knowledge base"],
+     "missing protocol -> review_required (escalate)",
+     "full view: workshop-assets/rag-domain.svg"],
     fill="#eff6ff", border="#0ea5e9", accent="#0ea5e9")
 
 box(1040, 726, 400, 164, "Microsoft Foundry",
@@ -186,7 +192,7 @@ arrow(1080, 686, 1180, 726, "refine draft", lx=1150, ly=706)
 parts.append("</svg>")
 
 svg = "\n".join(parts)
-out = r"C:\Coding\kaiser-readmissions-agent-workshop\workshop-assets\architecture-diagram.svg"
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "architecture-diagram.svg")
 with open(out, "w", encoding="utf-8") as f:
     f.write(svg)
 print("wrote", out, len(svg), "bytes")

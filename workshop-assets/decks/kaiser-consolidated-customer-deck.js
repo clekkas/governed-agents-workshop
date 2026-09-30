@@ -235,11 +235,12 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
   card(s, "Evidence before answer", "Retrieve first, build an evidence packet with claim-level citations, then generate. Missing / conflicting evidence -> escalate, never guess.", 4.75, 1.6, 3.85, 2.0, C.violet);
   card(s, "Measure retrieval first", "Use labeled relevance judgments (qrels) to measure precision / recall before tuning prompts or models. Governance and provenance are part of the design.", 8.8, 1.6, 3.85, 2.0, C.blue);
   bullets(s, [
+    "Flow: retrieve -> scope by diagnosis -> cite -> missing evidence escalates to human review, never a guess.",
     "Permission-trim with delegated identity (OBO); never rely on a service-identity test for user isolation.",
     "A working local retrieval-eval harness ships in agent-service/eval/.",
-    "Briefs: docs/rag-guidance-gpt-rag.md, docs/rag-development-patterns.md.",
+    "Briefs: docs/rag-guidance-gpt-rag.md, docs/rag-development-patterns.md, docs/rag-retrieval-flow.md.",
   ], 0.7, 3.85, 12.0, 2.2, { fontSize: 11.5 });
-  tell(s, "RAG as a production engineering pattern - grounded, measured, and governed, not a demo trick.");
+  tell(s, "RAG as a production engineering pattern - grounded, measured, and governed, not a demo trick. Domain view: workshop-assets/rag-domain.svg.");
   notes(s, "The RAG core. Emphasize evidence-packet-before-answer and measure-retrieval-first; both are the differentiators from a naive RAG demo.");
 }
 

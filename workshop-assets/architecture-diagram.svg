@@ -74,13 +74,15 @@
 <text x="138" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">protocol.search        → allow / review_required</text>
 <text x="138" y="862" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">task.create            → review_required (draft only)</text>
 <text x="138" y="883" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">audit.write            → allow (always)</text>
+<rect x="565" y="698" width="460" height="208" rx="16" fill="#ecfeff" stroke="#0ea5e9" stroke-width="1.6" stroke-dasharray="3 5"/>
+<text x="583" y="716" font-family="Segoe UI, Arial" font-size="12.5" font-weight="800" fill="#0ea5e9" letter-spacing="1">RAG DOMAIN (grounding)</text>
 <rect x="580" y="726" width="430" height="164" rx="14" fill="#eff6ff" stroke="#0ea5e9" stroke-width="2"/>
 <rect x="580" y="726" width="7" height="164" rx="3" fill="#0ea5e9"/>
 <text x="598" y="754" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">RAG KnowledgeBase</text>
-<text x="598" y="778" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">data/rag-docs (effective-dated protocols)</text>
+<text x="598" y="778" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">ingest -&gt; retrieve -&gt; ground -&gt; measure</text>
 <text x="598" y="799" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">diagnosis-scoped retrieval; claim-level citations</text>
-<text x="598" y="820" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">retrieval eval harness (precision@k / recall@k / MRR)</text>
-<text x="598" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">graduation target: Foundry IQ knowledge base</text>
+<text x="598" y="820" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">missing protocol -&gt; review_required (escalate)</text>
+<text x="598" y="841" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">full view: workshop-assets/rag-domain.svg</text>
 <rect x="1040" y="726" width="400" height="164" rx="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
 <rect x="1040" y="726" width="7" height="164" rx="3" fill="#7c3aed"/>
 <text x="1058" y="754" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#0f172a">Microsoft Foundry</text>

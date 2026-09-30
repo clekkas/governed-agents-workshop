@@ -29,6 +29,18 @@ The reference implementation is a three-tier app plus a governed data/model laye
 
 Every request carries an `x-correlation-id`. The full write-up is in `docs/solution-architecture-overview.md`; the diagram source is `workshop-assets/build_arch_diagram.py`.
 
+### RAG domain
+
+The grounding subsystem is a first-class domain, not a single box. Its pipeline
+(**sources → ingest → retrieve → ground → measure**), diagnosis-scoping, claim-level citations,
+missing-evidence escalation, and the local-`KnowledgeBase` → Foundry IQ / Azure AI Search graduation
+are illustrated in `workshop-assets/rag-domain.svg` (source:
+`workshop-assets/build_rag_domain_diagram.py`). The retrieval **flow** (happy path + escalation) is
+`docs/rag-retrieval-flow.md`.
+
+![RAG domain](workshop-assets/rag-domain.svg)
+
+
 ## Run it locally
 
 The solution runs as two (optionally three) processes.
