@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1150" viewBox="0 0 2000 1150" font-family="Segoe UI, Arial">
+<defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.25"/></filter><marker id="arrB" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#2563eb"/></marker><marker id="arrO" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#f0a500"/></marker><marker id="arrG" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#94a3b8"/></marker><marker id="arrGn" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#16a34a"/></marker><marker id="arrR" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#dc2626"/></marker></defs>
+<rect width="2000" height="1150" fill="#ffffff"/>
+<text x="1000.0" y="52" font-family="Segoe UI, Arial" font-size="34" fill="#0f172a" text-anchor="middle" font-weight="700">Discharge-transition HITL — Durable Task Scheduler</text>
+<text x="1000.0" y="88" font-family="Segoe UI, Arial" font-size="21" fill="#2563eb" text-anchor="middle" font-weight="700">Human-in-the-loop architecture</text>
+<rect x="835.0" y="108" width="330" height="26" rx="13" fill="#eaf3fc"/>
+<text x="1000.0" y="125.5" font-family="Segoe UI, Arial" font-size="12" fill="#2563eb" text-anchor="middle" font-weight="700">Use case: care-manager approval gate</text>
+<rect x="40" y="190" width="1380" height="760" rx="18" fill="#eaf3fc" stroke="#bcd8f5" stroke-width="2"/>
+<path d="M86,216 L96,238 L76,238 L82,227 L88,227 L85,221 Z" fill="#0078d4"/>
+<path d="M78,224 L66,238 L76,238 Z" fill="#50b0ef"/>
+<text x="105" y="236" font-family="Segoe UI, Arial" font-size="24" fill="#0078d4" text-anchor="start" font-weight="700">Azure</text>
+<rect x="70" y="340" width="250" height="165" rx="12" fill="#ffffff" stroke="#cfe0f0" stroke-width="2" filter="url(#sh)"/>
+<rect x="109" y="381" width="22" height="22" rx="3" fill="none" stroke="#0078d4" stroke-width="3"/>
+<circle cx="120" cy="393" r="7" fill="none" stroke="#0078d4" stroke-width="2"/>
+<line x1="113" y1="393" x2="127" y2="393" stroke="#0078d4" stroke-width="2"/>
+<line x1="109" y1="386" x2="131" y2="386" stroke="#0078d4" stroke-width="2"/>
+<text x="80" y="452" font-family="Segoe UI, Arial" font-size="16" fill="#0f172a" text-anchor="start" font-weight="700">Review tracker</text>
+<text x="80" y="476" font-family="Segoe UI, Arial" font-size="12.5" fill="#475569" text-anchor="start">Submit case for</text>
+<text x="80" y="494" font-family="Segoe UI, Arial" font-size="12.5" fill="#475569" text-anchor="start">care-manager review</text>
+<line x1="320" y1="420" x2="468" y2="420" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<rect x="343.8" y="392" width="100.39999999999999" height="22" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="394" y="407" font-family="Segoe UI, Arial" font-size="11.5" fill="#2563eb" text-anchor="middle" font-weight="700">Start workflow</text>
+<rect x="470" y="240" width="930" height="435" rx="14" fill="#ffffff" stroke="#2563eb" stroke-width="2.5" filter="url(#sh)"/>
+<path d="M508,266 L498,280 L504,280 L502,290 L513,275 L506,275 Z" fill="#f0a500"/>
+<text x="525" y="285" font-family="Segoe UI, Arial" font-size="19" fill="#0f172a" text-anchor="start" font-weight="700">Azure Functions • Durable Functions</text>
+<rect x="1200" y="262" width="180" height="26" rx="13" fill="#eaf3fc"/>
+<text x="1290.0" y="279.5" font-family="Segoe UI, Arial" font-size="12" fill="#2563eb" text-anchor="middle" font-weight="700">Application compute</text>
+<rect x="495" y="315" width="880" height="340" rx="12" fill="#f5f9ff" stroke="#bbd6f5" stroke-width="2"/>
+<rect x="516" y="336" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<rect x="505" y="354" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<line x1="520" y1="343" x2="509" y2="354" stroke="#0078d4" stroke-width="2"/>
+<rect x="527" y="354" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<line x1="520" y1="343" x2="531" y2="354" stroke="#0078d4" stroke-width="2"/>
+<text x="542" y="355" font-family="Segoe UI, Arial" font-size="17" fill="#0f172a" text-anchor="start" font-weight="700">Orchestrator</text>
+<rect x="515" y="385" width="200" height="110" rx="10" fill="#ffffff" stroke="#d7e6f8" stroke-width="1.5" filter="url(#sh)"/>
+<circle cx="548" cy="422" r="10" fill="none" stroke="#0078d4" stroke-width="3"/>
+<circle cx="561.0" cy="422.0" r="2.6" fill="#0078d4"/>
+<circle cx="557.2" cy="431.2" r="2.6" fill="#0078d4"/>
+<circle cx="548.0" cy="435.0" r="2.6" fill="#0078d4"/>
+<circle cx="538.8" cy="431.2" r="2.6" fill="#0078d4"/>
+<circle cx="535.0" cy="422.0" r="2.6" fill="#0078d4"/>
+<circle cx="538.8" cy="412.8" r="2.6" fill="#0078d4"/>
+<circle cx="548.0" cy="409.0" r="2.6" fill="#0078d4"/>
+<circle cx="557.2" cy="412.8" r="2.6" fill="#0078d4"/>
+<circle cx="548" cy="422" r="3.5" fill="#0078d4"/>
+<text x="615" y="470" font-family="Segoe UI, Arial" font-size="13.5" fill="#0f172a" text-anchor="middle" font-weight="700">Validate packet</text>
+<line x1="715" y1="440" x2="740" y2="440" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<rect x="740" y="385" width="200" height="110" rx="10" fill="#ffffff" stroke="#d7e6f8" stroke-width="1.5" filter="url(#sh)"/>
+<rect x="764" y="411" width="18" height="22" rx="2.5" fill="none" stroke="#0078d4" stroke-width="3"/>
+<line x1="768" y1="418" x2="778" y2="418" stroke="#0078d4" stroke-width="2"/>
+<line x1="768" y1="424" x2="778" y2="424" stroke="#0078d4" stroke-width="2"/>
+<line x1="768" y1="430" x2="778" y2="430" stroke="#0078d4" stroke-width="2"/>
+<text x="840" y="462" font-family="Segoe UI, Arial" font-size="13.5" fill="#0f172a" text-anchor="middle" font-weight="700">Draft packet +</text>
+<text x="840" y="481" font-family="Segoe UI, Arial" font-size="13.5" fill="#0f172a" text-anchor="middle" font-weight="700">notify reviewer</text>
+<line x1="940" y1="440" x2="965" y2="440" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<rect x="965" y="385" width="385" height="235" rx="10" fill="#ffffff" stroke="#d7e6f8" stroke-width="1.5" filter="url(#sh)"/>
+<circle cx="998" cy="422" r="11" fill="none" stroke="#0078d4" stroke-width="3"/>
+<line x1="998" y1="422" x2="998" y2="416" stroke="#0078d4" stroke-width="3"/>
+<line x1="998" y1="422" x2="1003" y2="424" stroke="#0078d4" stroke-width="3"/>
+<text x="1020" y="417" font-family="Segoe UI, Arial" font-size="15" fill="#0f172a" text-anchor="start" font-weight="700">Wait for decision</text>
+<rect x="985" y="452" width="165" height="96" rx="8" fill="#f5f9ff" stroke="#cfe0f2" stroke-width="1.2"/>
+<path d="M1015,474 L1005,488 L1011,488 L1009,498 L1020,483 L1013,483 Z" fill="#0078d4"/>
+<text x="1035" y="482" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">External</text>
+<text x="1035" y="500" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">event</text>
+<text x="1000" y="534" font-family="Consolas, monospace" font-size="10.5" fill="#475569" text-anchor="start">ReviewDecision</text>
+<rect x="1165" y="452" width="165" height="96" rx="8" fill="#f5f9ff" stroke="#cfe0f2" stroke-width="1.2"/>
+<circle cx="1192" cy="486" r="11" fill="none" stroke="#0078d4" stroke-width="3"/>
+<line x1="1192" y1="486" x2="1192" y2="480" stroke="#0078d4" stroke-width="3"/>
+<line x1="1192" y1="486" x2="1197" y2="488" stroke="#0078d4" stroke-width="3"/>
+<text x="1215" y="482" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">Durable timer</text>
+<text x="1215" y="500" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">SLA • 24 h</text>
+<text x="1180" y="534" font-family="Consolas, monospace" font-size="10.5" fill="#475569" text-anchor="start">create_timer</text>
+<text x="1157" y="585" font-family="Segoe UI, Arial" font-size="12" fill="#64748b" text-anchor="middle" font-style="italic">Persisted wait • resumes after restart</text>
+<rect x="330" y="715" width="1050" height="180" rx="14" fill="#dcebfb" stroke="#b6d3f2" stroke-width="2"/>
+<rect x="374" y="746" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<rect x="363" y="764" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<line x1="378" y1="753" x2="367" y2="764" stroke="#0078d4" stroke-width="2"/>
+<rect x="385" y="764" width="8" height="7" rx="1.5" fill="#0078d4"/>
+<line x1="378" y1="753" x2="389" y2="764" stroke="#0078d4" stroke-width="2"/>
+<text x="402" y="766" font-family="Segoe UI, Arial" font-size="20" fill="#0f172a" text-anchor="start" font-weight="700">Durable Task Scheduler (DTS)</text>
+<rect x="1150" y="742" width="210" height="26" rx="13" fill="#cfe3fa"/>
+<text x="1255.0" y="759.5" font-family="Segoe UI, Arial" font-size="12" fill="#2563eb" text-anchor="middle" font-weight="700">Managed scheduler (Azure service)</text>
+<rect x="355" y="800" width="320" height="72" rx="10" fill="#ffffff" stroke="#cfe0f2" stroke-width="1.5" filter="url(#sh)"/>
+<ellipse cx="393" cy="828" rx="11" ry="4" fill="none" stroke="#0078d4" stroke-width="3"/>
+<path d="M382,828 V844 a11,4 0 0 0 22,0 V828" fill="none" stroke="#0078d4" stroke-width="3"/>
+<path d="M382,836 a11,4 0 0 0 22,0" fill="none" stroke="#0078d4" stroke-width="2"/>
+<text x="427" y="842" font-family="Segoe UI, Arial" font-size="14.5" fill="#0f172a" text-anchor="start" font-weight="700">Task hub</text>
+<rect x="700" y="800" width="320" height="72" rx="10" fill="#ffffff" stroke="#cfe0f2" stroke-width="1.5" filter="url(#sh)"/>
+<rect x="729" y="825" width="18" height="22" rx="2.5" fill="none" stroke="#0078d4" stroke-width="3"/>
+<line x1="733" y1="832" x2="743" y2="832" stroke="#0078d4" stroke-width="2"/>
+<line x1="733" y1="838" x2="743" y2="838" stroke="#0078d4" stroke-width="2"/>
+<line x1="733" y1="844" x2="743" y2="844" stroke="#0078d4" stroke-width="2"/>
+<text x="772" y="842" font-family="Segoe UI, Arial" font-size="14.5" fill="#0f172a" text-anchor="start" font-weight="700">Durable history &amp; state</text>
+<rect x="1045" y="800" width="320" height="72" rx="10" fill="#ffffff" stroke="#cfe0f2" stroke-width="1.5" filter="url(#sh)"/>
+<circle cx="1083" cy="836" r="10" fill="none" stroke="#0078d4" stroke-width="3"/>
+<circle cx="1096.0" cy="836.0" r="2.6" fill="#0078d4"/>
+<circle cx="1092.2" cy="845.2" r="2.6" fill="#0078d4"/>
+<circle cx="1083.0" cy="849.0" r="2.6" fill="#0078d4"/>
+<circle cx="1073.8" cy="845.2" r="2.6" fill="#0078d4"/>
+<circle cx="1070.0" cy="836.0" r="2.6" fill="#0078d4"/>
+<circle cx="1073.8" cy="826.8" r="2.6" fill="#0078d4"/>
+<circle cx="1083.0" cy="823.0" r="2.6" fill="#0078d4"/>
+<circle cx="1092.2" cy="826.8" r="2.6" fill="#0078d4"/>
+<circle cx="1083" cy="836" r="3.5" fill="#0078d4"/>
+<text x="1117" y="842" font-family="Segoe UI, Arial" font-size="14.5" fill="#0f172a" text-anchor="start" font-weight="700">Work-item dispatch</text>
+<line x1="830" y1="675" x2="830" y2="715" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)" marker-start="url(#arrB)"/>
+<rect x="880.3" y="684" width="199.39999999999998" height="22" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="980" y="699" font-family="Segoe UI, Arial" font-size="11.5" fill="#2563eb" text-anchor="middle" font-weight="700">gRPC / TLS • managed identity</text>
+<rect x="1560" y="240" width="400" height="120" rx="12" fill="#fff4e0" stroke="#f0a500" stroke-width="2.5" filter="url(#sh)"/>
+<circle cx="1600" cy="281" r="7" fill="#f0a500"/>
+<path d="M1588,300 a12,11 0 0 1 24,0 Z" fill="#f0a500"/>
+<text x="1635" y="282" font-family="Segoe UI, Arial" font-size="18" fill="#0f172a" text-anchor="start" font-weight="700">Care manager</text>
+<text x="1635" y="306" font-family="Segoe UI, Arial" font-size="12.5" fill="#b45309" text-anchor="start">Review • Approve • Rework • Reject</text>
+<line x1="1400" y1="300" x2="1558" y2="300" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<rect x="1402.4" y="249" width="153.2" height="22" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="1479" y="264" font-family="Segoe UI, Arial" font-size="11.5" fill="#2563eb" text-anchor="middle" font-weight="700">Notify • Email / Teams</text>
+<rect x="1560" y="400" width="400" height="120" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="url(#sh)"/>
+<path d="M1600,440 L1611,445 V455 a11,13 0 0 1 -11,10 a11,13 0 0 1 -11,-10 V445 Z" fill="#0078d4"/>
+<text x="1635" y="440" font-family="Segoe UI, Arial" font-size="17" fill="#0f172a" text-anchor="start" font-weight="700">Approval API</text>
+<text x="1635" y="462" font-family="Consolas, monospace" font-size="11.5" fill="#475569" text-anchor="start">POST /api/v1/tasks/:id/action</text>
+<text x="1635" y="482" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="start">Entra ID • validate care-manager role</text>
+<text x="1635" y="500" font-family="Consolas, monospace" font-size="11.5" fill="#dc2626" text-anchor="start">wrong actor → 403</text>
+<line x1="1760" y1="360" x2="1760" y2="400" stroke="#f0a500" stroke-width="3" marker-end="url(#arrO)"/>
+<rect x="1706.5" y="369" width="107.0" height="22" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="1760" y="384" font-family="Segoe UI, Arial" font-size="11.5" fill="#b45309" text-anchor="middle" font-weight="700">Submit decision</text>
+<polyline points="1560,465 1470,465 1470,500 1350,500" fill="none" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<rect x="1358.8" y="434" width="232.39999999999998" height="22" rx="6" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+<text x="1475" y="449" font-family="Segoe UI, Arial" font-size="11.5" fill="#2563eb" text-anchor="middle" font-weight="700">Raise external event • instance ID</text>
+<line x1="1157" y1="620" x2="1157" y2="650" stroke="#2563eb" stroke-width="3"/>
+<line x1="1157" y1="650" x2="1912.0" y2="650" stroke="#2563eb" stroke-width="3"/>
+<line x1="1504.0" y1="650" x2="1504.0" y2="672" stroke="#16a34a" stroke-width="3" marker-end="url(#arrGn)"/>
+<rect x="1440" y="672" width="128" height="100" rx="10" fill="#e9f8ee" stroke="#16a34a" stroke-width="2" filter="url(#sh)"/>
+<circle cx="1466" cy="704" r="14" fill="#16a34a"/>
+<path d="M1460,704 L1465,709 L1473,698" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1490" y="702" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">Approved</text>
+<text x="1456" y="736" font-family="Segoe UI, Arial" font-size="10.5" fill="#475569" text-anchor="start">Finalize + route plan</text>
+<line x1="1640.0" y1="650" x2="1640.0" y2="672" stroke="#f0a500" stroke-width="3" marker-end="url(#arrO)"/>
+<rect x="1576" y="672" width="128" height="100" rx="10" fill="#fff4e0" stroke="#f0a500" stroke-width="2" filter="url(#sh)"/>
+<circle cx="1602" cy="704" r="14" fill="#f0a500"/>
+<path d="M1610,702 a8,8 0 1 1 -3,-6" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+<path d="M1605,695 L1611,695 L1610,701 Z" fill="#ffffff"/>
+<text x="1626" y="702" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">Needs rework</text>
+<text x="1592" y="736" font-family="Segoe UI, Arial" font-size="10.5" fill="#475569" text-anchor="start">Back to draft</text>
+<line x1="1776.0" y1="650" x2="1776.0" y2="672" stroke="#dc2626" stroke-width="3" marker-end="url(#arrR)"/>
+<rect x="1712" y="672" width="128" height="100" rx="10" fill="#fdecec" stroke="#dc2626" stroke-width="2" filter="url(#sh)"/>
+<circle cx="1738" cy="704" r="14" fill="#dc2626"/>
+<line x1="1732" y1="698" x2="1744" y2="710" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="1732" y1="710" x2="1744" y2="698" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+<text x="1762" y="702" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">Rejected</text>
+<text x="1728" y="736" font-family="Segoe UI, Arial" font-size="10.5" fill="#475569" text-anchor="start">Close case</text>
+<line x1="1912.0" y1="650" x2="1912.0" y2="672" stroke="#f0a500" stroke-width="3" marker-end="url(#arrO)"/>
+<rect x="1848" y="672" width="128" height="100" rx="10" fill="#fff4e0" stroke="#f0a500" stroke-width="2" filter="url(#sh)"/>
+<circle cx="1874" cy="704" r="14" fill="#f0a500"/>
+<circle cx="1874" cy="704" r="11" fill="none" stroke="#ffffff" stroke-width="3"/>
+<line x1="1874" y1="704" x2="1874" y2="698" stroke="#ffffff" stroke-width="3"/>
+<line x1="1874" y1="704" x2="1879" y2="706" stroke="#ffffff" stroke-width="3"/>
+<text x="1898" y="702" font-family="Segoe UI, Arial" font-size="12.5" fill="#0f172a" text-anchor="start" font-weight="700">Escalated</text>
+<text x="1864" y="736" font-family="Segoe UI, Arial" font-size="10.5" fill="#475569" text-anchor="start">SLA 24h • escalate</text>
+<rect x="1440" y="800" width="440" height="95" rx="12" fill="#ffffff" stroke="#cfe0f0" stroke-width="2" filter="url(#sh)"/>
+<ellipse cx="1480" cy="839" rx="11" ry="4" fill="none" stroke="#0078d4" stroke-width="3"/>
+<path d="M1469,839 V855 a11,4 0 0 0 22,0 V839" fill="none" stroke="#0078d4" stroke-width="3"/>
+<path d="M1469,847 a11,4 0 0 0 22,0" fill="none" stroke="#0078d4" stroke-width="2"/>
+<text x="1515" y="838" font-family="Segoe UI, Arial" font-size="15.5" fill="#0f172a" text-anchor="start" font-weight="700">Care team handoff / EHR</text>
+<text x="1515" y="860" font-family="Segoe UI, Arial" font-size="12" fill="#475569" text-anchor="start">route approved follow-up plan</text>
+<text x="1515" y="878" font-family="Segoe UI, Arial" font-size="11.5" fill="#64748b" text-anchor="start">synthetic • human-approved action</text>
+<line x1="1504" y1="772" x2="1504" y2="800" stroke="#16a34a" stroke-width="3" marker-end="url(#arrGn)"/>
+<rect x="120" y="975" width="900" height="120" rx="12" fill="#f8fbff" stroke="#d7e6f8" stroke-width="1.6"/>
+<text x="150" y="1015" font-family="Segoe UI, Arial" font-size="16" fill="#0f172a" text-anchor="start" font-weight="700">Operations</text>
+<line x1="300" y1="990" x2="300" y2="1080" stroke="#d7e6f8" stroke-width="1.5"/>
+<rect x="334" y="1035" width="6" height="8" rx="1" fill="#0078d4"/>
+<rect x="343" y="1027" width="6" height="16" rx="1" fill="#0078d4"/>
+<rect x="352" y="1031" width="6" height="12" rx="1" fill="#0078d4"/>
+<text x="372" y="1041" font-family="Segoe UI, Arial" font-size="14" fill="#475569" text-anchor="start" font-weight="700">DTS dashboard</text>
+<line x1="640" y1="990" x2="640" y2="1080" stroke="#d7e6f8" stroke-width="1.5"/>
+<circle cx="685" cy="1032" r="9" fill="#7c3aed"/>
+<rect x="681" y="1040" width="8" height="6" rx="1.5" fill="#7c3aed"/>
+<text x="712" y="1041" font-family="Segoe UI, Arial" font-size="14" fill="#475569" text-anchor="start" font-weight="700">Application Insights / LAW</text>
+<rect x="1060" y="975" width="880" height="120" rx="12" fill="#f8fbff" stroke="#d7e6f8" stroke-width="1.6"/>
+<text x="1090" y="1015" font-family="Segoe UI, Arial" font-size="16" fill="#0f172a" text-anchor="start" font-weight="700">Security</text>
+<line x1="1230" y1="990" x2="1230" y2="1080" stroke="#d7e6f8" stroke-width="1.5"/>
+<path d="M1280,1023 L1291,1028 V1038 a11,13 0 0 1 -11,10 a11,13 0 0 1 -11,-10 V1028 Z" fill="#0078d4"/>
+<text x="1312" y="1041" font-family="Segoe UI, Arial" font-size="14" fill="#475569" text-anchor="start" font-weight="700">Microsoft Entra ID • RBAC</text>
+<polyline points="560,895 560,940 345,940 345,1018" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#arrG)"/>
+<polyline points="800,895 800,940 685,940 685,1018" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#arrG)"/>
+<text x="1000" y="1128" font-family="Segoe UI, Arial" font-size="16" fill="#2563eb" text-anchor="middle" font-weight="700">Durable orchestration + human judgment + reliable recovery</text>
+<line x1="1400" y1="1123" x2="1434" y2="1123" stroke="#2563eb" stroke-width="3" marker-end="url(#arrB)"/>
+<text x="1442" y="1128" font-family="Segoe UI, Arial" font-size="12.5" fill="#475569" text-anchor="start">Workflow</text>
+<line x1="1550" y1="1123" x2="1584" y2="1123" stroke="#f0a500" stroke-width="3" marker-end="url(#arrO)"/>
+<text x="1592" y="1128" font-family="Segoe UI, Arial" font-size="12.5" fill="#475569" text-anchor="start">Human decision</text>
+<line x1="1730" y1="1123" x2="1764" y2="1123" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#arrG)"/>
+<text x="1772" y="1128" font-family="Segoe UI, Arial" font-size="12.5" fill="#475569" text-anchor="start">Observability</text>
+<text x="44" y="1128" font-family="Segoe UI, Arial" font-size="11" fill="#64748b" text-anchor="start">Grounded in agent-service/orchestrations + hitl_dts.py • synthetic data only</text>
+</svg>
