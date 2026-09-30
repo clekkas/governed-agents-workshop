@@ -109,9 +109,12 @@ function App() {
     selectedCase.evidence.find((item) => item.id === selectedEvidenceId) ?? selectedCase.evidence[0];
 
   // Approve / request-changes / reject are only legal from PendingReview or InReview (matches the
-  // backend state machine). Everything else (NeedsRework, Approved, Rejected, Escalated) disables
-  // the action buttons so the UI never invites an action the server will reject.
-  const isActionable = ["PendingReview", "InReview"].includes(selectedCase.status);
+  // backend state machine) AND only against live backend data. Sample/placeholder cards (shown
+  // while loading or when the backend is unreachable) carry synthetic correlation ids the backend
+  // has no durable task for, so acting on them would 404 — disable actions until data is live.
+  const isLive = dataSource === "live";
+  const statusActionable = ["PendingReview", "InReview"].includes(selectedCase.status);
+  const isActionable = isLive && statusActionable;
   // A reviewer must identify themselves before any decision — the name becomes the audited actor.
   const reviewer = reviewerName.trim();
   const canAct = isActionable && reviewer.length > 0;
@@ -460,7 +463,13 @@ function App() {
                   Reject
                 </button>
               </div>
-              {!isActionable ? (
+              {!isLive ? (
+                <p className="action-hint">
+                  {dataSource === "loading"
+                    ? "Loading live cases from the backend — review actions enable once the data arrives."
+                    : "Showing bundled sample data (backend unavailable) — review actions are disabled."}
+                </p>
+              ) : !statusActionable ? (
                 <p className="action-hint">
                   This packet is <strong>{statusLabels[selectedCase.status]}</strong> — no further care-manager
                   action is available.
