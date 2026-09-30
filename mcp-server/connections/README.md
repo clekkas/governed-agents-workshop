@@ -1,8 +1,17 @@
 # MCP connections
 
-Two lanes, both consumed under the same Microsoft Entra identity (delegated / on-behalf-of):
+Two lanes, different identity rules — the clinical MCP route (our governed tools, synthetic data) and
+the Work IQ route (Microsoft-hosted M365 context, proposed Entra delegated / on-behalf-of). This is a
+**proposed** architecture: Work IQ endpoint/auth, permission enforcement, supported protocols, and
+pricing — and the *no-PHI-to-Work-IQ* boundary — are **validation items**, not guarantees.
 
-![MCP + Work IQ deployment — two governed lanes](../../workshop-assets/mcp-workiq-deployment.svg)
+**Architecture — what talks to what:**
+
+![MCP + Work IQ architecture — two lanes, different auth paths](../../workshop-assets/mcp-workiq-architecture.png)
+
+**Deployment choices and validation:**
+
+![MCP + Work IQ deployment choices and validation](../../workshop-assets/mcp-workiq-deployment.png)
 
 | File | Server | Lane | Who runs it |
 | --- | --- | --- | --- |

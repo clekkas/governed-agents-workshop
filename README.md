@@ -31,14 +31,19 @@ Every request carries an `x-correlation-id`. The full write-up is in `docs/solut
 
 ### RAG domain
 
-The grounding subsystem is a first-class domain, not a single box. Its pipeline
-(**sources → ingest → retrieve → ground → measure**), diagnosis-scoping, claim-level citations,
-missing-evidence escalation, and the local-`KnowledgeBase` → Foundry IQ / Azure AI Search graduation
-are illustrated in `workshop-assets/rag-domain.svg` (source:
-`workshop-assets/build_rag_domain_diagram.py`). The retrieval **flow** (happy path + escalation) is
-`docs/rag-retrieval-flow.md`.
+The grounding subsystem is a first-class domain, not a single box: **prepare knowledge → handle a
+case (retrieve → evidence → enough? → grounded draft *or* `review_required`) → offline evaluation**,
+with diagnosis-scoping, claim-level citations, and missing-evidence escalation. This is an
+**intended design (synthetic data only)** — retrieval rules, the local-`KnowledgeBase` → Foundry IQ /
+Azure AI Search backend swap, and the minimum precision threshold are **validation items**. The
+retrieval **flow** is in `docs/rag-retrieval-flow.md`.
 
-![RAG domain](workshop-assets/rag-domain.svg)
+![RAG architecture](workshop-assets/rag-domain-architecture.png)
+
+**Readiness checklist** — what to validate before graduating from local retrieval to a cloud backend
+(behavior/contract parity, permissions, evaluation gates):
+
+![Validate the contract before graduation](workshop-assets/rag-domain-review-details.png)
 
 
 ## Run it locally

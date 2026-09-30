@@ -62,6 +62,14 @@ function tell(s, text) {
   s.addText(text, { x: 0.7, y: 6.35, w: 12, h: 0.5, fontFace: "Aptos", fontSize: 10, italic: true, color: C.muted, margin: 0 });
 }
 function notes(s, t) { s.addNotes(t); }
+function imageSlide(img, note) {
+  const s = pptx.addSlide();
+  s.background = { color: "F5F6F8" };
+  // Supplied PNGs are 16:9 with their own titles/footers; place near full-bleed, aspect-correct.
+  s.addImage({ path: path.resolve(__dirname, "..", img), x: 0.27, y: 0.15, w: 12.8, h: 7.2 });
+  if (note) s.addNotes(note);
+  return s;
+}
 function divider(kick, title, sub, pills) {
   const s = pptx.addSlide();
   s.background = { color: C.navy };
@@ -197,21 +205,9 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
   notes(s, "Reframe from earlier: Work IQ is a shipping, consumable service (MCP/A2A/REST), not just a pattern. Emphasize delegated-identity-only + OPA + audit as the governance story, and the clean split - our MCP for clinical tools, Work IQ for M365 context. Cost is usage-based Copilot Credits.");
 }
 
-// ============================================================ 7c. Where the MCP server runs
-{
-  const s = slide("Where the MCP server runs", "Priority - deployment: two lanes, one identity");
-  // Lane A: our governed clinical MCP server (two transports).
-  s.addText("CLINICAL / PHI  ->  our governed MCP server", { x: 0.7, y: 1.5, w: 8.0, h: 0.24, fontFace: "Aptos", fontSize: 9, bold: true, color: C.violet, charSpace: 0.6, margin: 0 });
-  card(s, "Local / stdio", "python mcp-server/server.py - a stdio subprocess. Zero infra; ships with the app. What you demo in the room.", 0.7, 1.85, 3.85, 1.95, C.violet);
-  card(s, "Hosted on Azure", "Same server as a Container App with INTERNAL ingress - private to the environment / VNet (Layer 1 secure MCP). enable_mcp_server=true.", 4.75, 1.85, 3.85, 1.95, C.blue);
-  card(s, "Same contracts", "Identical tools, JSON contracts, and decisions either way. Agent routes via USE_EXTERNAL_MCP + MCP_SERVER_URL; in-process stays the default.", 8.8, 1.85, 3.85, 1.95, C.teal);
-  // Lane B: Work IQ (consumed, not hosted).
-  s.addText("M365 CONTEXT  ->  Work IQ (Microsoft-hosted, we consume)", { x: 0.7, y: 4.1, w: 9.0, h: 0.24, fontFace: "Aptos", fontSize: 9, bold: true, color: C.amber, charSpace: 0.6, margin: 0 });
-  card(s, "Separate lane", "Work IQ is not something we deploy - it is Microsoft-hosted. The agent consumes it on the user's Entra on-behalf-of token; no app-only auth, no stored secret.", 0.7, 4.45, 5.9, 1.7, C.amber);
-  card(s, "Never merged", "PHI stays on our MCP server; M365 work context comes from Work IQ. Two lanes under one identity - enable_workiq=true, usage-billed via Copilot Credits.", 6.8, 4.45, 5.9, 1.7, C.red);
-  tell(s, "Diagram: workshop-assets/mcp-workiq-deployment.svg. Stdio and in-process always work; hosting is a toggle.");
-  notes(s, "Answers 'how is the MCP server deployed?'. Same code runs stdio locally or as an internal-ingress Container App on Azure; the internal-ingress IS the private-network layer of secure MCP. Work IQ is the other lane - consumed via Entra OBO, never merged with the clinical PHI tools. Show mcp-workiq-deployment.svg if they want the picture.");
-}
+// ============================================================ 7c. Where the MCP server runs (supplied diagram)
+imageSlide("mcp-workiq-architecture.png",
+  "MCP + Work IQ architecture - what talks to what. Two routes, different identity rules: the clinical MCP route (purple, optional, internal ingress, synthetic data) and the Work IQ route (orange, Microsoft 365 cloud, proposed Entra delegated on-behalf-of). Gray = shared Azure services under the app's managed identity - NOT the delegated user identity. PROPOSED design: Work IQ endpoint/auth, permission enforcement, supported protocols, and pricing still to validate; 'no PHI to Work IQ' is a design intent to test, not a guarantee. Companion deployment diagram in repo: workshop-assets/mcp-workiq-deployment.png.");
 
 // ============================================================ 8. Toolboxes
 {
@@ -240,26 +236,13 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
     "A working local retrieval-eval harness ships in agent-service/eval/.",
     "Briefs: docs/rag-guidance-gpt-rag.md, docs/rag-development-patterns.md, docs/rag-retrieval-flow.md.",
   ], 0.7, 3.85, 12.0, 2.2, { fontSize: 11.5 });
-  tell(s, "RAG as a production engineering pattern - grounded, measured, and governed, not a demo trick. Domain view: workshop-assets/rag-domain.svg.");
+  tell(s, "RAG as a production engineering pattern - grounded, measured, and governed, not a demo trick. Architecture: workshop-assets/rag-domain-architecture.png (next slide).");
   notes(s, "The RAG core. Emphasize evidence-packet-before-answer and measure-retrieval-first; both are the differentiators from a naive RAG demo.");
 }
 
-// ============================================================ 9b. RAG domain (deep dive)
-{
-  const s = slide("The RAG domain: grounded, measured, governed", "Priority - RAG best practices (deep dive)");
-  card(s, "1 Sources", "Effective-dated protocols (data/rag-docs); SharePoint / O365 (future). Each carries ACLs + labels.", 0.5, 1.55, 2.35, 2.15, C.amber);
-  card(s, "2 Ingest", "Extract, chunk, embed, index. ACL-trimmed at index time so permissions are honored.", 3.02, 1.55, 2.35, 2.15, C.cyan);
-  card(s, "3 Retrieve", "Query from the case; diagnosis-scoping filter (CHF never surfaces for COPD); top-k + confidence.", 5.54, 1.55, 2.35, 2.15, C.blue);
-  card(s, "4 Ground", "Evidence packet BEFORE answer; claim-level citations; missing protocol -> review_required.", 8.06, 1.55, 2.35, 2.15, C.violet);
-  card(s, "5 Measure", "precision@k / recall@k / MRR over qrels; gate on a minimum; measure before you tune.", 10.58, 1.55, 2.35, 2.15, C.green);
-  card(s, "Today - local KnowledgeBase", "agent-service/knowledge.py: keyword scoring over rag-docs. Offline, deterministic, diagnosis-scoped, cited. No vector store to manage.", 0.5, 4.0, 5.9, 1.5, C.teal);
-  card(s, "Graduation - Foundry IQ / Azure AI Search", "Swap the retriever; agents unchanged (same query -> cited-evidence contract). Reuse one always-on Search for cost - build on SEPARATE indexes (immutable connections).", 6.9, 4.0, 5.9, 1.5, C.cyan);
-  bullets(s, [
-    "Missing / low-coverage evidence -> review_required -> care-manager approval (Durable Task Scheduler). The agent drafts and cites; a human decides. Never guess.",
-  ], 0.5, 5.7, 12.4, 0.7, { fontSize: 11.5 });
-  tell(s, "Same retrieval contract on graduation - keep the qrels and metrics, swap the backend. Domain diagram: workshop-assets/rag-domain.svg; flow: docs/rag-retrieval-flow.md.");
-  notes(s, "Deep-dive on RAG for Joshua/Matt. Walk the five stages left to right, then the two-lane graduation (local -> Foundry IQ) under one retrieval contract, and the missing-evidence escalation. Tie to existing-vs-Foundry search and capability-host reuse/cost. Show rag-domain.svg if they want the full picture.");
-}
+// ============================================================ 9b. RAG domain (supplied diagram)
+imageSlide("rag-domain-architecture.png",
+  "RAG architecture - evidence before answer. Read three bands: prepare the knowledge (dated protocols -> preparation -> retrieval store / backend options), handle a case (agent -> retrieve -> evidence -> 'enough evidence?' -> grounded draft with citations OR review_required to a care-manager HITL), and offline evaluation (qrels, precision@k / recall@k / MRR) feeding retrieval improvements. INTENDED design, synthetic data only. Retrieval rules (dates, diagnosis scope, caller auth), the local->Foundry IQ/Azure AI Search backend swap, and the minimum precision threshold still to validate - retrieval confidence is not answer correctness. Companion readiness checklist in repo: workshop-assets/rag-domain-review-details.png (flow: docs/rag-retrieval-flow.md).");
 
 // ============================================================ 10. Search reuse + cost
 {

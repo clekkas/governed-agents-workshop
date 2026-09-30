@@ -100,8 +100,10 @@ the *same* governed server runs two ways — a **stdio** subprocess locally (zer
 or a **Container App with internal ingress** on Azure, private to the VNet — which is literally the
 private-network layer of the secure-MCP slide. Contracts and decisions are identical; the agent just
 routes to the internal URL. And Work IQ stays the *other* lane — Microsoft-hosted, consumed on the
-user's identity — never merged with our clinical tools. Diagram:
-`workshop-assets/mcp-workiq-deployment.svg`."
+user's identity — never merged with our clinical tools. Diagrams:
+`workshop-assets/mcp-workiq-architecture.png` (what talks to what) and `mcp-workiq-deployment.png`
+(deployment choices + validation). Note these are **proposed** — Work IQ endpoint/auth/pricing and
+the no-PHI boundary are validation items."
 
 **Slide 11 (Toolboxes).** "The natural follow-on: govern once, reuse everywhere. A toolbox is one
 governed endpoint that many agents share — this is where credential rotation and policy live, so you
@@ -126,7 +128,8 @@ boundary bite."
   long, cut to the checkpoint.
 
 > **Hosted MCP + Work IQ — the "how is it deployed?" answer.** If asked where the MCP server *lives*,
-> use `workshop-assets/mcp-workiq-deployment.svg` (the two-lane deployment diagram) and this track:
+> use `workshop-assets/mcp-workiq-architecture.png` (what talks to what) + `mcp-workiq-deployment.png`
+> (deployment choices) and this track:
 > "The **same** governed server runs two ways. Locally it's a **stdio** subprocess — zero infra,
 > what you're watching now. In Azure it's a **Container App with *internal* ingress** — private to
 > the environment's VNet, which *is* Layer 1 of the secure-MCP slide, not a public endpoint. Flip
@@ -151,7 +154,8 @@ domain as a pipeline — **sources → ingest → retrieve → ground → measur
 CHF protocol can't ground a COPD case), claim-level citations, missing-evidence escalation, and a
 measured retrieval gate. And the key graduation point: today it's a local KnowledgeBase; you swap in
 Foundry IQ / Azure AI Search **under the same retrieval contract**, so the agents don't change.
-Full picture: `workshop-assets/rag-domain.svg`; flow: `docs/rag-retrieval-flow.md`."
+Full picture: `workshop-assets/rag-domain-architecture.png` (+ readiness checklist
+`rag-domain-review-details.png`); flow: `docs/rag-retrieval-flow.md`."
 
 **Slide 14 (Search reuse + cost).** "This was your most-raised, critical question — can app teams
 reuse the Search/Cosmos/Storage that Foundry provisions, or do they pay twice. Standard setup is

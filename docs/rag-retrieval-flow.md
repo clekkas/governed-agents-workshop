@@ -3,8 +3,10 @@
 How the agent turns a case into a **cited, grounded** answer — or, when evidence is missing, a
 **human-review escalation instead of a guess**. Grounded in
 `agent-service/src/discharge_transition_agent/knowledge.py` (retrieval + diagnosis-scoping) and the
-Evidence Retrieval / Care Plan / Human Review specialists. See the visual companion
-`workshop-assets/rag-domain.svg` and the deck's Foundry IQ + RAG slide.
+Evidence Retrieval / Care Plan / Human Review specialists. See the visual companions
+`workshop-assets/rag-domain-architecture.png` (the architecture) and
+`workshop-assets/rag-domain-review-details.png` (the graduation readiness checklist), plus the deck's
+Foundry IQ + RAG slide.
 
 ## The happy path and the escalation path
 
@@ -71,4 +73,5 @@ sequenceDiagram
 
 - `docs/rag-guidance-gpt-rag.md` · `docs/rag-development-patterns.md` · `docs/existing-vs-foundry-search.md`
 - `docs/capability-host-reuse-and-cost.md` (reuse + cost on graduation)
-- `workshop-assets/rag-domain.svg` (the RAG domain / pipeline diagram)
+- `workshop-assets/rag-domain-architecture.png` (the RAG architecture) and
+  `workshop-assets/rag-domain-review-details.png` (graduation readiness checklist)
