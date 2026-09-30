@@ -408,4 +408,46 @@ divider("Earn the right to trust it", "Prove it, then pilot it",
   notes(s, "Close on the through-line: we do not choose between capability and governance - we build them together, sequenced around what Kaiser asked for.");
 }
 
+// ============================================================ Appendix: agenda & owners (from Loop)
+{
+  const s = pptx.addSlide("MAIN");
+  s.background = { color: C.off };
+  s.addText("WORKSHOP AGENDA & OWNERS", { x: 0.5, y: 0.34, w: 12.3, h: 0.22, fontFace: "Aptos", fontSize: 8, bold: true, color: C.teal, charSpace: 1.2, margin: 0 });
+  s.addText("Two-day run sheet (from the planning Loop) - times being finalized; only closeout is fixed", { x: 0.5, y: 0.6, w: 12.3, h: 0.3, fontFace: "Aptos Display", fontSize: 16, bold: true, color: C.navy, margin: 0, fit: "shrink" });
+
+  const hdr = (t) => ({ text: t, options: { bold: true, color: C.white, fill: { color: C.teal }, fontSize: 9, valign: "middle" } });
+  const band = (t) => [{ text: t, options: { bold: true, color: C.white, fill: { color: C.navy }, fontSize: 9.5, colspan: 4, valign: "middle" } }];
+  const row = (time, sess, owner, notes) => [
+    { text: time, options: { fontSize: 8.5, color: C.slate } },
+    { text: sess, options: { fontSize: 8.5, bold: true, color: C.navy } },
+    { text: owner, options: { fontSize: 8.5, color: C.slate } },
+    { text: notes, options: { fontSize: 8, color: C.muted } },
+  ];
+
+  const rows = [
+    [hdr("Time"), hdr("Session / Topic"), hdr("Owner"), hdr("Core questions / outcome")],
+    band("DAY 1"),
+    row("TBD", "Overview - MCP Server, Work IQ, Toolbox", "David Barkol", "Tool boundary + scope model; secure MCP server; operationalize"),
+    row("TBD", "Demo - MCP Server, Work IQ, Toolbox", "Chris Lekkas", ""),
+    row("TBD", "Agentic RAG - Foundry IQ", "Chris Lekkas + Shivang Vora", "Best practice; existing AI Search vs capability / project-host AI Search"),
+    row("TBD", "Lunch", "", ""),
+    row("TBD", "BYO Registry for Hosted Agents", "Chris Lekkas", "Hands-on lab session"),
+    row("TBD", "Hosted Agents technical deep dive", "Chris Lekkas + Shivang Vora", ""),
+    row("TBD", "Compliance - Policy, Guardrails", "Chris Lekkas + Shivang Vora", "Guardrail + PHI-minimization matrix"),
+    band("DAY 2"),
+    row("TBD", "Foundry Observability - LAW + Application Insights", "Lee Schuenemeyer", ""),
+    row("TBD", "Product team call - HA & Observability", "TBD", ""),
+    row("TBD", "SRE Agent deep dive", "TBD", ""),
+    row("TBD", "HITL - DTS", "David Barkol", "KP Eng TBD"),
+    row("1:45 - 2:00", "Closeout & roadmap", "Shivang Vora", "30 / 60 / 90-day pilot roadmap"),
+  ];
+
+  s.addTable(rows, {
+    x: 0.5, y: 1.05, w: 12.33, colW: [1.35, 4.5, 2.65, 3.83],
+    border: { type: "solid", color: "E2E8F0", pt: 0.5 },
+    align: "left", valign: "middle", fontFace: "Aptos", autoPage: false, rowH: 0.32,
+  });
+  notes(s, "Reference / leave-behind agenda captured from the planning Loop. Owners as assigned; most session times are still being finalized (only the closeout 1:45-2:00 is fixed in the source). Note the Loop run sheet still lists BYO Registry hands-on, a product-team HA/observability call, and an SRE agent deep dive - reconcile with the 9/29 reordered narrative (these are tactical/futures in the customer deck).");
+}
+
 pptx.writeFile({ fileName: OUT }).then(() => console.log("wrote", OUT));
