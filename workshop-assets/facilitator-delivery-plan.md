@@ -8,7 +8,7 @@ Pairs with: `run-of-show.md` (chapter/checkpoint table), `demo-eval-runbook.md` 
 `facilitator-cheatsheet.md` (who-asks-what → which brief).
 
 > The consolidated deck is a *customer storyline*, not a linear click-through. Day 1 uses slides
-> **1–16 + 20**; Day 2 uses **17–19 + 21–24**. Present the slides listed per block, then break to the
+> **1–17 + 21**; Day 2 uses **18–20 + 22–25**. Present the slides listed per block, then break to the
 > live surface. Chapter numbers (Ch0…Ch9) are stable topic tags from the run-of-show.
 
 ## Before you start (once, off-screen)
@@ -140,24 +140,31 @@ boundary bite."
 
 ## 10:45–11:00 · Break
 
-## 11:00–12:15 · Ch 4 — Foundry IQ, Building RAG · Slides 12–14
+## 11:00–12:15 · Ch 4 — Foundry IQ, Building RAG · Slides 12–15
 
 **Slide 12 (Foundry IQ + RAG).** "This is grounding. The differentiators from a naïve RAG demo:
 we build the **evidence packet before the answer**, and we **measure retrieval first**. If the
 evidence isn't there, the agent escalates instead of guessing."
 
-**Slide 13 (Search reuse + cost).** "This was your most-raised, critical question — can app teams
+**Slide 13 (The RAG domain — deep dive).** "For the engineers in the room: here's the whole RAG
+domain as a pipeline — **sources → ingest → retrieve → ground → measure**. Note diagnosis-scoping (a
+CHF protocol can't ground a COPD case), claim-level citations, missing-evidence escalation, and a
+measured retrieval gate. And the key graduation point: today it's a local KnowledgeBase; you swap in
+Foundry IQ / Azure AI Search **under the same retrieval contract**, so the agents don't change.
+Full picture: `workshop-assets/rag-domain.svg`; flow: `docs/rag-retrieval-flow.md`."
+
+**Slide 14 (Search reuse + cost).** "This was your most-raised, critical question — can app teams
 reuse the Search/Cosmos/Storage that Foundry provisions, or do they pay twice. Standard setup is
 BYO: reuse existing or let Foundry provision. The real cost win is **Azure AI Search** — one
 always-on service backing both agent vector stores and app RAG indexes. Cosmos and Storage are
 consumption-priced, so little saving there. The caveat that matters: capability connections are
 **immutable** — build on *separate* indexes/DBs/containers, never the agent's own."
 
-**Slide 14 (SharePoint / O365 ingest).** "Matt's ask — RAG over SharePoint PDFs, PPT, Word, Excel.
+**Slide 15 (SharePoint / O365 ingest).** "Matt's ask — RAG over SharePoint PDFs, PPT, Word, Excel.
 Two patterns, and the one caveat to remember is **ACL trimming** on the indexed path so retrieval
 honors permissions."
 
-**▶ DEMO CUE — after Slide 14.**
+**▶ DEMO CUE — after Slide 15.**
 Say: "Let me show grounding actually holding the line."
 - Live edit: **add one synthetic protocol doc** to the knowledge source.
 - **Re-run case P0310** and show **missing-evidence escalation** vs. a **cited answer** once the doc
@@ -172,37 +179,37 @@ Say: "Let me show grounding actually holding the line."
 
 ## 12:15–1:00 · Lunch
 
-## 1:00–2:15 · Ch 3 — Compliance: Policy & Guardrails · Slide 15
+## 1:00–2:15 · Ch 3 — Compliance: Policy & Guardrails · Slide 16
 
-**Slide 15 (Guardrails + healthcare content safety).** "Now the flip side of the boundary — what it
+**Slide 16 (Guardrails + healthcare content safety).** "Now the flip side of the boundary — what it
 must never *say*. This is Sarita's content-safety concern: the filter that blocks legitimate medical
 questions, the 'Tylenol' false positive. The answer is layered tuning plus a ticket path, so a
 benign clinical prompt passes but 'patient is safe to discharge' is still blocked."
 
-**▶ DEMO CUE — after Slide 15.**
+**▶ DEMO CUE — after Slide 16.**
 - Live edit: **add one prohibited-claim check**.
 - Run the **guardrail test**; show a **blocked 'safe to discharge'**, and a **benign clinical prompt
   passing** (the Tylenol case). Doc: `docs/healthcare-content-safety.md`.
 
 ## 2:15–2:30 · Break
 
-## 2:30–3:45 · Ch 1 — Hosted Agents + BYO Registry · Slide 16
+## 2:30–3:45 · Ch 1 — Hosted Agents + BYO Registry · Slide 17
 
-**Slide 16 (Agent-type decision).** "You asked for the decision criteria. Default to a **prompt
+**Slide 17 (Agent-type decision).** "You asked for the decision criteria. Default to a **prompt
 agent**; graduate to a **hosted agent** the moment you need custom orchestration, multi-agent
 handoffs, an existing framework, or your own code — which is exactly why *this* discharge use case is
 hosted. BYO Registry we'll show as a sample end-to-end only; it's not something we pre-staged."
 
-**▶ DEMO CUE — after Slide 16 (show, don't live-edit).**
+**▶ DEMO CUE — after Slide 17 (show, don't live-edit).**
 - Open the `agents/` manifests and the `backend/` orchestrator; explain the hosted-agent target.
 - Prove it's alive: `curl http://127.0.0.1:8080/api/health`. Checkpoint `chapter-01-backend-tests`.
 - Doc: `docs/agent-type-decision.md`. Frame BYO AKS as roadmap/futures.
 
-## 3:45–4:00 · Ch 5 — Day 1 playback · Slide 20
+## 3:45–4:00 · Ch 5 — Day 1 playback · Slide 21
 
-**Slide 20 (End-to-end).** "Let's see the whole thing work before we close." Then break to the demo.
+**Slide 21 (End-to-end).** "Let's see the whole thing work before we close." Then break to the demo.
 
-**▶ DEMO CUE — after Slide 20.**
+**▶ DEMO CUE — after Slide 21.**
 - Run **one case start to finish** in the UI, then pull its trace and walk the ordered events:
   ```powershell
   $r = Invoke-RestMethod -Method Post http://127.0.0.1:8080/api/v1/agent/invoke `
@@ -219,14 +226,14 @@ hosted. BYO Registry we'll show as a sample end-to-end only; it's not something 
 ## 9:00–9:15 · Recap & environment check
 Reconfirm Day 1 decisions; re-run the health check. (Optionally re-show Slides 4–5 for the boundary.)
 
-## 9:15–10:30 · Ch 6 — LAW / Application Insights · Slide 17
+## 9:15–10:30 · Ch 6 — LAW / Application Insights · Slide 18
 
-**Slide 17 (Observability + CMK/AMPLS).** "Two things at once: how we see what the agent did, and how
+**Slide 18 (Observability + CMK/AMPLS).** "Two things at once: how we see what the agent did, and how
 we keep PHI safe while doing it. Every request carries an `x-correlation-id`; we can replay the exact
 ordered event list. And because request/response content in Foundry logs can hold PHI, the posture
 is a **dedicated Log Analytics cluster + customer-managed keys + AMPLS** — Lee leads this one."
 
-**▶ DEMO CUE — after Slide 17.**
+**▶ DEMO CUE — after Slide 18.**
 - Invoke a case, copy its `x-correlation-id`, then `GET /api/v1/traces/:id` and walk the
   **tool.called** policy decisions, the **agent.handoff** chain, and the **review.transition**:
   ```powershell
@@ -239,13 +246,13 @@ is a **dedicated Log Analytics cluster + customer-managed keys + AMPLS** — Lee
 
 ## 10:30–10:45 · Break
 
-## 10:45–12:00 · Ch 7 — HITL: Data Task Scheduler · Slide 18
+## 10:45–12:00 · Ch 7 — HITL: Data Task Scheduler · Slide 19
 
-**Slide 18 (HITL / Durable Task Scheduler).** "This is the capstone and it's running today — where
+**Slide 19 (HITL / Durable Task Scheduler).** "This is the capstone and it's running today — where
 the human stays in control. Three behaviors: a valid approval goes through, an illegal transition is
 refused, and an overdue task auto-escalates on an SLA timer."
 
-**▶ DEMO CUE — after Slide 18.** Primary surface is the **UI** (worklist → case → Approve with the
+**▶ DEMO CUE — after Slide 19.** Primary surface is the **UI** (worklist → case → Approve with the
 required reviewer name). Under-the-hood / backup via API:
 - **Approve** P0147 as the care manager → task moves to Approved.
 - **Wrong actor** (approve as `agent`) → **403**, refused.
@@ -260,17 +267,17 @@ required reviewer name). Under-the-hood / backup via API:
 
 ## 12:00–12:45 · Lunch
 
-## 12:45–1:45 · Ch 9 — Ops & governance Q&A · Slide 19 (+ recall 13)
-**Slide 19 (divider: "Prove it + plan it").** Open Q&A. Drive answers with the cheat-sheet: reuse +
-cost (`capability-host-reuse-and-cost.md`) and secure MCP (`securing-mcp-servers.md`); recall Slide 13
+## 12:45–1:45 · Ch 9 — Ops & governance Q&A · Slide 20 (+ recall 14)
+**Slide 20 (divider: "Prove it + plan it").** Open Q&A. Drive answers with the cheat-sheet: reuse +
+cost (`capability-host-reuse-and-cost.md`) and secure MCP (`securing-mcp-servers.md`); recall Slide 14
 for the cost point. Cover BYO AKS + Foundry roadmap as futures.
 
-## 1:45–2:00 · Ch 9 — Closeout & roadmap · Slides 21–24
+## 1:45–2:00 · Ch 9 — Closeout & roadmap · Slides 22–25
 
-**Slide 21 (Evaluation gate).** "Before you trust it, prove it — safety is testable and enforced in
+**Slide 22 (Evaluation gate).** "Before you trust it, prove it — safety is testable and enforced in
 CI." Then run the eval demo.
 
-**▶ DEMO CUE — Slide 21 (the money demo, ~4 min, offline, no code editing).**
+**▶ DEMO CUE — Slide 22 (the money demo, ~4 min, offline, no code editing).**
 ```powershell
 .\scripts\demo-eval.ps1        # Enter advances each step
 ```
@@ -279,13 +286,13 @@ Arc: **green (6/6, exit 0)** → inject one flag `EVAL_DEMO_BREAK=risk_score` �
 the approved score. The gate named the violation and returned non-zero; in CI this **blocks the
 merge**. Same command a GitHub Actions job runs on every PR." Full script: `demo-eval-runbook.md`.
 
-**Slide 22 (Roadmap).** "Here's a concrete, cost-aware 30/60/90 tied to your priorities and the
+**Slide 23 (Roadmap).** "Here's a concrete, cost-aware 30/60/90 tied to your priorities and the
 two-quarter window you care about." Capture governance owners.
 
-**Slide 23 (Where to go deeper).** "Leave-behind: source-grounded briefs by topic, each citing
+**Slide 24 (Where to go deeper).** "Leave-behind: source-grounded briefs by topic, each citing
 current Microsoft Learn. The facilitator cheat-sheet maps each of your questions to the right brief."
 
-**Slide 24 (Close).** "The through-line for two days: we didn't choose between capability and
+**Slide 25 (Close).** "The through-line for two days: we didn't choose between capability and
 governance — we built them together, in the order you asked for. Thank you."
 
 ---

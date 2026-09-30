@@ -244,6 +244,23 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
   notes(s, "The RAG core. Emphasize evidence-packet-before-answer and measure-retrieval-first; both are the differentiators from a naive RAG demo.");
 }
 
+// ============================================================ 9b. RAG domain (deep dive)
+{
+  const s = slide("The RAG domain: grounded, measured, governed", "Priority - RAG best practices (deep dive)");
+  card(s, "1 Sources", "Effective-dated protocols (data/rag-docs); SharePoint / O365 (future). Each carries ACLs + labels.", 0.5, 1.55, 2.35, 2.15, C.amber);
+  card(s, "2 Ingest", "Extract, chunk, embed, index. ACL-trimmed at index time so permissions are honored.", 3.02, 1.55, 2.35, 2.15, C.cyan);
+  card(s, "3 Retrieve", "Query from the case; diagnosis-scoping filter (CHF never surfaces for COPD); top-k + confidence.", 5.54, 1.55, 2.35, 2.15, C.blue);
+  card(s, "4 Ground", "Evidence packet BEFORE answer; claim-level citations; missing protocol -> review_required.", 8.06, 1.55, 2.35, 2.15, C.violet);
+  card(s, "5 Measure", "precision@k / recall@k / MRR over qrels; gate on a minimum; measure before you tune.", 10.58, 1.55, 2.35, 2.15, C.green);
+  card(s, "Today - local KnowledgeBase", "agent-service/knowledge.py: keyword scoring over rag-docs. Offline, deterministic, diagnosis-scoped, cited. No vector store to manage.", 0.5, 4.0, 5.9, 1.5, C.teal);
+  card(s, "Graduation - Foundry IQ / Azure AI Search", "Swap the retriever; agents unchanged (same query -> cited-evidence contract). Reuse one always-on Search for cost - build on SEPARATE indexes (immutable connections).", 6.9, 4.0, 5.9, 1.5, C.cyan);
+  bullets(s, [
+    "Missing / low-coverage evidence -> review_required -> care-manager approval (Durable Task Scheduler). The agent drafts and cites; a human decides. Never guess.",
+  ], 0.5, 5.7, 12.4, 0.7, { fontSize: 11.5 });
+  tell(s, "Same retrieval contract on graduation - keep the qrels and metrics, swap the backend. Domain diagram: workshop-assets/rag-domain.svg; flow: docs/rag-retrieval-flow.md.");
+  notes(s, "Deep-dive on RAG for Joshua/Matt. Walk the five stages left to right, then the two-lane graduation (local -> Foundry IQ) under one retrieval contract, and the missing-evidence escalation. Tie to existing-vs-Foundry search and capability-host reuse/cost. Show rag-domain.svg if they want the full picture.");
+}
+
 // ============================================================ 10. Search reuse + cost
 {
   const s = slide("Existing vs Foundry Search + capability-host reuse", "Priority - Joshua / Matt: the critical cost question");
