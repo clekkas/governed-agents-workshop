@@ -117,6 +117,19 @@ boundary bite."
 - Anchor docs if asked: `docs/securing-mcp-servers.md`, `docs/work-iq-overview.md`. If the edit runs
   long, cut to the checkpoint.
 
+> **Hosted MCP + Work IQ — the "how is it deployed?" answer.** If asked where the MCP server *lives*,
+> use `workshop-assets/mcp-workiq-deployment.svg` (the two-lane deployment diagram) and this track:
+> "The **same** governed server runs two ways. Locally it's a **stdio** subprocess — zero infra,
+> what you're watching now. In Azure it's a **Container App with *internal* ingress** — private to
+> the environment's VNet, which *is* Layer 1 of the secure-MCP slide, not a public endpoint. Flip
+> `enable_mcp_server=true` (or `deploy.ps1 -EnableMcpServer`) and the agent routes to it over the
+> internal URL via `USE_EXTERNAL_MCP` + `MCP_SERVER_URL`; nothing else changes because the contracts
+> and decisions are identical. **Work IQ is the other lane** — we don't deploy it, it's
+> Microsoft-hosted; we *consume* it on the user's Entra on-behalf-of token, so PHI stays on our MCP
+> server and M365 work context comes from Work IQ. Two lanes, one identity, never merged." One-liner
+> if pressed on cost: "our MCP server is just a Container App you already pay for; Work IQ is
+> usage-based Copilot Credits."
+
 ## 10:45–11:00 · Break
 
 ## 11:00–12:15 · Ch 4 — Foundry IQ, Building RAG · Slides 11–13

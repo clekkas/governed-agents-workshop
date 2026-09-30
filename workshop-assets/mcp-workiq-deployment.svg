@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="1040" viewBox="0 0 1560 1040" font-family="Segoe UI, Arial">
+<defs><marker id="arw" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M1,1 L10,5.5 L1,10 Z" fill="#64748b"/></marker></defs>
+<rect x="0" y="0" width="1560" height="1040" fill="#f8fafc"/>
+<text x="40" y="46" font-family="Segoe UI, Arial" font-size="24" font-weight="800" fill="#0f172a">MCP + Work IQ deployment — two governed lanes, one identity story</text>
+<text x="40" y="72" font-family="Segoe UI, Arial" font-size="13.5" fill="#475569">Clinical / PHI flows through our governed MCP server. M365 work context comes from Work IQ. Synthetic data only.</text>
+<rect x="40" y="96" width="660" height="150" rx="16" fill="#effffb" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="3 5"/>
+<text x="58" y="122" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#0f766e" letter-spacing="1">LOCAL / DEV  (zero infra)</text>
+<rect x="70" y="132" width="300" height="92" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="70" y="132" width="6" height="92" rx="3" fill="#0f766e"/>
+<text x="88" y="159" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">Agent (in-process tools)</text>
+<text x="88" y="183" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Default path: governed tools run in-process.</text>
+<text x="88" y="201" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Identical contracts + decisions.</text>
+<rect x="400" y="132" width="270" height="92" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2" stroke-dasharray="7 6"/>
+<rect x="400" y="132" width="6" height="92" rx="3" fill="#7c3aed"/>
+<text x="418" y="159" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">MCP server — stdio</text>
+<text x="418" y="183" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">python mcp-server/server.py</text>
+<text x="418" y="201" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Subprocess over stdin/stdout.</text>
+<line x1="370" y1="178" x2="400" y2="178" stroke="#7c3aed" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#arw)"/>
+<rect x="365" y="165" width="40" height="22" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="385" y="180" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">stdio</text>
+<rect x="40" y="300" width="900" height="700" rx="16" fill="#eff6ff" stroke="#0078d4" stroke-width="1.8" stroke-dasharray="3 5"/>
+<text x="58" y="326" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#0078d4" letter-spacing="1">AZURE  —  Container App Environment / VNet</text>
+<rect x="80" y="430" width="370" height="160" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="80" y="430" width="6" height="160" rx="3" fill="#0078d4"/>
+<text x="98" y="457" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">App Container App  (external ingress)</text>
+<text x="98" y="481" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Backend API + built UI (:8080)</text>
+<text x="98" y="499" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Agent sidecar (:8081) — orchestrator</text>
+<text x="98" y="517" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">USE_EXTERNAL_MCP=1 -&gt; hosted MCP</text>
+<text x="98" y="535" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">ENABLE_WORKIQ=1 -&gt; M365 context lane</text>
+<rect x="80" y="640" width="370" height="150" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="80" y="640" width="6" height="150" rx="3" fill="#7c3aed"/>
+<text x="98" y="667" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">MCP server Container App</text>
+<text x="98" y="691" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">INTERNAL ingress (private to env / VNet)</text>
+<text x="98" y="709" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">streamable-http transport (:8080)</text>
+<text x="98" y="727" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">7 governed clinical tools + contracts</text>
+<text x="98" y="745" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Layer 1 secure-MCP: private network</text>
+<rect x="500" y="430" width="400" height="160" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="500" y="430" width="6" height="160" rx="3" fill="#16a34a"/>
+<text x="518" y="457" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">Trust plane (shared)</text>
+<text x="518" y="481" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">User-assigned managed identity + RBAC</text>
+<text x="518" y="499" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Key Vault  ·  Azure AI Search (RAG)</text>
+<text x="518" y="517" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">App Insights / Log Analytics (tracing)</text>
+<text x="518" y="535" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Durable Task Scheduler (HITL gate)</text>
+<rect x="500" y="640" width="400" height="150" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="500" y="640" width="6" height="150" rx="3" fill="#b45309"/>
+<text x="518" y="667" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">Microsoft Foundry</text>
+<text x="518" y="691" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Foundry account + project</text>
+<text x="518" y="709" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">gpt-4o deployment</text>
+<text x="518" y="727" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Hosted agents (orchestrator + specialists)</text>
+<line x1="265" y1="590" x2="265" y2="640" stroke="#7c3aed" stroke-width="2.4" marker-end="url(#arw)"/>
+<rect x="163" y="602" width="204" height="22" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="1"/>
+<text x="265" y="617" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">MCP_SERVER_URL (internal https)</text>
+<line x1="450" y1="510" x2="500" y2="510" stroke="#16a34a" stroke-width="2.4" marker-end="url(#arw)"/>
+<rect x="420" y="497" width="110" height="22" rx="6" fill="#ffffff" stroke="#16a34a" stroke-width="1"/>
+<text x="475" y="512" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">managed identity</text>
+<rect x="1000" y="300" width="520" height="430" rx="16" fill="#fff5f0" stroke="#d83b01" stroke-width="1.8" stroke-dasharray="3 5"/>
+<text x="1018" y="326" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#d83b01" letter-spacing="1">MICROSOFT 365 CLOUD  (Microsoft-hosted — we consume, not host)</text>
+<rect x="1030" y="360" width="460" height="150" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="1030" y="360" width="6" height="150" rx="3" fill="#d83b01"/>
+<text x="1048" y="387" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">Work IQ</text>
+<text x="1048" y="411" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Governed M365 work-context service</text>
+<text x="1048" y="429" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">MCP / A2A / REST  ·  ~10 generic tools</text>
+<text x="1048" y="447" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">mail · Teams · files · people · calendar</text>
+<text x="1048" y="465" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">OPA policy + audit on every call</text>
+<rect x="1030" y="545" width="460" height="150" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+<rect x="1030" y="545" width="6" height="150" rx="3" fill="#dc2626"/>
+<text x="1048" y="572" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#0f172a">Identity &amp; governance</text>
+<text x="1048" y="596" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Entra DELEGATED / on-behalf-of ONLY</text>
+<text x="1048" y="614" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">No app-only auth  ·  no stored secret</text>
+<text x="1048" y="632" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Honors user permissions, labels, DLP</text>
+<text x="1048" y="650" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Usage-based (Copilot Credits)</text>
+<line x1="300" y1="430" x2="300" y2="395" stroke="#d83b01" stroke-width="2.6"/>
+<line x1="300" y1="395" x2="1055" y2="395" stroke="#d83b01" stroke-width="2.6"/>
+<line x1="1055" y1="395" x2="1055" y2="360" stroke="#d83b01" stroke-width="2.6" marker-end="url(#arw)"/>
+<rect x="579" y="382" width="192" height="22" rx="6" fill="#ffffff" stroke="#d83b01" stroke-width="1"/>
+<text x="675" y="397" font-family="Segoe UI, Arial" font-size="11" fill="#475569" text-anchor="middle">Entra OBO (user token, https)</text>
+<text x="1000" y="800" font-family="Segoe UI, Arial" font-size="13" font-weight="800" fill="#0f172a">Two lanes, never merged</text>
+<line x1="1000" y1="818" x2="1040" y2="818" stroke="#7c3aed" stroke-width="3"/>
+<text x="1050" y="823" font-family="Segoe UI, Arial" font-size="12" fill="#475569">Clinical / PHI  -&gt;  our governed MCP server (stdio or hosted)</text>
+<line x1="1000" y1="842" x2="1040" y2="842" stroke="#d83b01" stroke-width="3"/>
+<text x="1050" y="847" font-family="Segoe UI, Arial" font-size="12" fill="#475569">M365 context  -&gt;  Work IQ (Entra OBO, Microsoft-hosted)</text>
+<text x="40" y="1016" font-family="Segoe UI, Arial" font-size="11.5" fill="#475569">Toggles: enable_mcp_server (hosted MCP) · enable_workiq (M365 lane). Off by default; in-process + stdio always work. See mcp-server/README.md and docs/work-iq-overview.md.</text>
+</svg>

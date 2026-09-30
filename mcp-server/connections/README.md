@@ -2,6 +2,8 @@
 
 Two lanes, both consumed under the same Microsoft Entra identity (delegated / on-behalf-of):
 
+![MCP + Work IQ deployment — two governed lanes](../../workshop-assets/mcp-workiq-deployment.svg)
+
 | File | Server | Lane | Who runs it |
 | --- | --- | --- | --- |
 | `clinical.mcp.json` | `discharge-transition-clinical` (this repo's `server.py`) | **Clinical / PHI tools** | We build and govern it |
