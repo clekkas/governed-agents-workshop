@@ -71,7 +71,7 @@ the boundary, not just the endpoint.
 
 ## References (public)
 
-- Foundry Agent Service overview + agent types: `/azure/foundry/agents/overview`
-- Hosted agents: `/azure/foundry/agents/concepts/hosted-agents`
-- Prompt agent quickstart: `/azure/foundry/agents/quickstarts/prompt-agent`
-- Responses API: `/azure/foundry/agents/quickstarts/responses-api`
+- Foundry Agent Service overview + agent types: https://learn.microsoft.com/en-us/azure/foundry/agents/overview
+- Hosted agents: https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents
+- Prompt agent quickstart: https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/prompt-agent
+- Responses API: https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/responses-api

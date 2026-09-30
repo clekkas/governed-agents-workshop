@@ -6,7 +6,7 @@
 >
 > Grounded in Microsoft Learn: **Set up standard agent resources for Foundry Agent Service**
 > (`/azure/foundry/agents/concepts/standard-agent-setup`) and **Configure agent capability
-> settings** (`/azure/foundry/agents/how-to/configure-capability-settings`). Verify RU/container
+> settings** (`/azure/foundry/how-to/configure-capability-settings`). Verify RU/container
 > specifics against Learn at delivery time — the service evolves.
 
 ## The one-line answer
@@ -97,6 +97,6 @@ agents need **Foundry User** on the project.
 
 ## References (public)
 
-- Standard agent setup: `/azure/foundry/agents/concepts/standard-agent-setup`
-- Configure agent capability settings: `/azure/foundry/agents/how-to/configure-capability-settings`
-- Foundry IQ knowledge sources: `/azure/foundry/agents/concepts/what-is-foundry-iq`
+- Standard agent setup: https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/standard-agent-setup
+- Configure agent capability settings: https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-capability-settings
+- Foundry IQ knowledge sources: https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq

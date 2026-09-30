@@ -53,6 +53,6 @@ consumption-priced, so their reuse saves little. Full guidance + the lifecycle c
 
 ## References (public)
 
-- Foundry IQ knowledge sources: `/azure/foundry/agents/concepts/what-is-foundry-iq`
-- Standard agent setup (BYO Search): `/azure/foundry/agents/concepts/standard-agent-setup`
+- Foundry IQ knowledge sources: https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq
+- Standard agent setup (BYO Search): https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/standard-agent-setup
 - Local: `docs/capability-host-reuse-and-cost.md`, `docs/rag-guidance-gpt-rag.md`

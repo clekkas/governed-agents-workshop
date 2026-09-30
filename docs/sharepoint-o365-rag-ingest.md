@@ -95,8 +95,8 @@ Need custom tokenization/metadata, cost-predictable indexing, or a broadly-reada
 
 ## References (public)
 
-- SharePoint tool: `/azure/foundry/agents/how-to/tools/sharepoint`
-- Copilot Retrieval API: `/microsoft-365-copilot/extensibility/api-reference/retrieval-api-overview`
-- Foundry IQ knowledge sources: `/azure/foundry/agents/concepts/what-is-foundry-iq`
-- Integrated vectorization: `/azure/search/vector-search-integrated-vectorization`
-- Document Intelligence: `/azure/ai-services/document-intelligence/overview`
+- SharePoint tool: https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/sharepoint
+- Copilot Retrieval API: https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/api-reference/retrieval-api-overview
+- Foundry IQ knowledge sources: https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq
+- Integrated vectorization: https://learn.microsoft.com/en-us/azure/search/vector-search-integrated-vectorization
+- Document Intelligence: https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/overview

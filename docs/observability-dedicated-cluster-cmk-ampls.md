@@ -99,7 +99,7 @@ keep it all on the private network.
 
 ## References (public)
 
-- Customer-managed keys: `/azure/azure-monitor/logs/customer-managed-keys`
-- Dedicated clusters: `/azure/azure-monitor/logs/logs-dedicated-clusters`
-- Azure Monitor Private Link: `/azure/azure-monitor/logs/private-link-security`
-- Encryption at rest / double encryption: `/azure/security/fundamentals/encryption-atrest`
+- Customer-managed keys: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/customer-managed-keys
+- Dedicated clusters: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/logs-dedicated-clusters
+- Azure Monitor Private Link: https://learn.microsoft.com/en-us/azure/azure-monitor/logs/private-link-security
+- Encryption at rest / double encryption: https://learn.microsoft.com/en-us/azure/security/fundamentals/encryption-atrest

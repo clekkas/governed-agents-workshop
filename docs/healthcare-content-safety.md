@@ -72,6 +72,6 @@ Pradip's team):
 
 ## References (public)
 
-- Azure AI Content Safety: `/azure/ai-services/content-safety/overview`
-- Foundry content filtering & custom filters: `/azure/ai-foundry/concepts/content-filtering`
-- Prompt shields: `/azure/ai-services/content-safety/concepts/jailbreak-detection`
+- Azure AI Content Safety: https://learn.microsoft.com/en-us/azure/ai-services/content-safety/overview
+- Foundry content filtering & custom filters: https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/content-filtering
+- Prompt shields: https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection

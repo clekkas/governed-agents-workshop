@@ -7,7 +7,7 @@
 > Grounded in Microsoft Learn: **Connect agents to MCP server endpoints**
 > (`/azure/foundry/agents/how-to/tools/model-context-protocol`), **Foundry Toolboxes**
 > (`/azure/foundry/agents/how-to/tools/toolbox`), and **Agent tools with network isolation**
-> (`/azure/foundry/agents/how-to/configure-private-link`). Verify specifics at delivery time.
+> (`/azure/foundry/how-to/configure-private-link`). Verify specifics at delivery time.
 
 ## The one-line answer
 
@@ -100,7 +100,7 @@ didn't happen — so make audit **always-on** and fail closed. Ties to the telem
 
 ## References (public)
 
-- Connect agents to MCP servers: `/azure/foundry/agents/how-to/tools/model-context-protocol`
-- Foundry Toolboxes: `/azure/foundry/agents/how-to/tools/toolbox`
-- Agent tools with network isolation: `/azure/foundry/agents/how-to/configure-private-link`
-- Private network agent-tools Bicep: `github.com/microsoft-foundry/foundry-samples` → `infrastructure-setup-bicep/19-private-network-agent-tools`
+- Connect agents to MCP servers: https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/model-context-protocol
+- Foundry Toolboxes: https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox
+- Agent tools with network isolation: https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link
+- Private network agent-tools Bicep: https://github.com/microsoft-foundry/foundry-samples → `infrastructure-setup-bicep/19-private-network-agent-tools`
