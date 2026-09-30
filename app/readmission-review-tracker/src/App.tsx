@@ -247,7 +247,7 @@ function App() {
           </p>
           <span className={`data-source ${dataSource}`}>
             {dataSource === "loading"
-              ? "Connecting to backend…"
+              ? "Running multi-agent workflow…"
               : dataSource === "live"
                 ? "Live: backend orchestrator"
                 : "Offline: bundled sample data"}
@@ -449,7 +449,7 @@ function App() {
                   onChange={(event) => setReviewerName(event.target.value)}
                   placeholder="Enter your name to enable review actions"
                   autoComplete="off"
-                  disabled={!isActionable}
+                  disabled={dataSource === "live" && !statusActionable}
                 />
               </div>
               <div className="review-actions">
@@ -464,11 +464,17 @@ function App() {
                 </button>
               </div>
               {!isLive ? (
-                <p className="action-hint">
-                  {dataSource === "loading"
-                    ? "Loading live cases from the backend — review actions enable once the data arrives."
-                    : "Showing bundled sample data (backend unavailable) — review actions are disabled."}
-                </p>
+                dataSource === "loading" ? (
+                  <p className="action-hint loading-hint">
+                    <span className="spinner" aria-hidden="true" /> Running the multi-agent workflow — this
+                    usually takes 30–60 seconds. You can enter your reviewer name now; the review actions
+                    enable as soon as the live case loads.
+                  </p>
+                ) : (
+                  <p className="action-hint">
+                    Showing bundled sample data (backend unavailable) — review actions are disabled.
+                  </p>
+                )
               ) : !statusActionable ? (
                 <p className="action-hint">
                   This packet is <strong>{statusLabels[selectedCase.status]}</strong> — no further care-manager
