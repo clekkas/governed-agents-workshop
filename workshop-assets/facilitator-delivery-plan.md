@@ -100,12 +100,22 @@ governed endpoint that many agents share — this is where credential rotation a
 don't re-secure every tool for every agent."
 
 **▶ DEMO CUE — after Slide 10.**
-Say: "Let me tighten one contract live so you see the boundary bite."
+Say: "Let me run the MCP chapter through our deploy runner, then tighten one contract so you see the
+boundary bite."
+- Run the **MCP chapter runner** (master → child) so the room sees the per-capability CI/CD pattern:
+  ```powershell
+  infra\scripts\deploy-chapters.ps1 -Chapters mcp
+  ```
+  It runs the **tool-contract validation** (7 contracts + drift self-test) and the **governed server
+  tests** (redact / read-only score / draft-only / escalation) — all green.
 - Live edit: open an MCP tool schema, **narrow one field** (e.g. make a returned field redacted /
-  drop a scope).
-- Run the **tool-contract validation** and show an **allow / redact / deny** decision changing.
+  drop a scope), then re-run `deploy-chapters.ps1 -Chapters mcp` and show the **allow / redact / deny**
+  decision change (or the validator failing loudly on drift).
+- Optional: `python mcp-server/server.py` to show the **real MCP stdio server** is runnable; note
+  Work IQ attaches as a *separate* governed connection (`mcp-server/connections/`).
 - Reveal the finished state at checkpoint `chapter-02-mcp-validate`.
-- Anchor doc if asked: `docs/securing-mcp-servers.md`. If the edit runs long, cut to the checkpoint.
+- Anchor docs if asked: `docs/securing-mcp-servers.md`, `docs/work-iq-overview.md`. If the edit runs
+  long, cut to the checkpoint.
 
 ## 10:45–11:00 · Break
 
@@ -264,6 +274,7 @@ governance — we built them together, in the order you asked for. Thank you."
 | Moment | Command |
 | --- | --- |
 | Health check | `curl http://127.0.0.1:8080/api/health` |
+| MCP chapter runner | `infra\scripts\deploy-chapters.ps1 -Chapters mcp` (validate) · add `-Deploy` for deploy actions |
 | Invoke a case | `Invoke-RestMethod -Method Post http://127.0.0.1:8080/api/v1/agent/invoke -ContentType application/json -Body '{"caseId":"P0147","actorRole":"care_manager"}'` |
 | Read the trace | `Invoke-RestMethod "http://127.0.0.1:8080/api/v1/traces/<correlationId>"` |
 | Force SLA escalation | `Invoke-RestMethod -Method Post http://127.0.0.1:8080/api/v1/tasks/sweep` |
