@@ -41,17 +41,26 @@ function App() {
   const [traceError, setTraceError] = useState<string | null>(null);
 
   // Load cases from the backend on mount, invoking the orchestrator for each so
-  // the worklist and detail panels reflect live agent output. Falls back to the
-  // bundled sample data if the backend is unreachable (offline workshop).
+  // the worklist and detail panels reflect live agent output. Uses allSettled so a single
+  // slow/failed invoke (e.g. a cold start) doesn't discard the whole live worklist — we keep
+  // every case that succeeded and only fall back to the bundled sample data if the backend is
+  // unreachable or every invoke failed (offline workshop).
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const summaries = await fetchCases();
-        const results = await Promise.all(
+        const settled = await Promise.allSettled(
           summaries.map(async (summary) => toReviewCase(summary, await invokeAgent(summary.id))),
         );
-        if (cancelled || results.length === 0) return;
+        if (cancelled) return;
+        const results = settled
+          .filter((s): s is PromiseFulfilledResult<ReviewCase> => s.status === "fulfilled")
+          .map((s) => s.value);
+        if (results.length === 0) {
+          setDataSource("sample");
+          return;
+        }
         setCases(results);
         setSelectedCaseId(results[0].id);
         setSelectedEvidenceId(results[0].evidence[0]?.id);
