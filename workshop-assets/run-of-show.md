@@ -3,6 +3,7 @@
 Orchestration guide for delivering the two-day workshop while GitHub Copilot builds the
 delegated development items. Scout owns this document. Pair it with:
 
+- `facilitator-delivery-plan.md` (slide-keyed talk track + per-block demo cues and commands)
 - `docs/chapter-delivery-model.md` (chapter timing + live-edit rhythm)
 - `docs/requirements/dev-backlog.md` (WI-01…WI-08)
 - `docs/requirements/copilot-agent-plan-prompts.md` (paste-ready prompts)

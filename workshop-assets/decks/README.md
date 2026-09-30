@@ -14,6 +14,12 @@ Generators for the workshop PowerPoint decks.
   scenario + safety boundary → reference architecture → the eight priority briefs (re-sequenced to
   the 9/29 order) → end-to-end → evaluation gate → 30/60/90 roadmap → deeper-reading index → close.
 
+## Delivering the deck
+
+`../facilitator-delivery-plan.md` is the slide-keyed run script for the consolidated deck: for each
+time block it maps which slides to show, the first-person talk track, and exactly when to break for a
+demo (with copy-paste commands and checkpoint tags).
+
 ## Regenerate
 
 Requires Node and `pptxgenjs`.
