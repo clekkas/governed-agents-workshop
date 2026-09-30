@@ -42,6 +42,28 @@
    agent** the moment you need custom orchestration, multi-agent handoffs, an existing framework, or
    your own code — which is exactly why the discharge use case is hosted.
 
+## Toolbox for app teams (Matt's reuse question)
+
+If Matt/Sarita ask what a **Toolbox** buys KP: it bundles many tools (MCP servers, Azure AI Search,
+OpenAPI, Code Interpreter, File Search, A2A, browser automation, **Work IQ, Fabric IQ**, Skills)
+behind **one MCP-compatible endpoint** with centralized **credentials, versioning, and policy**.
+
+- **Govern once, reuse everywhere.** App teams point many agents at one secured endpoint instead of
+  re-wiring credentials + policy per agent. This is the concrete answer to "don't duplicate."
+- **Versioned + promotable.** Create a version, the first becomes default, then **test → promote** a
+  new default; agents consume a **version-specific endpoint** — so tools change without redeploying
+  the agent (big for a regulated org where redeploy = re-review).
+- **Governed at the toolbox.** RBAC via the **Foundry User** role (developer manages, agent identity
+  calls at runtime, end-user identity for OAuth flows), a **guardrail / RAI policy** at the toolbox
+  level, and **network isolation** support.
+- **Nuance to voice:** Toolbox is **Layer 4** (centralize creds + policy), *not* the whole security
+  story — the private-network + identity + least-privilege scopes still sit underneath it.
+- **One-liner:** "A Toolbox turns 'many tools on many agents' into one governed, versioned endpoint —
+  reuse without re-securing, and swap tools without redeploying agents."
+
+Verified against Microsoft Learn (Foundry Toolboxes, current as of 9/30/2026); some SDK packages are
+still preview. Brief: `docs/securing-mcp-servers.md` (Layer 4). Deck: slide 11.
+
 ## Reordered agenda reminder (per 9/29)
 
 Day 1 AM leads with **MCP + Toolboxes → Foundry IQ/RAG**; PM = **Guardrails → Hosted Agents (demoted)**.
