@@ -155,7 +155,6 @@ function divider(kick, title, sub, pills) {
   card(s, "App + tools", "Container Apps: a UI/backend plus a Python agent sidecar. MCP tool boundary. Azure AI Search + Storage back RAG / Foundry IQ.", 4.75, 1.6, 3.85, 2.0, C.teal);
   card(s, "Trust plane", "Managed identity + RBAC, Key Vault, App Insights / LAW for tracing, and a Durable Task Scheduler for the human approval gate.", 8.8, 1.6, 3.85, 2.0, C.blue);
   bullets(s, [
-    "Workload in Sweden Central; Azure AI Search in Norway East (regional SKU capacity).",
     "Keyless CI: GitHub Actions with OIDC, remote Terraform state, human-gated apply.",
     "Everything is IaC (Terraform) and reproducible; synthetic data only.",
   ], 0.7, 3.85, 12.0, 2.2, { fontSize: 11.5 });
@@ -356,11 +355,11 @@ divider("Earn the right to trust it", "Prove it, then pilot it",
 // ============================================================ 19. Deeper reading
 {
   const s = slide("Where to go deeper", "Source-grounded briefs");
-  card(s, "Tools + grounding", "securing-mcp-servers.md; capability-host-reuse-and-cost.md; existing-vs-foundry-search.md; sharepoint-o365-rag-ingest.md; rag-guidance-gpt-rag.md.", 0.7, 1.6, 5.9, 1.9, C.teal);
-  card(s, "Safety + agents", "healthcare-content-safety.md; agent-type-decision.md; governance-security-observability.md; policy/ guardrails and test matrix.", 6.8, 1.6, 5.9, 1.9, C.violet);
-  card(s, "Operate", "observability-dedicated-cluster-cmk-ampls.md; observability-correlation-trace.md; hitl-durable-task-scheduler.md.", 0.7, 3.65, 5.9, 1.7, C.blue);
-  card(s, "Run the workshop", "workshop-assets/agenda-2-day.md; run-of-show.md; facilitator-cheatsheet.md (who wants what -> which brief).", 6.8, 3.65, 5.9, 1.7, C.amber);
-  tell(s, "Every brief cites current Microsoft Learn and maps to a slide in this deck.");
+  card(s, "Tools + grounding", "Securing MCP tool servers; reusing capability-host Search and its cost; existing vs. Foundry search; SharePoint / O365 RAG ingest; RAG design guidance.", 0.7, 1.6, 5.9, 1.9, C.teal);
+  card(s, "Safety + agents", "Healthcare content safety; choosing the right agent type; governance, security and observability; guardrail policy and its test matrix.", 6.8, 1.6, 5.9, 1.9, C.violet);
+  card(s, "Operate", "Dedicated cluster with CMK and AMPLS; end-to-end trace correlation; human-in-the-loop with the Durable Task Scheduler.", 0.7, 3.65, 5.9, 1.7, C.blue);
+  card(s, "Run the workshop", "Two-day agenda, run-of-show, and a facilitator cheat-sheet that maps each stakeholder question to the right brief.", 6.8, 3.65, 5.9, 1.7, C.amber);
+  tell(s, "Detailed, source-grounded briefs are provided as a leave-behind pack; every brief cites current Microsoft Learn.");
   notes(s, "Leave-behind slide. Point each persona to their briefs; the facilitator cheat-sheet has the full question -> doc lookup.");
 }
 
