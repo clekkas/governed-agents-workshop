@@ -40,3 +40,9 @@ Build guardrails as layered controls:
 ## Key message
 
 Prompt instructions are necessary but not sufficient. The architecture must enforce policy at tools, retrieval, output validation, workflow state, and telemetry.
+
+## Related guidance
+
+- **`docs/healthcare-content-safety.md`** — why generic content filters flag benign clinical
+  language (the "Tylenol" false positive), the layered fix (request/response/app-side knobs +
+  custom content filter + false-positive test suite), and the ticket path when the filter is wrong.

@@ -26,6 +26,15 @@ Teach RAG as a five-step development loop:
 4. Ground: build an evidence packet before answer generation.
 5. Evaluate: test retrieval, groundedness, missing evidence, citations, and regression.
 
+## Related guidance
+
+- **`docs/existing-vs-foundry-search.md`** — the two independent Search instances (agent
+  capability-host vs your existing index) and which to use.
+- **`docs/capability-host-reuse-and-cost.md`** — can app teams reuse the Foundry-provisioned
+  Search/Cosmos/Storage, and the cost answer.
+- **`docs/rag-guidance-gpt-rag.md`** — Foundry IQ patterns, source kinds, OBO permission trimming,
+  and the "measure retrieval before tuning" method.
+
 ## Multi-surface discussion
 
 The same grounded knowledge capability can appear in multiple Microsoft AI surfaces:

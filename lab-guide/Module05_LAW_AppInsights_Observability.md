@@ -51,3 +51,9 @@ Telemetry schema and starter KQL dashboard queries.
 4. Dashboard requirements.
 5. Alerting plan.
 6. Incident triage runbook.
+
+## Related guidance
+
+- **`docs/observability-dedicated-cluster-cmk-ampls.md`** — because Foundry logs may now contain
+  PHI (request/response), protect the store with a **dedicated LAW cluster + customer-managed keys
+  (CMK) + Azure Monitor Private Link (AMPLS)**. Includes the cost framing and Day-2 sequencing (Lee).

@@ -26,3 +26,8 @@ This module will be completed after the separate local BYO Registry sample repo 
 
 A deployment topology and registry-control checklist.
 
+## Related guidance
+
+- **`docs/agent-type-decision.md`** — hosted vs prompt vs custom-agent decision (the "tipping
+  factor"): when to choose each, the SDLC trade-offs, and why this use case is a hosted agent.
+
