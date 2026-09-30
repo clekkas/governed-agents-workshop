@@ -34,6 +34,9 @@ Teach RAG as a five-step development loop:
   Search/Cosmos/Storage, and the cost answer.
 - **`docs/rag-guidance-gpt-rag.md`** — Foundry IQ patterns, source kinds, OBO permission trimming,
   and the "measure retrieval before tuning" method.
+- **`docs/sharepoint-o365-rag-ingest.md`** — grounding on SharePoint/O365 docs (PDF/PPT/Word/Excel):
+  the live SharePoint tool (per-user OBO) vs the indexed tokenize→vectorize pipeline, with ACL and
+  licensing guidance.
 
 ## Multi-surface discussion
 
