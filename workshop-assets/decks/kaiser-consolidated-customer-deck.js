@@ -197,6 +197,22 @@ divider("Built around your 9/29 priorities", "Your priorities, answered",
   notes(s, "Reframe from earlier: Work IQ is a shipping, consumable service (MCP/A2A/REST), not just a pattern. Emphasize delegated-identity-only + OPA + audit as the governance story, and the clean split - our MCP for clinical tools, Work IQ for M365 context. Cost is usage-based Copilot Credits.");
 }
 
+// ============================================================ 7c. Where the MCP server runs
+{
+  const s = slide("Where the MCP server runs", "Priority - deployment: two lanes, one identity");
+  // Lane A: our governed clinical MCP server (two transports).
+  s.addText("CLINICAL / PHI  ->  our governed MCP server", { x: 0.7, y: 1.5, w: 8.0, h: 0.24, fontFace: "Aptos", fontSize: 9, bold: true, color: C.violet, charSpace: 0.6, margin: 0 });
+  card(s, "Local / stdio", "python mcp-server/server.py - a stdio subprocess. Zero infra; ships with the app. What you demo in the room.", 0.7, 1.85, 3.85, 1.95, C.violet);
+  card(s, "Hosted on Azure", "Same server as a Container App with INTERNAL ingress - private to the environment / VNet (Layer 1 secure MCP). enable_mcp_server=true.", 4.75, 1.85, 3.85, 1.95, C.blue);
+  card(s, "Same contracts", "Identical tools, JSON contracts, and decisions either way. Agent routes via USE_EXTERNAL_MCP + MCP_SERVER_URL; in-process stays the default.", 8.8, 1.85, 3.85, 1.95, C.teal);
+  // Lane B: Work IQ (consumed, not hosted).
+  s.addText("M365 CONTEXT  ->  Work IQ (Microsoft-hosted, we consume)", { x: 0.7, y: 4.1, w: 9.0, h: 0.24, fontFace: "Aptos", fontSize: 9, bold: true, color: C.amber, charSpace: 0.6, margin: 0 });
+  card(s, "Separate lane", "Work IQ is not something we deploy - it is Microsoft-hosted. The agent consumes it on the user's Entra on-behalf-of token; no app-only auth, no stored secret.", 0.7, 4.45, 5.9, 1.7, C.amber);
+  card(s, "Never merged", "PHI stays on our MCP server; M365 work context comes from Work IQ. Two lanes under one identity - enable_workiq=true, usage-billed via Copilot Credits.", 6.8, 4.45, 5.9, 1.7, C.red);
+  tell(s, "Diagram: workshop-assets/mcp-workiq-deployment.svg. Stdio and in-process always work; hosting is a toggle.");
+  notes(s, "Answers 'how is the MCP server deployed?'. Same code runs stdio locally or as an internal-ingress Container App on Azure; the internal-ingress IS the private-network layer of secure MCP. Work IQ is the other lane - consumed via Entra OBO, never merged with the clinical PHI tools. Show mcp-workiq-deployment.svg if they want the picture.");
+}
+
 // ============================================================ 8. Toolboxes
 {
   const s = slide("Toolboxes: one governed endpoint", "Priority - pairs with MCP");
